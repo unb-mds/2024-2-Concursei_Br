@@ -8,6 +8,7 @@
 | Marco Marques       | marcomarquesdc      |
 | Eduardo Silva Waski | EduardoWaski        |
 | José Victor Gabriel | RR2M4A              |
+| Marcos Paulo Ribeiro| ribmarcos           |
 
 ### Descrição
 
