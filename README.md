@@ -4,6 +4,7 @@
 | Nome                | Github              |
 |---------------------|---------------------|
 | Artur de Camargos   | ArturDCR            |
+| André Meyer         | AndreMeyerr         |
 | Luiz Felipe Bessa   | lfelipebessa        |
 | Marco Marques       | marcomarquesdc      |
 | Eduardo Silva Waski | EduardoWaski        |
