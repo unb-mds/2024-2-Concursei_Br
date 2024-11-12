@@ -11,6 +11,8 @@
 | José Victor Gabriel | RR2M4A              |
 | Marcos Paulo Ribeiro| ribmarcos           |
 
-### Descrição
+## Visão de produto
 
-Em Análise
+## É - Não é / Faz - Não faz
+
+## Objetivo de produto
