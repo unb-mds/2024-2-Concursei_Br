@@ -11,8 +11,9 @@
 | José Victor Gabriel | RR2M4A              |
 | Marcos Paulo Ribeiro| ribmarcos           |
 
-## Visão de produto
-
-## É - Não é / Faz - Não faz
-
-## Objetivo de produto
+## Configuração de ambiente
+- Python 3.12
+### Bibliotecas
+- Streamlit
+- Numpy
+- Matplotlib
