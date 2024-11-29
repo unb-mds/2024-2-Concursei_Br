@@ -17,3 +17,13 @@
 - Streamlit
 - Numpy
 - Matplotlib
+  
+```bash
+pip install streamlit
+pip install numpy
+pip install matplotlib
+```
+### Executando o programa
+```bash
+streamlit run gov_app.py
+```
