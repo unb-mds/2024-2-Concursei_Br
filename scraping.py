@@ -62,5 +62,3 @@ def fetch_daily_pdf():
     pdf_content = BytesIO(res.content)
     pdfreader = PdfReader(pdf_content)
     return pdfreader
-
-print(fetch_daily_pdf())
