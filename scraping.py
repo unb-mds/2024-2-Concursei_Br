@@ -43,7 +43,7 @@ def fetch_daily_pdf():
 
     # O ID da publicação é sempre incerto, pois depende de feriados, fins de semana, e publicações de emergência
     # Então vamos loopar por todos os ids possíveis até encontrar o da data atual
-    for i in range(20001, 20002):
+    for i in range(20001, 20365):
 
         updated_link = pdf_link.replace("20ID", str(i))
 
@@ -51,8 +51,6 @@ def fetch_daily_pdf():
         res = requests.get(updated_link)
 
         if res.headers.get("content-type") == "application/pdf":
-            continue
-        else:
             # Gerando objeto para manipular pdf
             pdf_content = BytesIO(res.content)
             pdfreader = PdfReader(pdf_content)
