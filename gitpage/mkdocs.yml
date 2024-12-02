@@ -1,0 +1,57 @@
+site_name: 2024-2-Squad14
+
+repo_name: '2024-2-Squad14'
+repo_url: https://github.com/unb-mds/2024-2-Squad14
+
+theme: 
+  name: material
+  language: pt-BR
+
+  icon:
+    repo: fontawesome/brands/github
+  
+  features:
+    - toc.integrate
+    - toc.follow
+    - navigation.tabs
+    - navigation.tabs.stiky
+    - navigation.footer
+    - navigation.instant
+    - navigation.top
+
+  hide: 
+    -
+  
+  extra: 
+    social: 
+      - icon: 
+        link:
+
+  plugins:
+    - search:
+        lang: pt-BR
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: defalt
+      primary: dark blue
+      accent: amber
+      toggle: 
+        icon: material/lightbulb-outline
+        name: Modo Escuro
+
+  markdown_extensions:
+    - admonition
+    - pymdownx.details
+    - pymdownx.superfences
+    - attr_list
+    - md_in_html
+    - pymdownx.emoji:
+        emoji_index: !!python/name:materialx.emoji.twemoji
+        emoji_generator: !!python/name:materialx.emoji.to_svg
+
+
+nav: 
+  - Home: index.md
+  - Sprints: sprints.md
+  - Tecnologias: tecnology.md
+  - Backlog: backlog.md
