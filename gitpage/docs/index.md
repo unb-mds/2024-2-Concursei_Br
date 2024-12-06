@@ -1,7 +1,7 @@
 
 #Painel de Transparência Municipal
 
-#### A aplicação visa oferecer à população interressada, uma visão mais simplificada dos dados municipais.
+<h3 style = "margin: 0 20px 0 20px">A aplicação visa oferecer à população interressada, uma visão mais simplificada dos dados municipais.</h3>
 
 <br></br>
 <hr></hr>
