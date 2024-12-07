@@ -1,59 +1,98 @@
 import requests
-from datetime import date
-from io import BytesIO
-from PyPDF2 import PdfReader
+from bs4 import BeautifulSoup
+from unidecode import unidecode
+import json
+from collections import defaultdict
 
-# Link das edições: https://dodf.df.gov.br/dodf/jornal/pastas
-# Esse é o caminho padrão das edições do diário oficial do DODF.
-# Abaixo tem o padrão do link de cada pdf do diário oficial.
+
+
+# Use as siglas dos estados quando quiser recuperar os munincípios de 
+# determinado estado:
 #
-# "pasta=ANO":      pasta=ANO_DESEJADO
-# "MES_MES":        MÊS_EM_NÚMERO/MÊS_POR_EXTENSO
-# "ID":             ID_DA_PUBLICAÇÃO (O nº da publicação do ano. A primeira publicação do ano é sempre 001, a segunda, 002, terceira, 003...)
-# "DIA-MES-ANO":    DIA-MES-ANO em número
+#    "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", 
+#    "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", 
+#    "RR", "SC", "SP", "SE", "TO"
+#
 
-PDF_PATH = "https://dodf.df.gov.br/dodf/jornal/visualizar-pdf?pasta=ANO|MES_MES|DODF%20ID%20DIA-MES-ANO|&arquivo=DODF%20ID%20DIA-MES-ANO%20INTEGRA.pdf"
-STANDARD_PDF_CLASS = "link-materia"
-MONTHS = {
-    "1": "janeiro",
-    "2": "fevereiro",
-    "3": "março",
-    "4": "abril",
-    "5": "maio",
-    "6": "junho",
-    "7": "julho",
-    "8": "agosto",
-    "9": "setembro",
-    "10": "outubro",
-    "11": "novembro",
-    "12": "dezembro"
-}
+def get_estate_municipalities(acronym : str):
 
-def fetch_daily_pdf():
+    # Site do IBGE com o código dos munincípios
+    IBGE_URL = "https://www.ibge.gov.br/explica/codigos-dos-municipios.php"
+    response = requests.get(IBGE_URL)
 
-    current_year, current_month, current_day = str(date.today()).split("-")
+    if response.status_code != 200:
+        print(f"Erro ao acessar a página. Status code: {response.status_code}")
+        return None
+
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+    thead = soup.find("thead", id=acronym)
+    tbody = thead.find_next_sibling("tbody")
+
+    municipalities = {}
+
+    # Iterando todos os munincípios listados (linhas)
+    for row in tbody.find_all("tr"):  
+        columns = row.find_all("td")
+
+        # Recuperando o nome do munincícpio e o ID
+        name = unidecode(columns[0].a.text) # Substitui acentos, cedilha, etc...
+        id = columns[1].text
+        municipalities[name] = id
+
+    return municipalities
+
+
+
+# Procura por determinado conteúdo em publicações
+# Use a query_string para filtrar por palavras-chave como "abertura de licitação", "contrato", etc...
+def scrap_by_gazettes(territory_ids, published_since="2000-01-01", query_string="", excerpt_size=30, number_of_excerpts=1, size=2000):
+
+    # API
+    BASE_API_URL = "https://queridodiario.ok.org.br/api/"
+    ENDPOINT = "gazettes"
+    PARAMS = {
+        "territory_ids": territory_ids,
+        "published_since": published_since,
+        "querystring": query_string,
+        "excerpt_size": excerpt_size,
+        "number_of_excertps": number_of_excerpts,
+        "pre_tags": "",
+        "post_tags": "",
+        "size": size,
+        "sort_by": "relevance"
+    }
+
+    res = requests.get(f"{BASE_API_URL}{ENDPOINT}", params=PARAMS)
+    return res.json()
+
+
+# Teste
+if __name__ == "__main__":
+
+    acronym = "RJ"
+    query_string = "licitação"
+    published_since = "2020-01-01"
+
+    municipalities_dict = get_estate_municipalities(acronym)
+
     
-    # Corrigindo o link para a data atual
-    pdf_link = PDF_PATH.replace("pasta=ANO", f"pasta={current_year}")
-    pdf_link = pdf_link.replace("MES_MES", f"{current_month}_{MONTHS[current_month].capitalize()}")
-    pdf_link = pdf_link.replace("DIA-MES-ANO", f"{current_day}-{current_month}-{current_year}")
+    # Todo novo valor do dicionário será inicializado como uma lista
+    txt_urls = defaultdict(list)
 
-    # Link de teste
-    # pdf_link = "https://dodf.df.gov.br/dodf/jornal/visualizar-pdf?pasta=2024|01_Janeiro|DODF%20ID%2031-01-2024|&arquivo=DODF%20ID%2031-01-2024%20INTEGRA.pdf"
+    # Fazendo o scraping pra cada munincípio
+    for id in municipalities_dict.values():
+        
+        try:
+            res_json = scrap_by_gazettes(id, published_since, query_string)
+        except:
+            continue
 
-    # O ID da publicação é sempre incerto, pois depende de feriados, fins de semana, e publicações de emergência
-    # Então vamos loopar por todos os ids possíveis até encontrar o da data atual
-    for i in range(20001, 20365):
-
-        updated_link = pdf_link.replace("20ID", str(i))
-
-        # Buscando o link
-        res = requests.get(updated_link)
-
-        if res.headers.get("content-type") == "application/pdf":
-            # Gerando objeto para manipular pdf
-            pdf_content = BytesIO(res.content)
-            pdfreader = PdfReader(pdf_content)
-            return pdfreader
+        print(f"Processando: {id}")
+        for gazette in res_json.get("gazettes"):
+            txt_urls[gazette.get("territory_id")].append(gazette.get("txt_url"))
     
-    return None
+    
+    # Salvando tudo num arquivo json
+    with open(f"data/gazettes_{acronym}.json", "w") as file:
+        json.dump(dict(txt_urls), file, indent=4)
