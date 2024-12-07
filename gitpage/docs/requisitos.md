@@ -32,8 +32,6 @@ Garantir que o site estará no ar.
 
 ---
 
-
 ## 📌 Notas
 
 - Este documento deve ser revisado regularmente para refletir mudanças no escopo do projeto.
-

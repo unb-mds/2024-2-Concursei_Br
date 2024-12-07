@@ -23,43 +23,43 @@
 <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
 
 <div style="text-align: center;">
-    <img src="../colaboradores/eduardo_img.jpg" alt="EduardoWaski" class="img-redonda">
+    <img src="colaboradores/eduardo_img.jpg" alt="EduardoWaski" class="img-redonda">
     <br>
     <a href="https://github.com/EduardoWaski">EduardoWaski</a>
 </div>
 
 <div style="text-align: center;">
-    <img src="../colaboradores/jose_img.jpg" alt="RR2M4A" class="img-redonda">
+    <img src="colaboradores/jose_img.jpg" alt="RR2M4A" class="img-redonda">
     <br>
     <a href="https://github.com/RR2M4A">RR2M4A</a>
 </div>
 
 <div style="text-align: center;">
-    <img src="../colaboradores/marco_img.png" alt="marcomarquesdc" class="img-redonda">
+    <img src="colaboradores/marco_img.png" alt="marcomarquesdc" class="img-redonda">
     <br>
     <a href="https://github.com/marcomarquesdc">marcomarquesdc</a>
 </div>
 
 <div style="text-align: center;">
-    <img src="../colaboradores/andre_img.png" alt="AndreMeyerr" class="img-redonda">
+    <img src="colaboradores/andre_img.png" alt="AndreMeyerr" class="img-redonda">
     <br>
     <a href="https://github.com/AndreMeyerr">AndreMeyerr</a>
 </div>
 
 <div style="text-align: center;">
-    <img src="../colaboradores/luis_img.jpg" alt="lfelipebessa" class="img-redonda">
+    <img src="colaboradores/luis_img.jpg" alt="lfelipebessa" class="img-redonda">
     <br>
     <a href="https://github.com/lfelipebessa">lfelipebessa</a>
 </div>
 
 <div style="text-align: center;">
-    <img src="../colaboradores/artur_img.jpg" alt="ArturDCR" class="img-redonda">
+    <img src="colaboradores/artur_img.jpg" alt="ArturDCR" class="img-redonda">
     <br>
     <a href="https://github.com/ArturDCR">ArturDCR</a>
 </div>
 
 <div style="text-align: center;">
-    <img src="../colaboradores/marcos_img.png" alt="ribmarcos" class="img-redonda">
+    <img src="colaboradores/marcos_img.png" alt="ribmarcos" class="img-redonda">
     <br>
     <a href="https://github.com/ribmarcos">ribmarcos</a>
 </div>
