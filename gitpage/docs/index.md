@@ -1,20 +1,67 @@
 
-#Painel de Transparência Municipal
+# Painel de Transparência Municipal
 
-<h3 style = "margin: 0 20px 0 20px">A aplicação visa oferecer à população interressada, uma visão mais simplificada dos dados municipais.</h3>
+<h3> Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. A aplicação visa oferecer à população interressada, uma visão mais simplificada dos dados municipais.</h3>
 
 <br></br>
 <hr></hr>
 
-# Colaboradores
+# Nossa Equipe
 
-| Nome                | Github              |
-|---------------------|---------------------|
-| Artur de Camargos   | ArturDCR            |
-| André Meyer         | AndreMeyerr         |
-| Luiz Felipe Bessa   | lfelipebessa        |
-| Marco Marques       | marcomarquesdc      |
-| Eduardo Silva Waski | EduardoWaski        |
-| José Victor Gabriel | RR2M4A              |
-| Marcos Paulo Ribeiro| ribmarcos           |
+<style>
+.img-redonda {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+</style>
 
+## Colaboradores
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+
+<div style="text-align: center;">
+    <img src="../colaboradores/eduardo_img.jpg" alt="EduardoWaski" class="img-redonda">
+    <br>
+    <a href="https://github.com/EduardoWaski">EduardoWaski</a>
+</div>
+
+<div style="text-align: center;">
+    <img src="../colaboradores/jose_img.jpg" alt="RR2M4A" class="img-redonda">
+    <br>
+    <a href="https://github.com/RR2M4A">RR2M4A</a>
+</div>
+
+<div style="text-align: center;">
+    <img src="../colaboradores/marco_img.png" alt="marcomarquesdc" class="img-redonda">
+    <br>
+    <a href="https://github.com/marcomarquesdc">marcomarquesdc</a>
+</div>
+
+<div style="text-align: center;">
+    <img src="../colaboradores/andre_img.png" alt="AndreMeyerr" class="img-redonda">
+    <br>
+    <a href="https://github.com/AndreMeyerr">AndreMeyerr</a>
+</div>
+
+<div style="text-align: center;">
+    <img src="../colaboradores/luis_img.jpg" alt="lfelipebessa" class="img-redonda">
+    <br>
+    <a href="https://github.com/lfelipebessa">lfelipebessa</a>
+</div>
+
+<div style="text-align: center;">
+    <img src="../colaboradores/artur_img.jpg" alt="ArturDCR" class="img-redonda">
+    <br>
+    <a href="https://github.com/ArturDCR">ArturDCR</a>
+</div>
+
+<div style="text-align: center;">
+    <img src="../colaboradores/marcos_img.png" alt="ribmarcos" class="img-redonda">
+    <br>
+    <a href="https://github.com/ribmarcos">ribmarcos</a>
+</div>
+
+</div>
