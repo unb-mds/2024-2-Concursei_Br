@@ -39,7 +39,6 @@ streamlit run gov_app.py
 
 ## Equipe 👤
 
-## Contribuintes
 
 | ![lfelipebessa](https://github.com/lfelipebessa.png) | ![RR2M4A](https://github.com/RR2M4A.png) | ![marcomarquesdc](https://github.com/marcomarquesdc.png) |
 |-----------------------------------------------------|------------------------------------------|------------------------------------------|
