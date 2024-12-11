@@ -36,6 +36,15 @@ Execute o programa com:
 ```bash
 streamlit run gov_app.py
 ```
+## Extras
+ • [Stroy map]()
+ 
+ • [Arquitetura]()
+
+ • [Gitpages](unb-mds.github.io/2024-2-Squad14/)
+
+ • [Documentação]()
+ 
 
 ## Equipe 👤
 
