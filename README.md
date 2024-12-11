@@ -1,11 +1,22 @@
 # Painel de Transparência Municipal
 
-Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. 
-A aplicação visa oferecer à população interressada, uma visão mais simplificada dos dados munincipais de determinado estado.
+Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. Objetivo de criar um painel de transparência municipal acessível e intuitivo que permita aos cidadãos monitorar e entender facilmente como os recursos públicos estão sendo utilizados, promovendo a participação cidadã e a confiança na administração pública. 
 
 ![Descrição da Imagem](prototipo/prototipo.png)
 
 > Status: Em desenvolvimento ⚙️🔨
+
+---
+
+## Público Alvo
+Todos os cidadãos do município, incluindo:
+
+- Residentes
+- Jornalistas
+- Pesquisadores
+- Autoridades públicas
+
+---
 
 ## Linguagem e bibliotecas utilizadas 🦾
 - [Python 3.12](https://www.python.org/downloads/)
@@ -37,7 +48,7 @@ Execute o programa com:
 streamlit run gov_app.py
 ```
 ## Extras
- • [Stroy map]()
+ • [Story map]()
  
  • [Arquitetura]()
 
