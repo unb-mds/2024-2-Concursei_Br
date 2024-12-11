@@ -37,5 +37,22 @@ Execute o programa com:
 streamlit run gov_app.py
 ```
 
+## Equipe 👤
+
+## Contribuintes
+
+| ![lfelipebessa](https://github.com/lfelipebessa.png) | ![RR2M4A](https://github.com/RR2M4A.png) | ![marcomarquesdc](https://github.com/marcomarquesdc.png) |
+|-----------------------------------------------------|------------------------------------------|------------------------------------------|
+| **[Luiz Felipe Bessa](https://github.com/lfelipebessa)** | **[José Victor](https://github.com/RR2M4A)** | **[Marco Marques](https://github.com/marcomarquesdc)** |
+
+| ![EduardoWaski](https://github.com/EduardoWaski.png) | ![ArturDCR](https://github.com/ArturDCR.png) | ![AndreMeyerr](https://github.com/AndreMeyerr.png) | ![ribmarcos](https://github.com/ribmarcos.png) |
+|------------------------------------------|------------------------------------------|------------------------------------------|------------------------------------------|
+| **[Eduardo Waski](https://github.com/EduardoWaski)** | **[Artur de Camargos](https://github.com/ArturDCR)** | **[André Meyer](https://github.com/AndreMeyerr)** | **[Marcos Paulo](https://github.com/ribmarcos)** |
+
+
+
+
+
+
 
 
