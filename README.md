@@ -3,17 +3,9 @@
 Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. 
 A aplicação visa oferecer à população interressada, uma visão mais simplificada dos dados munincipais de determinado estado.
 
-> Status: Em desenvolvimento ⚙️🔨
+![Descrição da Imagem](prototipo/prototipo.png)
 
-| Nome                | Github              |
-|---------------------|---------------------|
-| Artur de Camargos   | ArturDCR            |
-| André Meyer         | AndreMeyerr         |
-| Luiz Felipe Bessa   | lfelipebessa        |
-| Marco Marques       | marcomarquesdc      |
-| Eduardo Silva Waski | EduardoWaski        |
-| José Victor Gabriel | RR2M4A              |
-| Marcos Paulo Ribeiro| ribmarcos           |
+> Status: Em desenvolvimento ⚙️🔨
 
 ## Linguagem e bibliotecas utilizadas 🦾
 - [Python 3.12](https://www.python.org/downloads/)
