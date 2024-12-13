@@ -6,6 +6,7 @@ def configure_page():
     st.set_page_config(page_title="DATA GOV", layout="wide", initial_sidebar_state="collapsed")
 
 def header():
+    # Configurar estilos e comportamento
     st.markdown(
         """
         <style>
@@ -17,89 +18,62 @@ def header():
             left: 0;
             width: 100%;
             z-index: 10;
-            text-align:center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .navbar h1 {
             color: white;
             font-family: 'Arial', sans-serif;
             margin: 0;
-            display: inline-block;
         }
         .navbar-icons {
-            float: right;
-            margin-top: -35px;
+            display: flex;
+            align-items: center;
         }
         .navbar-icons img {
             width: 30px;
             margin-left: 10px;
             cursor: pointer;
-        }
-        /* Adiciona espaçamento extra ao conteúdo principal */
-        .main-content {
-            margin-top: 100px; /* Ajusta o espaço para evitar sobreposição */
-        }
-        .main-header {
-            font-family: 'Arial', sans-serif;
-            color: #0FFEF9;
-            text-align: left;
-            margin-top: 20px;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .sub-header {
-            font-family: 'Arial', sans-serif;
-            color: #0FFEF9;
-            text-align: left;
-            font-size: 18px;
-            margin-bottom: 20px;
         }
         </style>
         """,
         unsafe_allow_html=True,
     )
 
-    # Barra de navegação
-    st.markdown(
-        """
-        <style>
-        .navbar {
-            background-color: #0FFEF9;
-            padding: 10px;
-            position: fixed;
-            top: 40px; /* Ajusta a posição vertical da barra de navegação */
-            left: 40;
-            width: 100%;
-            z-index: 10;
-        }
-        .navbar h1 {
-            color: black;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            display: inline-block;
-        }
-        .navbar-icons {
-            float: right;
-            margin-top: -35px;
-        }
-        .navbar-icons img {
-            width: 30px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
-        </style>
-        <div class="navbar">
-            <h1>DATA GOV</h1>
-            <div class="navbar-icons">
-                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
+    # Renderizar o header com botão de abrir/fechar sidebar
+    col1, col2 = st.columns([1, 9])  # Divide em duas colunas
+    with col1:
+        if st.button("☰", key="toggle_sidebar", help="Abrir/Fechar Sidebar"):
+            # Alternar estado da sidebar
+            if "sidebar_open" not in st.session_state:
+                st.session_state.sidebar_open = True
+            else:
+                st.session_state.sidebar_open = not st.session_state.sidebar_open
+
+    with col2:
+        st.markdown(
+            """
+            <div class="navbar">
+                <h1>DATA GOV</h1>
+                <div class="navbar-icons">
+                    <a href="https://github.com"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"></a>
+                </div>
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # Forçar estado da sidebar com base na variável
+    if st.session_state.get("sidebar_open", True):
+        st.sidebar.title("Menu")
+    else:
+        st.sidebar.empty()  # Oculta a sidebar
+
 
 def subheader():
-    st.markdown("<div class='main-header'>Monitore Licitações do GOV", unsafe_allow_html=True)
-    st.markdown("<div class='sub-header'>Dados Provenientes do Diário Oficial!", unsafe_allow_html=True)
+    st.markdown("<div class='main-header'>Monitore Licitações do GOV</div>", unsafe_allow_html=True)
+    st.markdown("<div class='sub-header'>Dados Provenientes do Diário Oficial!</div>", unsafe_allow_html=True)
 
 def layout():
     col1, col2, col3 = st.columns([1, 1, 1])
