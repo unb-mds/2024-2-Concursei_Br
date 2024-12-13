@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Configuração da página (deve ser feita no início)
+st.set_page_config(page_title="DATA GOV", layout="wide")
 
 class GovWebApp:
     def __init__(self):
@@ -19,67 +21,77 @@ class GovWebApp:
         st.markdown(
             """
             <style>
-            .navbar {
-                background-color: #0FFEF9;
-                padding: 10px;
+            /* Estilo do header */
+            .header {
+                background-color: #28a745; /* Verde */
+                border: none;
+                padding: 20px;
                 position: fixed;
-                top: 35px;
+                top: 60px;
                 left: 0;
                 width: 100%;
-                z-index: 10;
-                text-align:center;
-                height: 10px;
+                z-index: 1000;
+                text-align: center;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
-            .navbar h1 {
+
+            .header .logo {
+                font-size: 30px;
+                font-weight: bold;
                 color: white;
-                font-family: 'Arial', sans-serif;
-                margin: 0;
-                display: inline-block;
+                margin-left: 20px;
             }
-            .navbar-icons {
-                float: right;
-                margin-top: -35px;
+            .header .nav {
+                display: flex;
+                align-items: center;
             }
-            .navbar-icons img {
-                width: 30px;
-                margin-left: 10px;
-                cursor: pointer;
-            }
-            /* Adiciona espaçamento extra ao conteúdo principal */
-            .main-content {
-                margin-top: 100px; /* Ajusta o espaço para evitar sobreposição */
-            }
-            .main-header {
-                font-family: 'Arial', sans-serif;
-                color: #0FFEF9;
-                text-align: left;
-                margin-top: 20px;
-                font-size: 28px;
+
+            .header .nav a {
+                margin: 0 10px;
+                text-decoration: none;
+                color: white;
                 font-weight: bold;
             }
-            .sub-header {
-                font-family: 'Arial', sans-serif;
-                color: #0FFEF9;
-                text-align: left;
+
+            .header .btn {
+                background-color: white;
+                border: none;
+                color: #28a745 !important; /* Cor do texto do botão */
+                padding: 10px 20px;
+                border-radius: 5px;
+                text-decoration: none;
+                font-weight: bold;
                 font-size: 18px;
-                margin-bottom: 20px;
+            }
+
+            .header .btn:hover {
+                background-color: #236e1a;
+                color: white !important;
+            }
+
+            /* Espaçamento para evitar sobreposição */
+            .main-content {
+                margin-top: 80px;
             }
             </style>
-            """,
-            unsafe_allow_html=True,
-        )
-        # Barra de navegação
-        st.markdown(
-            """
-            <div class="navbar">
-                <h1>DATA GOV</h1>
-                <div class="navbar-icons">
-                    <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
+
+            <div class="header">
+                <div class="logo">DATA GOV</div>
+                <div class="nav">
+                    <a href="#inicio">Início</a>
+                    <a href="#relatorios">Relatórios</a>
+                    <a href="#contato" class="btn">Ver Relatórios →</a>
                 </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
+
+    def main_content(self):
+        st.markdown('<div class="main-content">', unsafe_allow_html=True)
 
     def subheader(self):
         st.markdown("<div class='main-header'>Monitore Licitações do GOV</div>", unsafe_allow_html=True)
@@ -92,19 +104,21 @@ class GovWebApp:
     # Métodos para cada aba
     def show_inicio(self):
         self.header()  # Exibe o header
+        self.main_content()  # Ajusta o conteúdo principal
         self.subheader()  # Exibe o subheader
         st.write("Explore dados importantes sobre diversos setores do governo.")
         st.info("Use a barra lateral para navegar entre os setores.")
 
     def show_saude(self):
         self.header()
+        self.main_content()
         self.subheader()
         st.write("### Informações sobre Saúde Pública")
         st.write("Aqui você encontrará estatísticas, dados e análises do setor de saúde no Brasil.")
         # Dados de exemplo
         data = np.random.randn(1000)
 
-        st.title("Histograma de licitações por período ")
+        st.title("Histograma de licitações por período")
 
         # Criando o histograma
         fig, ax = plt.subplots()
@@ -118,18 +132,21 @@ class GovWebApp:
 
     def show_educacao(self):
         self.header()
+        self.main_content()
         self.subheader()
         st.write("### Informações sobre Educação")
         st.write("Explore dados sobre escolas, universidades e programas educacionais no Brasil.")
 
     def show_seguranca(self):
         self.header()
+        self.main_content()
         self.subheader()
         st.write("### Informações sobre Segurança Pública")
         st.write("Descubra estatísticas sobre segurança, policiamento e políticas públicas de segurança.")
 
     def show_economia(self):
         self.header()
+        self.main_content()
         self.subheader()
         st.write("### Informações sobre Economia")
         st.write("Analise dados sobre PIB, desemprego, inflação e outros indicadores econômicos.")
