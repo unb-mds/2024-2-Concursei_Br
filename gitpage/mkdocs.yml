@@ -70,4 +70,5 @@ nav:
     - Backlog: backlog.md
     - Requisitos: requisitos.md
     - Arquitetura: arquitetura.md
+    - Story Map: storymap.md
   - Configuração/Execução: config.md
