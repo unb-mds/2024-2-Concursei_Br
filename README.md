@@ -22,6 +22,8 @@ Todos os cidadãos do município, incluindo:
 - [Python 3.12](https://www.python.org/downloads/)
 
   **- - Bibliotecas - -**<br>
+  .Pandas
+  .Plotly
   .Streamlit  
   .Numpy  
   .Matplotlib  
@@ -30,6 +32,8 @@ Todos os cidadãos do município, incluindo:
 
 Com <b>Python</b> instalado, faça a instalação das bibliotecas com os seguintes comandos no terminal:
 ```bash
+pip install pandas
+pip install plotly
 pip install streamlit
 pip install numpy
 pip install matplotlib
