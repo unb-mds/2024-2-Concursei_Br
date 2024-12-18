@@ -1,6 +1,6 @@
 # Arquitetura
 
-Esta arquitetura descreve um fluxo de dados composto por cinco componentes principais: 
+Esta arquitetura descreve um fluxo de dados composto por cinco componentes principais:
 
 1. **DataClass**: Responsável por iniciar o processo, utilizando o método `fetchData()` para capturar dados.
 2. **WebScrap**: Um módulo de raspagem web que coleta informações usando o método `scrape()` e contém a lógica para interagir com fontes externas.
@@ -10,4 +10,4 @@ Esta arquitetura descreve um fluxo de dados composto por cinco componentes princ
 
 O fluxo segue uma sequência linear, com cada componente desempenhando um papel específico para transformar dados brutos em informações utilizáveis no front-end.
 
-<img style = "display: flex; justify-self: center; margin: 70px 0 70px 0;" src="/img_docs/img_arquitetura.png" alt="arquitetura" width="40%"/>
+<img style = "display: flex; justify-self: center; margin: 70px 0 70px 0;" src="img_docs\arquitetura.png" alt="arquitetura" width="40%"/>
