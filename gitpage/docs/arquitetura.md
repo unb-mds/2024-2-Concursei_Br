@@ -10,4 +10,4 @@ Esta arquitetura descreve um fluxo de dados composto por cinco componentes princ
 
 O fluxo segue uma sequência linear, com cada componente desempenhando um papel específico para transformar dados brutos em informações utilizáveis no front-end.
 
-<img style = "display: flex; justify-self: center; margin: 70px 0 70px 0;" src="img_docs\arquitetura.png" alt="arquitetura" width="40%"/>
+<img style = "display: flex; justify-self: center; margin: 70px 0 70px 0;" src="https://raw.githubusercontent.com/unb-mds/2024-2-Squad14/refs/heads/main/gitpage/docs/img_docs/arquitetura.png" alt="arquitetura" width="40%"/>
