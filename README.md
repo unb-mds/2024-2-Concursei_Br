@@ -3,7 +3,7 @@
 Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. 
 A aplicação visa oferecer à população interressada, uma visão mais simplificada dos dados munincipais de determinado estado.
 
-![Descrição da Imagem](prototipo/prototipo.png)
+![Descrição da Imagem](frontend/prototipo/prototipo.png)
 
 > Status: Em desenvolvimento ⚙️🔨
 
@@ -34,7 +34,7 @@ git clone https://github.com/unb-mds/2024-2-Squad14.git
 
 Execute o programa com:
 ```bash
-streamlit run gov_app.py
+streamlit run app.py
 ```
 
 
