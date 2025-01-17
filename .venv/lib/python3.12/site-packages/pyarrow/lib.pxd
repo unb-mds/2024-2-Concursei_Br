@@ -185,6 +185,16 @@ cdef class FixedSizeBinaryType(DataType):
         const CFixedSizeBinaryType* fixed_size_binary_type
 
 
+cdef class Decimal32Type(FixedSizeBinaryType):
+    cdef:
+        const CDecimal32Type* decimal32_type
+
+
+cdef class Decimal64Type(FixedSizeBinaryType):
+    cdef:
+        const CDecimal64Type* decimal64_type
+
+
 cdef class Decimal128Type(FixedSizeBinaryType):
     cdef:
         const CDecimal128Type* decimal128_type
@@ -225,6 +235,11 @@ cdef class OpaqueType(BaseExtensionType):
 cdef class UuidType(BaseExtensionType):
     cdef:
         const CUuidType* uuid_ext_type
+
+cdef class JsonType(BaseExtensionType):
+    cdef:
+        const CJsonType* json_ext_type
+
 
 cdef class PyExtensionType(ExtensionType):
     pass
@@ -422,6 +437,14 @@ cdef class DoubleArray(FloatingPointArray):
 
 
 cdef class FixedSizeBinaryArray(Array):
+    pass
+
+
+cdef class Decimal32Array(FixedSizeBinaryArray):
+    pass
+
+
+cdef class Decimal64Array(FixedSizeBinaryArray):
     pass
 
 
