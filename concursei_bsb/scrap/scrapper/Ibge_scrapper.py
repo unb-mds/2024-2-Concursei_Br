@@ -2,13 +2,14 @@ import requests
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 
-# Use as siglas dos estados quando quiser recuperar os munincípios de 
-# determinado estado:
-#
-#    "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", 
-#    "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", 
-#    "RR", "SC", "SP", "SE", "TO"
-#
+"""
+Use as siglas dos estados quando quiser recuperar os munincípios de 
+determinado estado:
+
+   "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", 
+   "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", 
+   "RR", "SC", "SP", "SE", "TO"
+"""
 
 def get_estate_municipalities(acronym : str):
 
@@ -31,8 +32,7 @@ def get_estate_municipalities(acronym : str):
     for row in tbody.find_all("tr"):  
         columns = row.find_all("td")
 
-        # Recuperando o nome do munincícpio e o ID
-        name = unidecode(columns[0].a.text) # Substitui acentos, cedilha, etc...
+        name = unidecode(columns[0].a.text)
         id = columns[1].text
         municipalities[name] = id
 

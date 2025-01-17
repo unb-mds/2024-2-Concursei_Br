@@ -12,7 +12,6 @@ if __name__ == "__main__":
 
     municipalities_dict = get_estate_municipalities(acronym)
 
-    
     # Todo novo valor do dicionário será inicializado como uma lista
     txt_urls = defaultdict(list)
 
@@ -29,7 +28,6 @@ if __name__ == "__main__":
             for gazette in res_json.get("gazettes"):
                 txt_urls[gazette.get("territory_id")].append(gazette.get("txt_url"))
         
-    
     # Salvando tudo num arquivo json
-    with open(f"../../database/gazettes_{acronym}.json", "w") as file:
+    with open(f"../../data/gazettes_{acronym}.json", "w") as file:
         json.dump(dict(txt_urls), file, indent=4)
