@@ -247,53 +247,20 @@
         
   
   
-  
-    <li class="md-tabs__item">
-      <a href="../tecnology/" class="md-tabs__link">
-        
-  
-    
-  
-  Tecnologias
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
     
   
   
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
-        
-  
     
-  
-  Backlog
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../requisitos/" class="md-tabs__link">
-        
-  
     
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../productview/" class="md-tabs__link">
+          
   
-  Requisitos
+  Documentação de Projeto
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -405,6 +372,72 @@
       
   
   
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Documentação de Projeto
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Documentação de Projeto
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../productview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Visão de Produto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
   
   
     <li class="md-nav__item">
@@ -420,9 +453,10 @@
     </li>
   
 
-    
-      
-      
+              
+            
+              
+                
   
   
     
@@ -450,9 +484,10 @@
     </li>
   
 
-    
-      
-      
+              
+            
+              
+                
   
   
   
@@ -467,6 +502,56 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arquitetura/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Arquitetura
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../storymap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Story Map
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -525,45 +610,61 @@ Descrição: Criar funcionalidades que permitam aos cidadãos e empresas acessar
 <blockquote>
 <p><strong>"Como [tipo de usuário], quero [ação/funcionalidade], para que [benefício/valor esperado]."</strong></p>
 </blockquote>
-<h3 id="exemplo-de-user-story-derivada-do-epico-acima"><strong>Exemplo de User Story (Derivada do Épico acima)</strong></h3>
-<p><strong>"Consulta de Editais de Licitação"</strong>  </p>
+<hr />
+<h1 id="criterios-de-aceitacao">Critérios de aceitação</h1>
+<h2 id="como-definir-criterios-de-aceitacao"><strong>Como definir critérios de aceitação?</strong></h2>
+<p><strong>Clareza e especificidade</strong>: Os critérios devem ser objetivos e fáceis de entender.<br />
+<strong>Orientados ao comportamento</strong>: Devem descrever o que o sistema deve fazer, não como deve ser implementado.<br />
+<strong>Testáveis</strong>: Devem permitir a validação por meio de testes claros e repetíveis.</p>
+<h2 id="estrutura-comum-para-criterios-de-aceitacao">Estrutura comum para critérios de aceitação</h2>
+<p>Critérios de aceitação geralmente são escritos no formato Dado... Quando... Então, que segue a lógica:</p>
 <ul>
-<li><strong>Como</strong> empresário,  </li>
-<li><strong>quero</strong> acessar e baixar os editais de licitação do município,  </li>
-<li><strong>para que</strong> eu possa participar dos processos de contratação pública de forma informada.  </li>
+<li><strong>Dado</strong>: o contexto inicial ou condição prévia.</li>
+<li><strong>Quando</strong>: o evento ou ação realizada pelo usuário.</li>
+<li><strong>Então</strong>: o resultado esperado ou comportamento do sistema.</li>
 </ul>
-<h2 id="epicos-e-user-story">Épicos e User Story</h2>
-<table>
-<thead>
-<tr>
-<th><strong>Épico</strong></th>
-<th><strong>História de Usuário</strong></th>
-<th><strong>Prioridade</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Visualização Gráfica dos Dados</strong></td>
-<td>Como cliente, eu quero visualizar os dados de uma forma mais amigável e correta. Para definir melhor a minha opinião sobre determinado dado.</td>
-<td>-</td>
-</tr>
-<tr>
-<td><strong>Filtragem dos Dados</strong></td>
-<td>Como  cidadão, eu quero filtrar os dados sobre os quais eu tenho interresse e sem distrações. Para facilitar o acesso aos meus interresses.</td>
-<td>-</td>
-</tr>
-<tr>
-<td><strong>Comparação de Dados</strong></td>
-<td>Como usuário, eu quero a possibilidade da comparação dos dados de difentes datas. Para que seja possível uma análise de eficiência governamental durante os anos.</td>
-<td>-</td>
-</tr>
-<tr>
-<td><strong>Exportação de Dados</strong></td>
-<td>Como cidadão interressado, quero exportar os dados sobre o município em formato CSV. Para realizar análises detalhadas e cruzar informações com outras bases de dados.</td>
-<td>-</td>
-</tr>
-</tbody>
-</table>
+<hr />
+<h2 id="epicos-e-user-story-e-seus-criterios-de-aceitacao">Épicos e User Story e seus Critérios de Aceitação</h2>
+<h3 id="criterios-de-aceitacao-para-as-historias-de-usuario">Critérios de Aceitação para as Histórias de Usuário</h3>
+<hr />
+<h4 id="historia-1-visualizacao-grafica-dos-dados"><strong>História 1: Visualização Gráfica dos Dados</strong></h4>
+<p><strong>"Como cliente, eu quero visualizar os dados de uma forma mais amigável e correta, para definir melhor a minha opinião sobre determinado dado."</strong>  </p>
+<p>Critérios de Aceitação:  </p>
+<ol>
+<li><strong>Dado</strong> que o cliente acesse a página de visualização de dados, <strong>quando</strong> os dados forem carregados, <strong>então</strong> eles devem ser exibidos em gráficos interativos e claros (ex.: gráficos de barras, linhas, ou pizza).  </li>
+<li><strong>Dado</strong> que o cliente interaja com o gráfico, <strong>quando</strong> ele passar o mouse sobre um ponto ou barra, <strong>então</strong> deve aparecer uma descrição detalhada (ex.: valores exatos e datas).  </li>
+<li><strong>Dado</strong> que os dados exibidos sejam grandes ou complexos, <strong>quando</strong> o cliente quiser ver mais detalhes, <strong>então</strong> deve haver uma opção de zoom ou foco em um período específico.  </li>
+</ol>
+<hr />
+<h4 id="historia-2-filtragem-dos-dados"><strong>História 2: Filtragem dos Dados</strong></h4>
+<p><strong>"Como cidadão, eu quero filtrar os dados sobre os quais eu tenho interesse e sem distrações, para facilitar o acesso aos meus interesses."</strong>  </p>
+<p>Critérios de Aceitação:  </p>
+<ol>
+<li><strong>Dado</strong> que o cidadão esteja na interface de visualização de dados, <strong>quando</strong> ele selecionar um filtro (ex.: ano, categoria, município), <strong>então</strong> os dados exibidos devem ser atualizados de acordo com os critérios escolhidos.  </li>
+<li><strong>Dado</strong> que o cidadão queira aplicar múltiplos filtros, <strong>quando</strong> ele escolher mais de um critério, <strong>então</strong> os dados devem refletir a interseção das condições.  </li>
+<li><strong>Dado</strong> que nenhum filtro seja selecionado, <strong>quando</strong> o cidadão acessar a página, <strong>então</strong> os dados devem ser exibidos de forma geral e sem filtros aplicados.  </li>
+<li><strong>Dado</strong> que o filtro aplicado não retorne resultados, <strong>quando</strong> o cidadão finalizar a seleção, <strong>então</strong> uma mensagem amigável deve informar que "não há dados correspondentes".  </li>
+</ol>
+<hr />
+<h4 id="historia-3-comparacao-de-dados"><strong>História 3: Comparação de Dados</strong></h4>
+<p><strong>"Como usuário, eu quero a possibilidade de comparar os dados de diferentes datas, para que seja possível uma análise de eficiência governamental durante os anos."</strong>  </p>
+<p>Critérios de Aceitação:  </p>
+<ol>
+<li><strong>Dado</strong> que o usuário esteja na interface de comparação, <strong>quando</strong> ele selecionar duas ou mais datas ou períodos, <strong>então</strong> os dados correspondentes devem ser exibidos lado a lado ou sobrepostos no mesmo gráfico.  </li>
+<li><strong>Dado</strong> que os dados de diferentes períodos sejam exibidos, <strong>quando</strong> o usuário clicar em uma linha ou barra do gráfico, <strong>então</strong> informações detalhadas (ex.: valor exato e data) devem ser mostradas para cada período selecionado.  </li>
+<li><strong>Dado</strong> que o usuário deseje alterar os períodos comparados, <strong>quando</strong> ele ajustar a seleção, <strong>então</strong> os gráficos devem ser atualizados automaticamente.  </li>
+<li><strong>Dado</strong> que os períodos selecionados não possuam dados, <strong>quando</strong> o usuário concluir a seleção, <strong>então</strong> uma mensagem deve informar que "não há dados disponíveis para as datas escolhidas".  </li>
+</ol>
+<hr />
+<h4 id="historia-4-exportacao-de-dados"><strong>História 4: Exportação de Dados</strong></h4>
+<p><strong>"Como cidadão interessado, quero exportar os dados sobre o município em formato CSV, para realizar análises detalhadas e cruzar informações com outras bases de dados."</strong>  </p>
+<p>Critérios de Aceitação:  </p>
+<ol>
+<li><strong>Dado</strong> que o cidadão esteja visualizando os dados filtrados, <strong>quando</strong> ele clicar no botão de exportação, <strong>então</strong> um arquivo no formato CSV contendo os dados visíveis deve ser baixado.</li>
+<li><strong>Dado</strong> que o arquivo CSV seja gerado, <strong>quando</strong> o cidadão abrir o arquivo, <strong>então</strong> os dados devem estar organizados em colunas com cabeçalhos claros e consistentes.  </li>
+<li><strong>Dado</strong> que o cidadão não tenha selecionado filtros, <strong>quando</strong> ele clicar no botão de exportação, <strong>então</strong> o CSV deve conter todos os dados disponíveis.  </li>
+<li><strong>Dado</strong> que ocorra algum erro na exportação, <strong>quando</strong> o cidadão tentar realizar o download, <strong>então</strong> uma mensagem de erro deve ser exibida com instruções para tentar novamente.  </li>
+</ol>
 
 
 

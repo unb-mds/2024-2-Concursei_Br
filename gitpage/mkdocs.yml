@@ -64,7 +64,11 @@ theme:
 nav: 
   - Home: index.md
   - Sprints: sprints.md
-  - Tecnologias: tecnology.md
-  - Backlog: backlog.md
-  - Requisitos: requisitos.md
+  - Documentação de Projeto:
+    - Visão de Produto: productview.md
+    - Tecnologias: tecnology.md
+    - Backlog: backlog.md
+    - Requisitos: requisitos.md
+    - Arquitetura: arquitetura.md
+    - Story Map: storymap.md
   - Configuração/Execução: config.md
