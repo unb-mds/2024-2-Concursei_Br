@@ -2,7 +2,7 @@
 
 Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. Objetivo de criar um painel de transparência municipal acessível e intuitivo que permita aos cidadãos monitorar e entender facilmente como os recursos públicos estão sendo utilizados, promovendo a participação cidadã e a confiança na administração pública. 
 
-![Descrição da Imagem](prototipo/prototipo.png)
+![Descrição da Imagem](frontend/prototipo/prototipo.png)
 
 > Status: Em desenvolvimento ⚙️🔨
 
@@ -51,7 +51,7 @@ git clone https://github.com/unb-mds/2024-2-Squad14.git
 
 Execute o programa com:
 ```bash
-streamlit run gov_app.py
+streamlit run app.py
 ```
 ## Extras
  • [Story map]()
