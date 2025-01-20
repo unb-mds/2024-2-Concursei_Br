@@ -49,9 +49,9 @@ Clone o repositório deste projeto através da seguinte linha de código:
 git clone https://github.com/unb-mds/2024-2-Squad14.git
 ```  
 
-Execute o programa com:
+Com o repositório clonado vá até o arquivo 2024-2-Squad14\concursei_bsb\app\ **__home.py__** e execute o programa com:
 ```bash
-streamlit run app.py
+streamlit run home.py
 ```
 ## Extras
  • [Story map]()
