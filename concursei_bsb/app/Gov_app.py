@@ -8,7 +8,10 @@ st.set_page_config(page_title="Concursei BSB", layout="wide")
 
 class GovWebApp:
     def __init__(self):
-        self.app_title = "Web App de dados relacionados a concursos"
+        self.pages = {
+            "inicio": self.show_inicio,
+            "relatorios": self.show_relatorios
+        }
 
     def header(self):
         st.markdown(
@@ -36,6 +39,7 @@ class GovWebApp:
                 font-weight: bold;
                 color: white;
                 margin-left: 20px;
+                cursor: pointer; /* Adiciona o cursor de clique */
             }
 
             .header .nav {
@@ -49,6 +53,10 @@ class GovWebApp:
                 color: white;
                 font-weight: bold;
                 cursor: pointer;
+            }
+
+            .header .nav a:hover {
+                color: #236e1a; /* Efeito de hover no Início */
             }
 
             .header .btn {
@@ -74,10 +82,10 @@ class GovWebApp:
             </style>
 
             <div class="header">
-                <div class="logo">CONCURSEI BSB</div>
+                <div class="logo" onClick="window.location.href='/?page=inicio'" target="_self">CONCURSEI BSB</div>
                 <div class="nav">
-                    <a onClick="window.location.href='?page=inicio'" target="_self">Início</a>
-                    <a onClick="window.location.href='?page=relatorios'" target="_self" class="btn">Ver Relatórios →</a>
+                    <a href="/?page=inicio" target="_self">Início</a>
+                    <a href="/?page=relatorios" target="_self" class="btn">Ver Relatórios →</a>
                 </div>
             </div>
             """,
@@ -112,43 +120,36 @@ class GovWebApp:
         self.subheader("Relatórios de Dados")
         st.write("Aqui você encontrará relatórios detalhados sobre concursos e dados relacionados.")
 
-        # Exemplo: tabela de dados
+        # Exemplo: tabela de dados de concursos
         df = pd.DataFrame({
-            "Concurso": ["Concurso A", "Concurso B", "Concurso C"],
-            "Inscritos": [1200, 950, 1500],
-            "Vagas": [50, 30, 70],
+            "Concurso": ["Concurso A", "Concurso B", "Concurso C", "Concurso D"],
+            "Inscritos": [1200, 950, 1500, 800],
+            "Vagas": [50, 30, 70, 40],
+            "Taxa de Inscrição (R$)": [100, 120, 80, 90],
+            "Estado": ["DF", "SP", "RJ", "MG"],
         })
+        st.write("### Detalhes dos Concursos")
         st.table(df)
 
+        # Exemplo: gráfico de barras com dados de inscritos por concurso
+        st.write("### Inscritos por Concurso")
+        fig, ax = plt.subplots()
+        ax.bar(df["Concurso"], df["Inscritos"], color="skyblue", edgecolor="black")
+        ax.set_title("Inscritos por Concurso")
+        ax.set_xlabel("Concurso")
+        ax.set_ylabel("Número de Inscritos")
+        st.pyplot(fig)
+
     def run(self):
-        # Use o session_state para definir a página atual
-        if "page" not in st.session_state:
-            st.session_state.page = "inicio"
+        # Verifica a página atual com base no parâmetro na URL
+        query_params = st.experimental_get_query_params()
+        current_page = query_params.get("page", ["inicio"])[0]
 
-        # Navegação entre páginas
-        if st.session_state.page == "inicio":
-            self.show_inicio()
-        elif st.session_state.page == "relatorios":
-            self.show_relatorios()
-
-        # Adiciona scripts JavaScript para mudar o estado no session_state ao clicar
-        st.markdown(
-            """
-            <script>
-            const links = document.querySelectorAll('.nav a');
-            links.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const href = link.getAttribute('onClick').split("'")[1];
-                    e.preventDefault();
-                    const queryParam = href.split('=')[1];
-                    window.location.href = href; 
-                    Streamlit.setComponentValue({"page": queryParam});
-                });
-            });
-            </script>
-            """,
-            unsafe_allow_html=True,
-        )
+        # Renderiza a página correspondente
+        if current_page in self.pages:
+            self.pages[current_page]()
+        else:
+            st.error("Página não encontrada!")
 
 
 if __name__ == "__main__":
