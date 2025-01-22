@@ -1,44 +1,48 @@
 import requests
-from bs4 import BeautifulSoup
- 
-BASEURL = 'https://concursosnobrasil.com/concursos/df'
-errorMessage = ''
- 
-def pageRequest(url: str):
-    try:
-        return requests.get(url)
-    except requests.HTTPError:
-        print("An http error has ocurred, process has exited")
-        return None
-    except:
-        print("An error has ocurred, process has exited")
-        return None
+import re
+from bs4 import BeautifulSoup as BSP
 
-def initWebScraper(url: str, parser: str = 'html.parser'):
-    webResponse = pageRequest(url)
- 
-    if(webResponse == None):
-        print("Canceling scrapping")
-        return None
- 
-    return BeautifulSoup(webResponse.text, parser)
-
-def get_contests_links(soup : BeautifulSoup):
- 
-    constests = {
-        'title': [],
-        'links': []
-    }
- 
-    links = soup.select("td > a")
+class Run_scrappers():
+    def __init__(self):
+        pass
     
-    for link in links:
-        constests['title'].append(link.text)
-        constests['links'].append(link['href'])
- 
-    for key in constests:
-        print(constests[key])
+    def pageRequest(self, url: str):
+        try:
+            return requests.get(url)
+        except requests.HTTPError:
+            print("An http error has ocurred, process has exited")
+            return None
+        except:
+            print("An error has ocurred, process has exited")
+            return None
+
+    def initWebScraper(self, url: str, parser: str = 'html.parser'):
+        webResponse = self.pageRequest(url)
+    
+        if(webResponse == None):
+            print("Canceling scrapping")
+            return None
+    
+        return BSP(webResponse.text, parser)
+
+    def get_contests_links(self, soup : BSP):
+    
+        constests = []
+    
+        links = soup.select("td > a")
+        
+        for link in links:
+            constests.append(link['href'])
+    
+        return constests
+    
+    def get_info_json(self, soup: BSP):
+
+        for indice in range(1,7):
+            print(soup.find_all(f'h{indice}'))
  
 if __name__ == "__main__":
-    soup = initWebScraper(BASEURL)
-    get_contests_links(soup)
+    scrap = Run_scrappers()
+    soup = scrap.initWebScraper('https://concursosnobrasil.com/concursos/df')
+    for contest in scrap.get_contests_links(soup):
+        scrap.get_info_json(scrap.initWebScraper(f'{contest}'))
