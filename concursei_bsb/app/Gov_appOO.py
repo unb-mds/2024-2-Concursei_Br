@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 # Configuração da página (deve ser feita no início)
 st.set_page_config(page_title="DATA GOV", layout="wide")
 
+data = pd.read_csv("CAMINHO DOS DADOS AQUI.csv",sep=';')
+
+
 class GovWebApp:
     def __init__(self):
         self.app_title = "Web App de Dados Governamentais"
@@ -97,6 +100,10 @@ class GovWebApp:
         st.markdown("<div class='main-header'>Monitore Licitações do GOV</div>", unsafe_allow_html=True)
         st.markdown("<div class='sub-header'>Dados Provenientes do Diário Oficial!</div>", unsafe_allow_html=True)
 
+    def display_data(self):
+        st.write(data)
+
+
     def display_sidebar(self):
         st.sidebar.title("Dados do Governo")
         return st.sidebar.radio("Selecione uma aba", list(self.sidebar_options.keys()))
@@ -106,6 +113,7 @@ class GovWebApp:
         self.header()  # Exibe o header
         self.main_content()  # Ajusta o conteúdo principal
         self.subheader()  # Exibe o subheader
+        self.display_data()
         st.write("Explore dados importantes sobre diversos setores do governo.")
         st.info("Use a barra lateral para navegar entre os setores.")
 
