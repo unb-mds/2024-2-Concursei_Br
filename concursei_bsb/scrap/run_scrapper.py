@@ -14,6 +14,9 @@ class Run_scrappers():
         }
     
     def page_request(self, url: str):
+
+        """Essa função é dedicada a fazer a requisição HTTP para a url especificada."""
+
         try:
             headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
             time.sleep(5)
@@ -27,6 +30,10 @@ class Run_scrappers():
 
 
     def init_web_scrapper(self, url: str, parser: str = 'html.parser'):
+
+        """Essa função retorna um objeto BeautifulSoup, para que assim seja
+        possível manipular o texto de alguma página e realizar o scraping."""
+
         webResponse = self.page_request(url)
     
         if(webResponse == None):
@@ -39,6 +46,8 @@ class Run_scrappers():
     def feed_dict(self, contests_dict: dict, contest_name: str = "", vacancies: str = "",
                   forecast: str = "", url: str = "", register_initial_data: str = "",
                   register_final_data: str = ""):
+        
+        """Essa função alimenta o dicionário que armazena os dados dos concursos."""
         
         # Inicializando o item no dicionário caso ele não exista
         if len(contests_dict) == 0:
@@ -78,11 +87,16 @@ class Run_scrappers():
 
 
     def get_contests_entire_info(self, contests_dict: dict, soup):
+
+        """Essa é a função principal para o scraping de algum concurso.
+        Ele faz o scraping na página geral onde são exibidos os concursos, e chama uma
+        outra função para acessar a página específica do concurso, para também realizar
+        o scraping."""
         
         info = soup.select('tr:not(:first-child)')
 
         for index, tr in enumerate(info):
-
+            
             name = tr.find("a").text.strip()
             vacancies = tr.find("td", class_="center").text.strip()
             forecast = self.translate_forecast(tr.find("div", class_='label-previsto'))
@@ -96,6 +110,9 @@ class Run_scrappers():
 
     def format_data(self, day: str, month: str, year: str):
 
+        """Essa função formata a data do formato d/mês_por_extenso/yyy para
+        dd/mm/yyyy."""
+
         day = day.zfill(2)
         month = self.months_map[month]
         year = "20" + year if len(year) == 2 else year
@@ -104,6 +121,9 @@ class Run_scrappers():
         
 
     def get_extreme_months(self, months_to_compare: list):
+
+        """Essa função identifica qual é o 'menor' mês, e qual o 'maior' mês.
+        Por exemplo, janeiro é menor que dezembro."""
         
         months_list = list(self.months_map.keys())
         smaller_month = months_list[-1]
@@ -120,6 +140,8 @@ class Run_scrappers():
 
     
     def get_registrations_data(self, paragraph: str):
+
+        """A função busca a data de início e a data final de inscrição para o concurso."""
 
         key_words = ("inscrições", "inscrição", "participação", "candidatar", "data")
 
@@ -155,8 +177,12 @@ class Run_scrappers():
 
     def get_especific_page_info(self, url: str):
 
+        """Esta função é dedicada a fazer o scraping de cada página específica de cada concurso.
+        Ao rodar o scraping da página, ela pode ser editada para pegar diferentes informações, 
+        como inscrição, remuneração, cargos, etc..."""
+
         soup = self.init_web_scrapper(url)
-        paragraphs = soup.select("p:not(.related-post-grid)")
+        paragraphs = soup.select("p:not(.related-post-grid), li")
         
         # Inscrições
         for paragraph in paragraphs:
@@ -170,6 +196,10 @@ class Run_scrappers():
 
 
     def parse_to_csv(self, contests_dict: dict):
+
+        """Essa função pega o dicionário com os dados dos concursos e 
+        o exporta para o formato csv."""
+
         df = pd.DataFrame(contests_dict)
         df.to_csv("../data/contests_info.csv", index=False, sep=';')
 
