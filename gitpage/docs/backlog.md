@@ -75,7 +75,7 @@ Critérios de Aceitação:
 
 #### **História 3: Comparação de Dados**
 
-**"Como usuário, eu quero a possibilidade de comparar os dados de diferentes datas, para que seja possível uma análise de eficiência governamental durante os anos."**  
+**"Como usuário, eu quero a possibilidade de comparar os dados de diferentes concursos, para que seja possível uma análise das vgas que estão com inscrições abertas."**  
 
 Critérios de Aceitação:  
 
