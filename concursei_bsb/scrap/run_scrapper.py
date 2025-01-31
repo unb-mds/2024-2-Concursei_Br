@@ -1,25 +1,25 @@
-import requests
 import re
 import time
+import requests
+from datetime import datetime
 from bs4 import BeautifulSoup
-import pandas as pd
+import numpy as np
 
-class Run_scrappers():
+class Run_scrapper():
     def __init__(self):
-
         self.months_map = {
-            'janeiro': '01', 'fevereiro': '02', 'março': '03', 'abril': '04',
-            'maio': '05', 'junho': '06', 'julho': '07', 'agosto': '08',
-            'setembro': '09', 'outubro': '10', 'novembro': '11', 'dezembro': '12'
+            "janeiro": "01", "fevereiro": "02", "março": "03", "abril": "04",
+            "maio": "05", "junho": "06", "julho": "07", "agosto": "08",
+            "setembro": "09", "outubro": "10", "novembro": "11", "dezembro": "12"
         }
     
     def page_request(self, url: str):
 
-        """Essa função é dedicada a fazer a requisição HTTP para a url especificada."""
+        """Faz requisição HTTP e retorna a resposta."""
 
         try:
             headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
-            time.sleep(5)
+            time.sleep(3)
             return requests.get(url, headers=headers) 
         except requests.HTTPError:
             print("An http error has ocurred, process has exited")
@@ -34,78 +34,54 @@ class Run_scrappers():
         """Essa função retorna um objeto BeautifulSoup, para que assim seja
         possível manipular o texto de alguma página e realizar o scraping."""
 
-        webResponse = self.page_request(url)
-    
-        if(webResponse == None):
+        web_response = self.page_request(url)
+
+        if not web_response:
             print("Canceling scrapping")
             return None
     
-        return BeautifulSoup(webResponse.text, parser)
+        return BeautifulSoup(web_response.text, parser)
 
 
-    def feed_dict(self, contests_dict: dict, contest_name: str = "", vacancies: str = "",
-                  forecast: str = "", url: str = "", register_initial_data: str = "",
-                  register_final_data: str = ""):
+    def feed_dict(self, contests_array: np.ndarray, *args):
         
         """Essa função alimenta o dicionário que armazena os dados dos concursos."""
         
-        # Inicializando o item no dicionário caso ele não exista
-        if len(contests_dict) == 0:
-            contests_dict['name'] = []
-            contests_dict['vacancies'] = []
-            contests_dict['forecast'] = []
-            contests_dict['url'] = []
-            contests_dict['register_initial_data'] = []
-            contests_dict['register_final_data'] = []
-
-        # Adição dos valores no dicionário
-        if contest_name:
-            contests_dict['name'].append(contest_name)
-
-        if vacancies:
-            contests_dict['vacancies'].append(vacancies)
-
-        if forecast:
-            contests_dict['forecast'].append(forecast)
-
-        if url:
-            contests_dict['url'].append(url)
-        
-        if register_initial_data:
-            contests_dict['register_initial_data'].append(register_initial_data)
-        
-        if register_final_data:
-            contests_dict['register_final_data'].append(register_final_data)
-
+        new_row = np.array(args, object).reshape(1, -1)
+        return np.vstack([contests_array, new_row])
 
     def translate_forecast(self, forecast: object|None):
 
-        if forecast != None:
-            return "Previsto"
-        
-        return "Aberto"
+        """Função que identifica o valor de forecast e o renomeia
+        de acordo com um padrão amigável para colocar no csv."""
+
+        return "Previsto" if forecast else "Aberto"
 
 
-    def get_contests_entire_info(self, contests_dict: dict, soup):
+    def get_contests_entire_info(self, contests_array: np.ndarray, soup):
 
-        """Essa é a função principal para o scraping de algum concurso.
-        Ele faz o scraping na página geral onde são exibidos os concursos, e chama uma
-        outra função para acessar a página específica do concurso, para também realizar
-        o scraping."""
+        """Faz scraping da página principal de concursos."""
         
         info = soup.select('tr:not(:first-child)')
 
         for index, tr in enumerate(info):
             
-            name = tr.find("a").text.strip()
+            a_tag = tr.find("a")
+            name = a_tag.text.strip()
+            url = a_tag['href']
             vacancies = tr.find("td", class_="center").text.strip()
             forecast = self.translate_forecast(tr.find("div", class_='label-previsto'))
-            url = tr.find("a")['href']
 
-            register_intial_data, register_final_data = scrap.get_especific_page_info(url)
+            if forecast == "Previsto":
+                contests_array = self.feed_dict(contests_array, name, vacancies, forecast, url,
+                'Unavaliable', 'Unavaliable')
+            else:
+                register_intial_data, final_register_data = self.get_especific_page_info(url)
 
-            self.feed_dict(contests_dict, name, vacancies, forecast, url,
-                           register_intial_data, register_final_data)
+                contests_array = self.feed_dict(contests_array, name, vacancies, forecast, url,
+                            register_intial_data, final_register_data)
+        
+        return contests_array
 
 
     def format_data(self, day: str, month: str, year: str):
@@ -138,12 +114,10 @@ class Run_scrappers():
 
         return smaller_month, bigger_month
 
-    
     def get_registrations_data(self, paragraph: str):
-
         """A função busca a data de início e a data final de inscrição para o concurso."""
 
-        key_words = ("inscrições", "inscrição", "participação", "candidatar", "data")
+        key_words = ("inscrições", "inscrição", "participação", "candidatar", "data", 'inscrever')
 
         # Verifica se no parágrafo é citado algum mês e as palavras-chave
         has_key_word = any(key_word in paragraph for key_word in key_words)
@@ -152,28 +126,32 @@ class Run_scrappers():
 
         if not (has_key_word and has_month and has_digit):
             return "Unavailable", "Unavailable"
-        
-        try:
-            days = re.findall(r" [0-9]{1,2} ", paragraph)
-            starting_day = days[0]
-            finishing_day = days[-1]
 
-            months = re.findall("(" + "|".join(self.months_map) + ")", paragraph)
-            starting_month = months[0]
-            finishing_month = months[-1]
+        # Regex para capturar datas em diferentes formatos
+        date_pattern = re.compile(
+            r"(\d{1,2})\s*(?:de)?\s*(" + "|".join(self.months_map.keys()) + r")\s*(?:de)?\s*(\d{2,4})?",
+            re.IGNORECASE
+        )
 
-            years = re.findall(r" [0-9]{4}", paragraph)
-            starting_year = years[0]
-            finishing_year = years[-1]
-        except:
+        # Encontra todas as datas no parágrafo
+        dates = date_pattern.findall(paragraph)
+
+        if not dates:
             return "Unavailable", "Unavailable"
-        
-        # Formantando no formato de data
-        initial_data = self.format_data(starting_day, starting_month, starting_year)
-        finishing_data = self.format_data(finishing_day, finishing_month, finishing_year)
+
+        # Processa as datas encontradas
+        formatted_dates = []
+        for day, month, year in dates:
+            month_num = self.months_map.get(month.lower(), "01")
+            year_num = year if year else datetime.now().strftime("%Y")
+            formatted_date = f"{day.zfill(2)}/{month_num}/{year_num}"
+            formatted_dates.append(formatted_date)
+
+        # Assume que a primeira data é a de início e a última é a de fim
+        initial_data = formatted_dates[0]
+        finishing_data = formatted_dates[-1]
 
         return initial_data, finishing_data
-
 
     def get_especific_page_info(self, url: str):
 
@@ -187,27 +165,27 @@ class Run_scrappers():
         # Inscrições
         for paragraph in paragraphs:
             paragraph = paragraph.text.lower()
-            register_initial_data, register_finishing_data = self.get_registrations_data(paragraph)
+            initial_register_data, register_finishing_data = self.get_registrations_data(paragraph)
             
-            if register_initial_data != "Unavailable" and register_finishing_data != "Unavailable":
+            if initial_register_data != "Unavailable" and register_finishing_data != "Unavailable":
                 break
             
-        return register_initial_data, register_finishing_data
+        return initial_register_data, register_finishing_data
 
 
-    def parse_to_csv(self, contests_dict: dict):
+    def parse_to_csv(self, contests_array: np.ndarray):
 
         """Essa função pega o dicionário com os dados dos concursos e 
         o exporta para o formato csv."""
 
-        df = pd.DataFrame(contests_dict)
-        df.to_csv("../data/contests_info.csv", index=False, sep=';')
+        np.savetxt("../data/contests_info.csv", contests_array, delimiter=";", 
+                   fmt="%s", header="Nome;Vagas;Status;URL;Início;Fim", comments="")
 
 if __name__ == "__main__":
 
-    scrap = Run_scrappers()
+    scrap = Run_scrapper()
     soup = scrap.init_web_scrapper('https://concursosnobrasil.com/concursos/df')
 
-    contests = {}
-    scrap.get_contests_entire_info(contests, soup)
+    contests = np.empty((0, 6), dtype=object)
+    contests = scrap.get_contests_entire_info(contests, soup)
     scrap.parse_to_csv(contests)
