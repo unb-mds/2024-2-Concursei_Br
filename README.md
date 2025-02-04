@@ -1,20 +1,19 @@
-# Painel de Transparência Municipal
+# Concursei BSB
 
-Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. Objetivo de criar um painel de transparência municipal acessível e intuitivo que permita aos cidadãos monitorar e entender facilmente como os recursos públicos estão sendo utilizados, promovendo a participação cidadã e a confiança na administração pública. 
+Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. O objetivo do Concursei BSB é servir à população como um "mapa" das vagas de concursos no Distrito Federal, conferindo dados importantes para que os interressados possam analisar e se organizar melhor.
 
-![Descrição da Imagem](frontend/prototipo/prototipo.png)
+![Descrição da Imagem](concursei_bsb/prototipo_frontend.jpg)
 
 > Status: Em desenvolvimento ⚙️🔨
 
 ---
 
 ## Público Alvo
-Todos os cidadãos do município, incluindo:
+Cidadãos de Brasília, incluindo:
 
-- Residentes
-- Jornalistas
-- Pesquisadores
-- Autoridades públicas
+- Concurseiros
+- Trabalhadores
+- Estudantes
 
 ---
 
@@ -31,36 +30,27 @@ Todos os cidadãos do município, incluindo:
 .BeautifulSoup<br>
 .Unidecode<br>
 
-
-Com <b>Python</b> instalado, faça a instalação das bibliotecas com os seguintes comandos no terminal:
-```bash
-pip install pandas
-pip install plotly
-pip install streamlit
-pip install numpy
-pip install matplotlib
-pip install bs4
-pip install unidecode
-```
-
 ## Execução 🖥️
 Clone o repositório deste projeto através da seguinte linha de código:
 ```bash
-git clone https://github.com/unb-mds/2024-2-Squad14.git
-```  
+git clone https://github.com/unb-mds/2024-2-Concursei_Bsb.git
+```
 
-Com o repositório clonado vá até o arquivo 2024-2-Squad14\concursei_bsb\app\ **__home.py__** e execute o programa com:
+Com <b>Python</b> instalado, faça a instalação das bibliotecas com o seguinte comando no terminal:
 ```bash
+pip install -r requirements.txt
+```
+
+Com o repositório clonado execute o programa com:
+```bash
+cd .\concursei_bsb\app\
 streamlit run home.py
 ```
 ## Extras
- • [Story map]()
  
- • [Arquitetura]()
+ • [Arquitetura](https://unb-mds.github.io/2024-2-Concursei_Bsb/arquitetura/)
 
- • [Gitpages](unb-mds.github.io/2024-2-Squad14/)
-
- • [Documentação]()
+ • [Gitpages](https://unb-mds.github.io/2024-2-Concursei_Bsb/)
  
 
 ## Equipe 👤
@@ -70,9 +60,9 @@ streamlit run home.py
 |-----------------------------------------------------|------------------------------------------|------------------------------------------|
 | **[Luiz Bessa](https://github.com/lfelipebessa)** | **[José Victor](https://github.com/RR2M4A)** | **[Marco Marques](https://github.com/marcomarquesdc)** |
 
-| ![EduardoWaski](https://github.com/EduardoWaski.png) | ![ArturDCR](https://github.com/ArturDCR.png) | ![AndreMeyerr](https://github.com/AndreMeyerr.png) | ![ribmarcos](https://github.com/ribmarcos.png) |
-|------------------------------------------|------------------------------------------|------------------------------------------|------------------------------------------|
-| **[Eduardo Waski](https://github.com/EduardoWaski)** | **[Artur de Camargos](https://github.com/ArturDCR)** | **[André Meyer](https://github.com/AndreMeyerr)** | **[Marcos Paulo](https://github.com/ribmarcos)** |
+| ![EduardoWaski](https://github.com/EduardoWaski.png) | ![ArturDCR](https://github.com/ArturDCR.png) | ![AndreMeyerr](https://github.com/AndreMeyerr.png) |
+|------------------------------------------|------------------------------------------|------------------------------------------|
+| **[Eduardo Waski](https://github.com/EduardoWaski)** | **[Artur de Camargos](https://github.com/ArturDCR)** | **[André Meyer](https://github.com/AndreMeyerr)** |
 
 
 
