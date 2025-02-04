@@ -5,7 +5,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import numpy as np
 
-class Run_scrapper():
+class Scrapper():
     def __init__(self):
         self.months_map = {
             "janeiro": "01", "fevereiro": "02", "março": "03", "abril": "04",
@@ -74,7 +74,7 @@ class Run_scrapper():
 
             if forecast == "Previsto":
                 contests_array = self.feed_dict(contests_array, name, vacancies, forecast, url,
-                'Unavaliable', 'Unavaliable')
+                'Unavailable', 'Unavailable')
             else:
                 register_intial_data, final_register_data = self.get_especific_page_info(url)
 
@@ -180,10 +180,11 @@ class Run_scrapper():
 
         np.savetxt("../data/contests_info.csv", contests_array, delimiter=";", 
                    fmt="%s", header="Nome;Vagas;Status;URL;Início;Fim", comments="")
+        
 
-if __name__ == "__main__":
+def run_scrapper():
 
-    scrap = Run_scrapper()
+    scrap = Scrapper()
     soup = scrap.init_web_scrapper('https://concursosnobrasil.com/concursos/df')
 
     contests = np.empty((0, 6), dtype=object)
