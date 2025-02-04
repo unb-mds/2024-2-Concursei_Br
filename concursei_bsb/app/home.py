@@ -119,7 +119,7 @@ template = """
 
 <div class="main-section">
     <h1>Acompanhe as <br>publicações no <br> <div style="color:green">Concursei BSB</div></h1>
-    <p>Promovendo a transparência governamental: acompanhe de forma simples e clara <br> as publicações diárias e saiba como os recursos públicos estão sendo utilizados.</p>
+    <p>Promovendo a participação pública em concursos do DF: acompanhe de forma simples e clara <br> as pubublicações de concursos.</p>
     <a href="#" class="btn">Ver Relatórios</a>
 </div>
 
