@@ -1,19 +1,9 @@
 import streamlit as st
 
-def set_page_cfg():
+def set_page_config():
     st.set_page_config(
         page_title="Concursei BSB",
         layout="wide",
-        page_icon="assets/logo_concursei.png"
-    )
-
-import streamlit as st
-
-def set_page_config():
-    """Configurações iniciais da página."""
-    st.set_page_config(
-        page_title="Concursei BSB", 
-        layout="wide", 
         page_icon="assets/logo_concursei.png"
     )
 
