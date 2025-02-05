@@ -3,14 +3,14 @@ import pandas as pd
 from datetime import datetime
 import calendar
 
-# Configuração DEVE ser a primeira instrução
+#nome da página e configurações gerais da página
 st.set_page_config(
     page_title="Calendário de Concursos",
     layout="wide",
     page_icon="assets/logo_concursei.png"
 )
 
-# CSS modificado
+#css da página
 st.markdown("""
 <style>
     :root {
@@ -31,7 +31,6 @@ st.markdown("""
         font-weight: bold !important;
     }
     
-    /* Removido estilo da borda */
     [data-testid="stVerticalBlock"] > div:nth-child(2) > div {
         border-radius: 8px !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
@@ -53,16 +52,15 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Carregar dados (mantido igual)
+#lendo o csv e filtrando os dados que queremos
 df = pd.read_csv("../data/contests_info.csv", sep=";")
 df['Início'] = pd.to_datetime(df['Início'], dayfirst=True, errors='coerce')
 df['Fim'] = pd.to_datetime(df['Fim'], dayfirst=True, errors='coerce')
 df = df.dropna(subset=['Início', 'Fim'])
 
-# Título
 st.title("📅 Calendário de Concursos Públicos")
 
-# Filtros (mantido igual)
+#filtro de meses e anos
 st.subheader("Selecione o período")
 col1, col2 = st.columns(2)
 with col1:
@@ -72,11 +70,10 @@ with col1:
 with col2:
     selected_month = st.selectbox("Mês", options=range(1, 13), format_func=lambda x: calendar.month_name[x])
 
-# Função do calendário modificada
+#criação do calendário
 def create_calendar(year, month):
     cal = calendar.monthcalendar(year, month)
     
-    # Cabeçalho dos dias (mantido)
     cols = st.columns(7)
     days = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
     for col, day in zip(cols, days):
@@ -85,7 +82,6 @@ def create_calendar(year, month):
             unsafe_allow_html=True
         )
 
-    # Dias do mês ajustados
     for week in cal:
         cols = st.columns(7)
         for day, col in zip(week, cols):
@@ -101,7 +97,6 @@ def create_calendar(year, month):
                 if contests.empty:
                     st.markdown(f"<div class='dia-evento' style='text-align: center;'>{day}</div>", unsafe_allow_html=True)
                 else:
-                    # Container sem borda
                     with st.container():
                         st.markdown(f"<div class='dia-evento'>", unsafe_allow_html=True)
                         st.markdown(f"**{day}**")
@@ -114,14 +109,31 @@ def create_calendar(year, month):
                             """)
                         st.markdown("</div>", unsafe_allow_html=True)
 
-# Restante do código mantido
 st.divider()
 st.header(f"Calendário para {calendar.month_name[selected_month]} {selected_year}")
 create_calendar(selected_year, selected_month)
 
+#legenda do calendário
 st.info("""
 **Legenda:**  
 🔵 = Data de Início do Concurso  
 🔴 = Data de Término do Concurso  
 Clique nos cards para expandir detalhes
 """)
+
+#footer da página
+st.markdown("""
+<style>   
+    .footer {
+        background-color: #ffffff;
+        padding: 20px;
+        border-top: 2px solid #eaeaea;
+        text-align: center;
+        font-size: 14px;
+        color: #666666;
+    }
+</style>
+<div class="footer">
+    © 2025 Concursei BSB. Todos os direitos reservados.
+</div>
+""", unsafe_allow_html=True)
