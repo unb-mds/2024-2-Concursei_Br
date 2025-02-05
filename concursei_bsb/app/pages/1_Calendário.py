@@ -1,24 +1,127 @@
 import streamlit as st
+import pandas as pd
+from datetime import datetime
+import calendar
 
-st.set_page_config(page_title="Calendário", page_icon="📅", layout="wide")
-
-# Header estilizado
-st.markdown(
-    """
-    <div class="header">
-        <div class="logo">CONCURSOS BRASIL</div>
-        <div class="nav">
-            <a href="#inicio">Início</a>
-            <a href="#calendario">Calendário</a>
-            <a href="#editais" class="btn">Ver Editais →</a>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
+# Configuração DEVE ser a primeira instrução
+st.set_page_config(
+    page_title="Calendário de Concursos",
+    layout="wide",
+    page_icon="assets/logo_concursei.png"
 )
 
-# Conteúdo principal
-st.title("Calendário de Concursos")
-st.write("### Confira os próximos concursos públicos!")
-st.write("Esta seção contém uma lista atualizada dos principais concursos com prazos importantes.")
-st.warning("Exemplo: Concurso IBGE 2025 - Inscrições até 31/01/2025.")
+# CSS modificado
+st.markdown("""
+<style>
+    :root {
+        --primary-color: #32a852;
+        --background-color: #ffffff;
+    }
+    
+    .stApp {
+        background-color: var(--background-color);
+    }
+    
+    h1, h2, h3 {
+        color: var(--primary-color) !important;
+    }
+    
+    .stSelectbox label p {
+        color: var(--primary-color) !important;
+        font-weight: bold !important;
+    }
+    
+    /* Removido estilo da borda */
+    [data-testid="stVerticalBlock"] > div:nth-child(2) > div {
+        border-radius: 8px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    }
+    
+    hr {
+        border-color: var(--primary-color) !important;
+    }
+    
+    [data-testid="stNotificationContent"] {
+        background-color: #f8fff9 !important;
+    }
+    
+    .dia-evento {
+        background: white !important;
+        padding: 10px !important;
+        margin: 4px !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Carregar dados (mantido igual)
+df = pd.read_csv("../data/contests_info.csv", sep=";")
+df['Início'] = pd.to_datetime(df['Início'], dayfirst=True, errors='coerce')
+df['Fim'] = pd.to_datetime(df['Fim'], dayfirst=True, errors='coerce')
+df = df.dropna(subset=['Início', 'Fim'])
+
+# Título
+st.title("📅 Calendário de Concursos Públicos")
+
+# Filtros (mantido igual)
+st.subheader("Selecione o período")
+col1, col2 = st.columns(2)
+with col1:
+    available_years = sorted(df['Início'].dt.year.unique().tolist() + df['Fim'].dt.year.unique().tolist())
+    selected_year = st.selectbox("Ano", options=available_years)
+
+with col2:
+    selected_month = st.selectbox("Mês", options=range(1, 13), format_func=lambda x: calendar.month_name[x])
+
+# Função do calendário modificada
+def create_calendar(year, month):
+    cal = calendar.monthcalendar(year, month)
+    
+    # Cabeçalho dos dias (mantido)
+    cols = st.columns(7)
+    days = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
+    for col, day in zip(cols, days):
+        col.markdown(
+            f"<div style='text-align: center; padding: 10px; background: #32a852; color: white; border-radius: 5px;'><strong>{day}</strong></div>", 
+            unsafe_allow_html=True
+        )
+
+    # Dias do mês ajustados
+    for week in cal:
+        cols = st.columns(7)
+        for day, col in zip(week, cols):
+            if day == 0:
+                col.write("")
+                continue
+                
+            current_date = datetime(year, month, day)
+            contests = df[(df['Início'].dt.date == current_date.date()) | 
+                         (df['Fim'].dt.date == current_date.date())]
+            
+            with col:
+                if contests.empty:
+                    st.markdown(f"<div class='dia-evento' style='text-align: center;'>{day}</div>", unsafe_allow_html=True)
+                else:
+                    # Container sem borda
+                    with st.container():
+                        st.markdown(f"<div class='dia-evento'>", unsafe_allow_html=True)
+                        st.markdown(f"**{day}**")
+                        for _, contest in contests.iterrows():
+                            event_type = "🔵 Início" if contest['Início'].date() == current_date.date() else "🔴 Fim"
+                            st.markdown(f"""
+                            **{contest['Nome']}**  
+                            {event_type}  
+                            Vagas: {contest['Vagas']}  
+                            """)
+                        st.markdown("</div>", unsafe_allow_html=True)
+
+# Restante do código mantido
+st.divider()
+st.header(f"Calendário para {calendar.month_name[selected_month]} {selected_year}")
+create_calendar(selected_year, selected_month)
+
+st.info("""
+**Legenda:**  
+🔵 = Data de Início do Concurso  
+🔴 = Data de Término do Concurso  
+Clique nos cards para expandir detalhes
+""")
