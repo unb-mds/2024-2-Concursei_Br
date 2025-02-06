@@ -4,6 +4,7 @@ import requests
 from datetime import datetime
 from bs4 import BeautifulSoup
 import numpy as np
+import time
 
 class Scrapper():
     def __init__(self):
@@ -13,15 +14,13 @@ class Scrapper():
             "setembro": "09", "outubro": "10", "novembro": "11", "dezembro": "12"
         }
 
-        # self.__regions = [
-        #     'AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'
-        # ]
-
         self.__regions = [
-            'AC','AL'
+            'AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'
         ]
 
-        self.aux = []
+        self.__months_regex = re.compile("|".join(self.__months_map))
+        self.__key_words_regex = re.compile(r'inscrições|inscrição|participação|candidatar|data|inscrever')
+        self.__digit_regex = re.compile(r'\d')
 
     def __page_request(self, url: str):
 
@@ -45,12 +44,7 @@ class Scrapper():
         possível manipular o texto de alguma página e realizar o scraping."""
 
         web_response = self.__page_request(url)
-
-        if not web_response:
-            print("Canceling scrapping")
-            return None
-    
-        return BeautifulSoup(web_response.text, parser)
+        return BeautifulSoup(web_response.content, parser)
 
 
     def __feed_dict(self, contests_array: np.ndarray, *args):
@@ -92,45 +86,49 @@ class Scrapper():
                             register_intial_data, final_register_data)
         
         return contests_array
+    
+    def __verify_key_words(self, paragraph: str):
+
+        if not self.__months_regex.search(paragraph):
+            return False
+
+        if not self.__key_words_regex.search(paragraph):
+            return False
+
+        if not self.__digit_regex.search(paragraph):
+            return False
+        
+        return True
+
 
     def __get_registrations_data(self, paragraph: str):
         """A função busca a data de início e a data final de inscrição para o concurso."""
 
-        key_words = ("inscrições", "inscrição", "participação", "candidatar", "data", 'inscrever')
+        has_key_words = self.__verify_key_words(paragraph)
 
-        # Verifica se no parágrafo é citado algum mês e as palavras-chave
-        has_key_word = any(key_word in paragraph for key_word in key_words)
-        has_month = any(month in paragraph for month in self.__months_map)
-        has_digit = any(char.isdigit() for char in paragraph)
-
-        if not (has_key_word and has_month and has_digit):
+        if not has_key_words:
             return "Unavailable", "Unavailable"
 
-        # Regex para capturar datas em diferentes formatos
-        date_pattern = re.compile(
-            r"(\d{1,2})\s*(?:de)?\s*(" + "|".join(self.__months_map.keys()) + r")\s*(?:de)?\s*(\d{2,4})?",
-            re.IGNORECASE
-        )
+        try:
+            days = re.findall(r" [0-9]{1,2} ", paragraph)
+            starting_day = days[0]
+            finishing_day = days[-1]
 
-        # Encontra todas as datas no parágrafo
-        dates = date_pattern.findall(paragraph)
+            months = re.findall("(" + "|".join(self.__months_map) + ")", paragraph)
+            starting_month = months[0]
+            finishing_month = months[-1]
 
-        if not dates:
-            return "Unavailable", "Unavailable"
+            years = re.findall(r" [0-9]{4}", paragraph)
+            starting_year = years[0]
+            finishing_year = years[-1]
+        except:
+            return None, None
+        
+        # Formantando no formato de data
+        starting_data = f"{starting_day}/{starting_month}/{starting_year}".replace(" ", "")
+        finishing_data = f"{finishing_day}/{finishing_month}/{finishing_year}".replace(" ", "")
 
-        # Processa as datas encontradas
-        formatted_dates = []
-        for day, month, year in dates:
-            month_num = self.__months_map.get(month.lower(), "01")
-            year_num = year if year else datetime.now().strftime("%Y")
-            formatted_date = f"{day.zfill(2)}/{month_num}/{year_num}"
-            formatted_dates.append(formatted_date)
-
-        # Assume que a primeira data é a de início e a última é a de fim
-        initial_data = formatted_dates[0]
-        finishing_data = formatted_dates[-1]
-
-        return initial_data, finishing_data
+        return starting_data, finishing_data
 
     def __get_especific_page_info(self, url: str):
 
@@ -157,25 +155,32 @@ class Scrapper():
         """Essa função pega o dicionário com os dados dos concursos e 
         o exporta para o formato csv."""
 
-        np.savetxt("../data/contests_info.csv", contests_array, delimiter=";", 
-                   fmt="%s", header="Região;Nome;Vagas;Status;URL;Início;Fim", comments="")
-    
-    def __list_to_variable(self):
-        retorno = ''
-        for a in range(len(self.aux)):
-            retorno += self.aux[a]
-        return retorno
+        file_path = "../data/contests_info.csv"
+
+        np.savetxt(file_path, contests_array, delimiter=";", 
+                fmt="%s", header="Região;Nome;Vagas;Status;URL;Início;Fim", comments="")
+
         
     def run_scrapper(self):
+        #Laço dedicado a verificação do horário para que o scrap seja executado
+
+        now = time.time()
+
         while True:
-            #Laço dedicado a verificação do horário para que o scrap seja executado
-            time_now = datetime.now()
-            if time_now.hour == 22 and time_now.minute == 11:
-                contests = np.empty((0, 7), dtype=object)
-                for loc in self.__regions:
-                    soup =  self.__init_web_scrapper(f'https://concursosnobrasil.com/concursos/{loc}')
-                    contests = self.__get_contests_entire_info(loc, contests, soup)
-                    self.aux.append(contests)
-                self.__parse_to_csv(self.__list_to_variable())
-            else:
-                pass
+
+            # if time_now.hour == 0 and time_now.minute == 0:
+            contests = np.empty((0, 7), dtype=object)
+            
+            for loc in self.__regions:
+
+                print(loc)
+                soup =  self.__init_web_scrapper(f'https://concursosnobrasil.com/concursos/{loc}')
+                contests = self.__get_contests_entire_info(loc, contests, soup)
+                
+            self.__parse_to_csv(contests)
+            break
+
+        after = time.time()
+
+        
+        print("Tempo: " + after - now)
