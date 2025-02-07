@@ -92,12 +92,12 @@ def get_css():
             margin-bottom: 30px;
         }
         .footer {
-            background-color: #ffffff;
+            background-color: #32a852;
             padding: 20px;
             border-top: 2px solid #eaeaea;
             text-align: center;
             font-size: 14px;
-            color: #666666;
+            color: #ffffff;
         }
     </style>
     """
