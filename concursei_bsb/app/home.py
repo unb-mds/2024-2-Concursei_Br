@@ -2,7 +2,7 @@ import streamlit as st
 
 def set_page_config():
     st.set_page_config(
-        page_title="Concursei BSB",
+        page_title="Concursei Br",
         layout="wide",
         page_icon="assets/logo_concursei.png"
     )
@@ -19,9 +19,9 @@ def get_css():
             padding: 0;
         }
         .header {
-            background-color: #ffffff;
+            background-color: #32a852;
             padding: 20px 50px;
-            border-bottom: 3px solid #eaeaea;
+            border-bottom: 3px solid #1e7a34;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -33,7 +33,7 @@ def get_css():
             margin-left: 5%;
             font-size: 24px;
             font-weight: bold;
-            color: #32a852;
+            color: #ffffff;
         }
         .header a {
             text-decoration: none;
@@ -107,7 +107,7 @@ def render_html():
     template = """
     <div class="header">
         <div class="logo">  
-            Concursei BSB
+            Concursei Br
         </div>
         <div>
             <a href="#">Início</a>
@@ -116,8 +116,8 @@ def render_html():
     </div>
 
     <div class="main-section">
-        <h1>Acompanhe as <br>publicações no <br> <div style="color:green">Concursei BSB</div></h1>
-        <p>Promovendo a participação pública em concursos do DF: acompanhe de forma simples e clara <br> as publicações de concursos.</p>
+        <h1>Acompanhe as <br>publicações no <br> <div style="color:green">Concursei Br</div></h1>
+        <p>Promovendo a participação pública em concursos do Brasil: acompanhe de forma simples e clara <br> as publicações de concursos.</p>
         <a href="#" class="btn">Ver Relatórios</a>
     </div>
 
@@ -128,7 +128,7 @@ def render_html():
     </div>
 
     <div class="footer">
-        © 2025 Concursei BSB. Todos os direitos reservados.
+        © 2025 Concursei Br. Todos os direitos reservados.
     </div>
     """
     return template
