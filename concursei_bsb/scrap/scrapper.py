@@ -17,7 +17,7 @@ class Scrapper():
         self.__regions = [
             'AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'
         ]
-
+    
         self.__months_regex = re.compile("|".join(self.__months_map))
         self.__key_words_regex = re.compile(r'inscrições|inscrição|participação|candidatar|data|inscrever')
         self.__digit_regex = re.compile(r'\d')
@@ -78,7 +78,7 @@ class Scrapper():
 
             if forecast == "Previsto":
                 contests_array = self.__feed_dict(contests_array, region, name, vacancies, forecast, url,
-                'Unavailable', 'Unavailable')
+                'Previsto', 'Previsto')
             else:
                 register_intial_data, final_register_data = self.__get_especific_page_info(url)
 
@@ -99,6 +99,15 @@ class Scrapper():
             return False
         
         return True
+    
+
+    def __format_data(self, day: str, month: str, year: str):
+
+        day = day.zfill(2)
+        month = self.__months_map[month]
+        year = year.zfill(4)
+
+        return f"{day}/{month}/{year}"
 
 
     def __get_registrations_data(self, paragraph: str):
@@ -107,26 +116,29 @@ class Scrapper():
         has_key_words = self.__verify_key_words(paragraph)
 
         if not has_key_words:
-            return "Unavailable", "Unavailable"
+            return "Indisponível", "Indisponível"
 
         try:
             days = re.findall(r" [0-9]{1,2} ", paragraph)
-            starting_day = days[0]
-            finishing_day = days[-1]
+            starting_day = days[0].strip()
+            finishing_day = days[-1].strip()
 
             months = re.findall("(" + "|".join(self.__months_map) + ")", paragraph)
-            starting_month = months[0]
-            finishing_month = months[-1]
+            starting_month = months[0].strip()
+            finishing_month = months[-1].strip()
 
             years = re.findall(r" [0-9]{4}", paragraph)
-            starting_year = years[0]
-            finishing_year = years[-1]
+            starting_year = years[0].strip()
+            finishing_year = years[-1].strip()
         except:
             return None, None
         
         # Formantando no formato de data
-        starting_data = f"{starting_day}/{starting_month}/{starting_year}".replace(" ", "")
-        finishing_data = f"{finishing_day}/{finishing_month}/{finishing_year}".replace(" ", "")
+        starting_data = self.__format_data(starting_day, starting_month, starting_year)
+        finishing_data = self.__format_data(finishing_day, finishing_month, finishing_year)
+        
+        if starting_data == finishing_data:
+            starting_data = "Não encontrado"
 
         return starting_data, finishing_data
 
@@ -144,7 +156,7 @@ class Scrapper():
             paragraph = paragraph.text.lower()
             initial_register_data, register_finishing_data = self.__get_registrations_data(paragraph)
             
-            if initial_register_data != "Unavailable" and register_finishing_data != "Unavailable":
+            if initial_register_data != "Indisponível" and register_finishing_data != "Indisponível":
                 break
             
         return initial_register_data, register_finishing_data
@@ -183,4 +195,4 @@ class Scrapper():
         after = time.time()
 
         
-        print("Tempo: " + after - now)
+        print("Tempo: " + str(after - now))
