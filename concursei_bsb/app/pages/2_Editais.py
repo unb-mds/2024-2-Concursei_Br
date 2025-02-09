@@ -63,6 +63,37 @@ def filtros():
 
     
     st.write(df_filtrado)
+    return df_filtrado
 
+def criar_visualizacoes(df_filtrado):
+    """
+    Recebe o df_filtrado e exibe "cards" resumindo:
+    - Número total de concursos filtrados
+    - Soma da coluna 'Vagas', interpretando '.' como separador de milhares
+    """
+    if df_filtrado.empty:
+        st.info("Não há dados para exibir nos gráficos com os filtros selecionados.")
+        return
 
-filtros()
+    df_filtrado['Vagas_limpo'] = (df_filtrado['Vagas']
+                                  .astype(str)
+                                  .str.replace('.', '', regex=False))
+    df_filtrado['Vagas_limpo'] = pd.to_numeric(df_filtrado['Vagas_limpo'], errors='coerce')
+
+    
+    df_filtrado['Vagas_limpo'] = df_filtrado['Vagas_limpo'].fillna(0)
+
+    total_vagas = df_filtrado['Vagas_limpo'].sum()
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.metric(label="Concursos Filtrados", value=len(df_filtrado))
+
+    with col2:
+        st.metric(label="Total de Vagas", value=int(total_vagas))
+
+    st.subheader("Gráficos de Resumo")
+
+df_filtrado = filtros()
+criar_visualizacoes(df_filtrado)
