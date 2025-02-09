@@ -5,6 +5,7 @@ Created on Mon Jan 20 19:12:31 2025
 @author: Marqu
 """
 import pandas as pd
+import altair as alt
 import streamlit as st
 from utils.data_loader import load_contests_data
 
@@ -62,7 +63,6 @@ def filtros():
 
     
     st.write(df_filtrado)
-
 
 
 filtros()
