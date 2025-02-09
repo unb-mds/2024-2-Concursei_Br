@@ -1,7 +1,7 @@
 import streamlit as st
 from utils.data_loader import load_contests_data
 
-st.set_page_config(page_title="Sobre o Concursei BSB", page_icon="assets/logo_concursei.png", layout="wide")
+st.set_page_config(page_title="Sobre o Concursei BR", page_icon="assets/logo_concursei.png", layout="wide")
 
 # Header estilizado
 st.markdown(
@@ -57,14 +57,14 @@ st.markdown(
     </style>
 
     <div class="header">
-        <div class="logo">Concursei BSB</div>
+        <div class="logo">Concursei BR</div>
     </div>
 
     <!-- Seção principal com informações sobre o site -->
     <div class="main-section">
-        <h1>Sobre o Concursei BSB</h1>
+        <h1>Sobre o Concursei BR</h1>
         <p>
-            O objetivo do concursei bsb é criar um painel de concursos com inscrição em aberto e previstos que seja intuitivo e que permita aos cidadãos monitorar e se programar facilmente 
+            O objetivo do concursei BR é criar um painel de concursos com inscrição em aberto e previstos que seja intuitivo e que permita aos cidadãos monitorar e se programar facilmente 
             para concursos de seu interresse. A ideia é que os dados sejam 
             atualizados periodicamente e que todos tenham a oportunidade de saber e participar.
         </p>
@@ -77,7 +77,7 @@ st.markdown(
 
     <!-- Footer -->
     <div class="footer">
-        © 2025 Concursei BSB. Todos os direitos reservados.
+        © 2025 Concursei BR. Todos os direitos reservados.
     </div>
     """,
     unsafe_allow_html=True,
