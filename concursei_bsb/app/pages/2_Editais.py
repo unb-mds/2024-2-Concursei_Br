@@ -32,18 +32,37 @@ st.write("Nesta página você terá acesso direto aos editais e provas anteriore
 
 df = pd.read_csv("../data/contests_info.csv", sep=';')
 
-def filtro_uf():
-    regioes = df['Região'].unique()
-    regiao_selecionada = st.multiselect("Selecione a Região:", options=regioes)
+def filtros():
+    col1, col2 = st.columns(2)
+
+    # 1. Filtro de Região
+    with col1:
+        regioes = df['Região'].unique()
+        regiao_selecionada = st.multiselect(
+            "Selecione a(s) Região(ões):", 
+            options=regioes
+        )
+
+    # 2. Filtro de Status
+    with col2:
+        status_opcoes = df['Status'].unique()   
+        status_selecionado = st.multiselect(
+            "Selecione o(s) Status:", 
+            options=status_opcoes
+        )
+
+    # 3. Aplicar filtros simultâneos
+    df_filtrado = df.copy()
+
     if regiao_selecionada:
-        # Filtrar o DataFrame com base na seleção do usuário
-        df_filtrado = df[df['Região'].isin(regiao_selecionada)]
-        
-        # Exibir o DataFrame filtrado
-        st.write(df_filtrado)
-    else:
-        # Mensagem quando nenhuma região for selecionada
-        st.write("Selecione uma ou mais regiões para visualizar os dados.")
+        df_filtrado = df_filtrado[df_filtrado['Região'].isin(regiao_selecionada)]
+
+    if status_selecionado:
+        df_filtrado = df_filtrado[df_filtrado['Status'].isin(status_selecionado)]
+
+    
+    st.write(df_filtrado)
 
 
-filtro_uf()
+
+filtros()
