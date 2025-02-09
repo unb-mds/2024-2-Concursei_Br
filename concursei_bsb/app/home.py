@@ -1,4 +1,5 @@
 import streamlit as st
+from utils.data_loader import load_contests_data
 
 def set_page_config():
     st.set_page_config(
@@ -21,7 +22,7 @@ def get_css():
         .header {
             background-color: #32a852;
             padding: 20px 50px;
-            border-bottom: 3px solid #1e7a34;
+            border-bottom: 2px solid #1e7a34;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -37,7 +38,7 @@ def get_css():
         }
         .header a {
             text-decoration: none;
-            color: #32a852;
+            color: #ffffff;
             font-weight: bold;
             margin-left: 20px;
         }
@@ -138,6 +139,19 @@ def main():
     set_page_config()
     st.markdown(get_css(), unsafe_allow_html=True)
     st.markdown(render_html(), unsafe_allow_html=True)
+
+    # 🔹 Tenta carregar os dados do CSV
+    st.header("📂 Dados Carregados do CSV")
+
+    try:
+        df = load_contests_data()
+        if df.empty:
+            st.error("❌ Erro ao carregar os dados! O arquivo CSV pode estar vazio ou não encontrado.")
+        else:
+            st.success(f"✅ CSV carregado com sucesso! {len(df)} registros encontrados.")
+            st.dataframe(df.head())  # 🔹 Exibe os primeiros registros do CSV
+    except Exception as e:
+        st.error(f"⚠️ Erro ao carregar os dados: {str(e)}")
 
 
 

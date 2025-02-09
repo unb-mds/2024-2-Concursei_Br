@@ -6,6 +6,7 @@ Created on Mon Jan 20 19:12:51 2025
 """
 
 import streamlit as st
+from utils.data_loader import load_contests_data
 
 st.set_page_config(page_title="Notícias", page_icon="📰", layout="wide")
 

@@ -1,4 +1,5 @@
 import streamlit as st
+from utils.data_loader import load_contests_data
 
 st.set_page_config(page_title="Sobre o Concursei BSB", page_icon="assets/logo_concursei.png", layout="wide")
 

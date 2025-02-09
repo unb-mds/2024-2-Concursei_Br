@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import calendar
+from utils.data_loader import load_contests_data
 
 # Configuração DEVE ser a primeira instrução
 st.set_page_config(
