@@ -54,6 +54,9 @@ available_years = [year for year in available_years if year >= 2000]
 # Filtrar regiões disponíveis
 available_regions = sorted(df["Região"].dropna().unique().tolist())
 
+# Adicionando a opção "Todos" no filtro de região
+available_regions.insert(0, "Todos")
+
 st.title("📅 Calendário de Concursos Públicos")
 
 # Filtros de seleção
@@ -69,7 +72,11 @@ with col3:
 # Criar calendário
 def create_calendar(year, month, region):
     cal = calendar.monthcalendar(year, month)
-    filtered_df = df[df["Região"] == region]
+
+    if region == "Todos":
+        filtered_df = df
+    else:    
+        filtered_df = df[df["Região"] == region]
     
     cols = st.columns(7)
     days = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]

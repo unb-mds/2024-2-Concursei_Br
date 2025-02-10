@@ -50,7 +50,7 @@ def get_css():
         }
         .header a {
             text-decoration: none;
-            color: #32a852;
+            color: #ffffff;
             font-weight: bold;
             margin-left: 20px;
         }
