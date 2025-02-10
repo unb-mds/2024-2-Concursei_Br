@@ -1,27 +1,45 @@
 import streamlit as st
+import pandas as pd
 
 def set_page_config():
     st.set_page_config(
-        page_title="Concursei BSB",
+        page_title="Concursei Br",
         layout="wide",
         page_icon="assets/logo_concursei.png"
     )
+
+def load_data():
+    """Carrega e processa os dados do CSV."""
+    file_path = "../data/contests_info.csv"
+    df = pd.read_csv(file_path, sep=';')
+    return df
 
 def get_css():
     """Retorna o CSS para estilização da página."""
     return """
     <style>
-        body {
-            width: 100%;
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+        * {
+            padding: 0;
             margin: 0;
+            max-width: 100% !important;
+        }
+
+        .block-container {
             padding: 0;
         }
+        
+        body {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
         .header {
-            background-color: #ffffff;
+            background-color: #32a852;
             padding: 20px 50px;
-            border-bottom: 3px solid #eaeaea;
+            border-bottom: 3px solid #1e7a34;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -33,11 +51,11 @@ def get_css():
             margin-left: 5%;
             font-size: 24px;
             font-weight: bold;
-            color: #32a852;
+            color: #ffffff;
         }
         .header a {
             text-decoration: none;
-            color: #32a852;
+            color: #ffffff;
             font-weight: bold;
             margin-left: 20px;
         }
@@ -74,40 +92,47 @@ def get_css():
             font-size: 16px;
             margin: 10px 10px 10px 7%;
         }
-        .statistics {
+        .statistics-box {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 35px;
+            margin: 0px 7%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             text-align: center;
-            margin: 50px 0;
+            border: 2px solid #1e7a34;
         }
-        .statistics .circle {
-            display: inline-block;
-            width: 150px;
-            height: 150px;
-            line-height: 150px;
-            border-radius: 50%;
-            background-color: #32a852;
-            color: white;
+        .statistics {
+            background-color: #dcdcdc;
+            padding: 10px 20% 70px 20%;
+        }
+        .stat-number {
+            color: #32a852;
             font-size: 48px;
             font-weight: bold;
-            margin-top: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            color: #666666;
+            font-size: 18px;
+            line-height: 1.4;
         }
         .footer {
-            background-color: #ffffff;
+            background-color: #32a852;
             padding: 20px;
             border-top: 2px solid #eaeaea;
             text-align: center;
             font-size: 14px;
-            color: #666666;
+            color: #ffffff;
         }
     </style>
     """
 
-def render_html():
-    """Renderiza a estrutura HTML da página."""
+def render_body():
+    """Renderiza o corpo principal da página."""
     template = """
     <div class="header">
         <div class="logo">  
-            Concursei BSB
+            Concursei Br
         </div>
         <div>
             <a href="#">Início</a>
@@ -116,30 +141,61 @@ def render_html():
     </div>
 
     <div class="main-section">
-        <h1>Acompanhe as <br>publicações no <br> <div style="color:green">Concursei BSB</div></h1>
-        <p>Promovendo a participação pública em concursos do DF: acompanhe de forma simples e clara <br> as publicações de concursos.</p>
+        <h1>Acompanhe as <br>publicações no <br> <div style="color:green">Concursei Br</div></h1>
+        <p>Promovendo a participação pública em concursos do Brasil: <br>acompanhe de forma simples e clara as publicações de concursos.</p>
         <a href="#" class="btn">Ver Relatórios</a>
-    </div>
-
-    <div class="statistics">
-        <h2>Publicações Concursos</h2>
-        <div class="circle">39</div>
-        <p>Quantidade de publicações no Concursos Brasil hoje</p>
-    </div>
-
-    <div class="footer">
-        © 2025 Concursei BSB. Todos os direitos reservados.
     </div>
     """
     return template
 
+def render_statistics(df):
+    """
+    Renderiza o bloco estatístico com duas informações na mesma caixa:
+    - Número de concursos com inscrições abertas (considerando apenas concursos em que 'Vagas' é numérico)
+    - Soma total de vagas dos concursos com valor numérico na coluna 'Vagas'
+    """
+    # Filtra os concursos onde a coluna 'Vagas' contém um valor numérico
+    df_numeric = df[pd.to_numeric(df['Vagas'], errors='coerce').notnull()].copy()
+    df_numeric['Vagas'] = pd.to_numeric(df_numeric['Vagas'])
+    
+    # Calcula a quantidade de concursos abertos dentre os concursos com vagas numéricas
+    abertos = df_numeric[df_numeric['Status'] == 'Aberto'].shape[0]
+    # Calcula a soma total de vagas
+    total_vagas = df_numeric['Vagas'].sum()
+    
+    return f"""
+    <div class="statistics" style="display: flex; justify-content: center;">
+        <div class="statistics-box">
+            <div style="margin-bottom: 20px;">
+                <div class="stat-label">Concursos com inscrições abertas HOJE</div>
+                <div class="stat-number">{abertos}</div>
+            </div>
+            <div>
+                <div class="stat-label">Total de vagas</div>
+                <div class="stat-number">{int(total_vagas)}</div>
+            </div>
+        </div>
+    </div>
+    """
+
+def render_footer():
+    """Função que retorna o footer"""
+    return """
+    <div class="footer">
+        © 2025 Concursei Br. Todos os direitos reservados.
+    </div>
+    """
+
 def main():
     """Função principal para rodar o Streamlit."""
     set_page_config()
+    df = load_data()
+
     st.markdown(get_css(), unsafe_allow_html=True)
-    st.markdown(render_html(), unsafe_allow_html=True)
-
-
+    st.markdown(render_body(), unsafe_allow_html=True)
+    
+    st.markdown(render_statistics(df), unsafe_allow_html=True)
+    st.markdown(render_footer(), unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
