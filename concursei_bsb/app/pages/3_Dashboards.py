@@ -77,7 +77,7 @@ def load_data():
 
     # Tratamendo coluna VAGAS e REGIÃO
     # Converter a coluna "Vagas" para numérico (ignorar valores inválidos)
-    df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce")
+    #df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce")
     # Remover linhas onde "Região" ou "Vagas" são NaN
     #df = df.dropna(subset=["Região", "Vagas"])
     
@@ -141,13 +141,45 @@ def plot_bar_vagas_estado(df):
     # Exibir no Streamlit
     st.plotly_chart(fig, use_container_width=True)
 
-def plot_bar_vagas_orgao(df):
-    """Gráfico de barras mostrando quais órgãos têm mais vagas."""
-    vagas_orgao = df.groupby('Nome')['Vagas'].sum().nlargest(10)
-    fig, ax = plt.subplots(figsize=(10, 5))
-    sns.barplot(y=vagas_orgao.index, x=vagas_orgao.values, ax=ax, palette=['#1e7a34'])
-    ax.set_title("Órgãos com Mais Vagas")
-    st.pyplot(fig)
+def plot_bar_vagas_orgao(df, top_n):
+    # Gráfico de barras mostrando quais órgãos têm mais vagas.
+    # Agrupar por órgão e somar as vagas
+    vagas_por_orgao = df.groupby("Nome")["Vagas"].sum().reset_index()
+
+    # Ordenar por número de vagas (maior para menor)
+    vagas_por_orgao = vagas_por_orgao.sort_values(by="Vagas", ascending=False)
+
+    # Filtrar os Top N órgãos com mais vagas
+    vagas_por_orgao = vagas_por_orgao.head(top_n)
+
+    # Criar o gráfico interativo
+    fig = px.bar(
+        vagas_por_orgao,
+        y="Nome",
+        x="Vagas",
+        title=f"Top {top_n} Órgãos com Mais Vagas",
+        text="Vagas",  # Exibir os valores nas barras
+        orientation="h",  # Barras horizontais para facilitar a leitura
+        color="Nome",  # Cores diferentes por órgão
+        color_discrete_sequence=px.colors.sequential.Greens  # Paleta de cores
+    )
+
+    # 🔹 Ajustes visuais
+    fig.update_traces(
+        texttemplate="%{text:.0f}",  # Exibir apenas inteiros
+        textposition="outside",
+        hovertemplate="<b>%{y}</b><br>Vagas: %{x:,d}"  # Formatar hover com separador de milhar
+    )
+
+    fig.update_layout(
+        xaxis_title="Quantidade de Vagas",
+        yaxis_title="Órgão",
+        yaxis=dict(automargin=True),  # Ajusta a margem automaticamente
+        height=600  # Define a altura do gráfico para facilitar a rolagem
+    )
+
+    # Exibir no Streamlit
+    st.plotly_chart(fig, use_container_width=True)
 
 def plot_hist_aberturas(df):
     """Gráfico histograma mostrando a quantidade de aberturas por mês."""
@@ -166,7 +198,10 @@ st.title("Dashboard de Concursos")
 df = load_data()
 plot_pie_chart(df)
 plot_bar_vagas_estado(df)
-plot_bar_vagas_orgao(df)
+
+# Seletor para número de órgãos a exibir
+top_n = st.slider("Quantidade de órgãos a exibir:", min_value=5, max_value=50, value=10, step=5)
+plot_bar_vagas_orgao(df, top_n)
 plot_hist_aberturas(df)
 
 render_footer()
