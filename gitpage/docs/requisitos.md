@@ -8,10 +8,10 @@ Bem-vindo à página de requisitos do projeto! Aqui você encontrará uma lista 
 
 Os requisitos funcionais descrevem as funcionalidades e comportamentos que o sistema deve possuir.
 
-1. **Dashboard de licitações**:
-Mostrar gráficos de vendas e número de acessos no painel administrativo.
+1. **Dashboard de Vagas**:
+Mostrar gráficos de vagas e seus períodos de inscrição.
 2. **Busca dos Dados**:
-Poderá pesquisar por relatórios específicos.
+Poderá pesquisar por concursos em áreas específicas.
 3. **Exportação de Dados**:
 Permite a exportação dos relatórios em um formato mais amigável.
 

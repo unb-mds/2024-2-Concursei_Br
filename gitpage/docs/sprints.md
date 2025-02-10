@@ -56,4 +56,24 @@
 - **Avaliação do produto**  
    Alinhar expectativas e tarefas com toda a equipe presente.  
 - **Planejamento da entrega**  
-   Organizar os detalhes finais para a primeira *release*.  
+   Organizar os detalhes finais para a primeira *release*.
+
+## Sprint 6: Análise do feedback da R1
+
+- **Redução do scopo do projeto**
+   Projeto focado nos dados de concursos no Distrito Federal.
+
+- **Revisão da Arquitura**
+
+## Sprint 7: Extração dos dados e tratamento
+
+- **Scrapping**
+   Extração dos dados no site concursosbrasil
+- **Tratamento dos dados**
+   Filtrar os dados obtidos
+
+## Sprint 8: Carregamento dos dados e conexão
+
+- **Arquivo CSV**
+   Os dados obtidos foram armazenados em um arquivo csv que irá ser continuamente atualizado.
+- **Dados conectados ao front**

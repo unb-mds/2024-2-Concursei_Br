@@ -595,16 +595,14 @@
 
 
 <h1 id="arquitetura">Arquitetura</h1>
-<p>Esta arquitetura descreve um fluxo de dados composto por cinco componentes principais:</p>
-<ol>
-<li><strong>DataClass</strong>: Responsável por iniciar o processo, utilizando o método <code>fetchData()</code> para capturar dados.</li>
-<li><strong>WebScrap</strong>: Um módulo de raspagem web que coleta informações usando o método <code>scrape()</code> e contém a lógica para interagir com fontes externas.</li>
-<li><strong>API</strong>: Atua como intermediária, fornecendo os dados através do método <code>getData()</code>, possibilitando o acesso de forma padronizada.</li>
-<li><strong>RegexReader</strong>: Processa os dados recebidos por meio do método <code>process(data)</code> para organizar ou extrair informações relevantes.</li>
-<li><strong>FrontEnd</strong>: Recebe os dados processados e os apresenta ao usuário final com o método <code>displayData(data)</code>.</li>
-</ol>
-<p>O fluxo segue uma sequência linear, com cada componente desempenhando um papel específico para transformar dados brutos em informações utilizáveis no front-end.</p>
-<p><img style = "display: flex; justify-self: center; margin: 70px 0 70px 0;" src="img_docs\arquitetura.png" alt="arquitetura" width="40%"/></p>
+<p>Essa arquitetura segue um fluxo de ETL (Extract, Transform, Load) para coletar e visualizar dados de concursos públicos:</p>
+<ul>
+<li><strong>Extração (Extract)</strong>: O backend realiza web scraping no site "ConcursosBrasil" para coletar informações sobre concursos públicos.</li>
+<li><strong>Transformação (Transform)</strong>: Os dados brutos extraídos são processados no módulo ETL, onde podem ser limpos, estruturados e organizados.</li>
+<li><strong>Carregamento (Load)</strong>: Após o processamento, os dados são armazenados em um arquivo CSV, facilitando seu uso posterior.</li>
+<li><strong>Visualização</strong>: O frontend acessa os dados do CSV e os apresenta aos usuários por meio de gráficos e narrativas visuais (Data Visualization e Storytelling).</li>
+</ul>
+<p><img style = "display: flex; justify-self: center; margin: 70px 0 70px 0;" src="img_docs/arquitetura.png" alt="arquitetura" width="40%"/></p>
 
 
 

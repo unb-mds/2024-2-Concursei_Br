@@ -3,14 +3,15 @@ import pandas as pd
 from datetime import datetime
 import calendar
 
-# Configuração da página
+#nome da página e configurações gerais da página
 st.set_page_config(
     page_title="Calendário de Concursos",
     layout="wide",
     page_icon="assets/logo_concursei.png"
 )
 
-# CSS da página
+
+#css da página
 st.markdown("""
 <style>
     :root {
@@ -27,6 +28,12 @@ st.markdown("""
         color: var(--primary-color) !important;
         font-weight: bold !important;
     }
+    
+    [data-testid="stVerticalBlock"] > div:nth-child(2) > div {
+        border-radius: 8px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    }
+    
     hr {
         border-color: var(--primary-color) !important;
     }
@@ -38,7 +45,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Carregar e limpar os dados
+#lendo o csv e filtrando os dados que queremos
 df = pd.read_csv("../data/contests_info.csv", sep=";")
 invalid_values = ["Não encontrado", "Previsto"]
 df = df[~df["Início"].isin(invalid_values) & ~df["Fim"].isin(invalid_values)].copy()
@@ -62,6 +69,7 @@ st.title("📅 Calendário de Concursos Públicos")
 # Filtros de seleção
 st.subheader("Selecione o período e a região")
 col1, col2, col3 = st.columns(3)
+
 with col1:
     selected_year = st.selectbox("Ano", options=available_years)
 with col2:
@@ -69,6 +77,7 @@ with col2:
 with col3:
     selected_region = st.selectbox("Região", options=available_regions)
 
+    
 # Criar calendário
 def create_calendar(year, month, region):
     cal = calendar.monthcalendar(year, month)
@@ -117,14 +126,14 @@ st.divider()
 st.header(f"Calendário para {calendar.month_name[selected_month]} {selected_year} - {selected_region}")
 create_calendar(selected_year, selected_month, selected_region)
 
-# Legenda do calendário
+#legenda do calendário
 st.info("""
 **Legenda:**  
 🔹 = Data de Início do Concurso  
 🔴 = Data de Término do Concurso  
 """)
 
-# Footer da página
+#footer da página
 st.markdown("""
 <style>   
     .footer {

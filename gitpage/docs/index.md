@@ -1,7 +1,7 @@
 
-# Painel de Transparência Municipal
+# Concursei BSB
 
-<h3> Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. A aplicação visa oferecer à população interressada, uma visão mais simplificada dos dados municipais.</h3>
+<h3> Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. A aplicação visa oferecer à população interressada, uma visão mais simplificada dos processos públicos com inscrição em andamentos e também com datas previstas.</h3>
 
 <br></br>
 <hr></hr>
@@ -56,12 +56,6 @@
     <img src="colaboradores/artur_img.jpg" alt="ArturDCR" class="img-redonda">
     <br>
     <a href="https://github.com/ArturDCR">ArturDCR</a>
-</div>
-
-<div style="text-align: center;">
-    <img src="colaboradores/marcos_img.png" alt="ribmarcos" class="img-redonda">
-    <br>
-    <a href="https://github.com/ribmarcos">ribmarcos</a>
 </div>
 
 </div>
