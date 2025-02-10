@@ -147,7 +147,7 @@ def plot_bar_vagas_estado(df):
         xaxis_title="Estado",
         yaxis_title="Quantidade de Vagas",
         xaxis_tickangle=-45,
-        height=600
+        height=700
     )
 
     # Exibir no Streamlit
@@ -326,8 +326,12 @@ col1, col2 = st.columns(2)
 
 # Coluna 1
 with col1:
-    st.plotly_chart(plot_hist_aberturas(df), 
-                    use_container_width=True)
+    # Slider e gráfico de vagas por órgão
+    top_n = st.slider("Quantidade de órgãos a exibir:", 
+                      min_value=5, max_value=50, 
+                      value=10, step=5)
+    plot_bar_vagas_orgao(df, top_n)
+    
 
     
 
@@ -341,11 +345,9 @@ with col2:
 col3, col4 = st.columns(2)
 
 with col3:
-    # Slider e gráfico de vagas por órgão
-    top_n = st.slider("Quantidade de órgãos a exibir:", 
-                      min_value=5, max_value=50, 
-                      value=10, step=5)
-    plot_bar_vagas_orgao(df, top_n)
+    st.plotly_chart(plot_hist_aberturas(df), 
+                    use_container_width=True)
+    
 
 with col4:
     plot_pie_chart(df)
