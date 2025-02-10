@@ -21,12 +21,28 @@ st.write("Nesta página você poderá exportar os dados personalizados.")
 
 df = pd.read_csv("../data/contests_info.csv", sep=';')
 
+# 🔹 Tratamento da coluna "Vagas"
+df["Vagas"] = df["Vagas"].astype(str).str.replace(".", "", regex=False)  # Remove separadores de milhares
+df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce")  # Converte números e transforma "Várias" em NaN
+
+# 🔹 Criar um DataFrame separado para "Várias"
+df_varias = df[df["Vagas"].isna()]  # Filtra apenas os concursos com "Várias"
+
+# 🔹 Substituir NaN por 0 APENAS para cálculos (não modificar os dados)
+df["Vagas_Num"] = df["Vagas"].fillna(0).astype(int)  # Criamos uma nova coluna apenas para cálculos
+
+# 🔹 Ordenar apenas os concursos numéricos
+df_ordenado = df.dropna(subset=["Vagas"]).sort_values(by="Vagas")
+
+# 🔹 Concatenar os concursos numéricos com os de "Várias" no final
+df_final = pd.concat([df_ordenado, df_varias], ignore_index=True)
+
 def filtros():
     col1, col2 = st.columns(2)
 
     # 1. Filtro de Região
     with col1:
-        regioes = df['Região'].unique()
+        regioes = df_final['Região'].unique()
         regiao_selecionada = st.multiselect(
             "Selecione a(s) Região(ões):", 
             options=regioes
@@ -34,14 +50,14 @@ def filtros():
 
     # 2. Filtro de Status
     with col2:
-        status_opcoes = df['Status'].unique()   
+        status_opcoes = df_final['Status'].unique()   
         status_selecionado = st.multiselect(
             "Selecione o(s) Status:", 
             options=status_opcoes
         )
 
     # 3. Aplicar filtros simultâneos
-    df_filtrado = df.copy()
+    df_filtrado = df_final.copy()
 
     if regiao_selecionada:
         df_filtrado = df_filtrado[df_filtrado['Região'].isin(regiao_selecionada)]
