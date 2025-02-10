@@ -5,6 +5,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import numpy as np
 import time
+import pandas as pd
 
 class Scrapper():
     def __init__(self):
@@ -15,8 +16,10 @@ class Scrapper():
         }
 
         self.__regions = [
-            'AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'
+            'BR', 'AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'
         ]
+
+        self.__csv_path = "../data/contests_info.csv"
     
         self.__months_regex = re.compile("|".join(self.__months_map))
         self.__key_words_regex = re.compile(r'inscrições|inscrição|participação|candidatar|data|inscrever')
@@ -77,12 +80,12 @@ class Scrapper():
             forecast = self.__translate_forecast(tr.find("div", class_='label-previsto'))
 
             if forecast == "Previsto":
-                contests_array = self.__feed_dict(contests_array, region, name, vacancies, forecast, url,
+                contests_array = self.__feed_dict(contests_array, region, name, vacancies, forecast,
                 'Previsto', 'Previsto')
             else:
                 register_intial_data, final_register_data = self.__get_especific_page_info(url)
 
-                contests_array = self.__feed_dict(contests_array, region, name, vacancies, forecast, url,
+                contests_array = self.__feed_dict(contests_array, region, name, vacancies, forecast,
                             register_intial_data, final_register_data)
         
         return contests_array
@@ -167,32 +170,32 @@ class Scrapper():
         """Essa função pega o dicionário com os dados dos concursos e 
         o exporta para o formato csv."""
 
-        file_path = "../data/contests_info.csv"
-
-        np.savetxt(file_path, contests_array, delimiter=";", 
-                fmt="%s", header="Região;Nome;Vagas;Status;URL;Início;Fim", comments="")
-
+        np.savetxt(self.__csv_path, contests_array, delimiter=";", 
+                fmt="%s", header="Região;Nome;Vagas;Status;Início das Inscrições;Fim das Inscrições", comments="")
         
+
+    def __remove_duplicated_contests(self):
+
+        df = pd.read_csv(self.__csv_path, delimiter=";")
+        df = df.drop_duplicates(subset=['Nome', 'Vagas', 'Início das Inscrições', 'Fim das Inscrições'], keep='first')
+
+        df.to_csv(self.__csv_path, sep=";", index=False)
+
+
     def run_scrapper(self):
         #Laço dedicado a verificação do horário para que o scrap seja executado
 
-        now = time.time()
 
         while True:
 
             # if time_now.hour == 0 and time_now.minute == 0:
-            contests = np.empty((0, 7), dtype=object)
-            
+            contests = np.empty((0, 6), dtype=object)
+
             for loc in self.__regions:
 
-                print(loc)
                 soup =  self.__init_web_scrapper(f'https://concursosnobrasil.com/concursos/{loc}')
                 contests = self.__get_contests_entire_info(loc, contests, soup)
                 
             self.__parse_to_csv(contests)
+            self.__remove_duplicated_contests()
             break
-
-        after = time.time()
-
-        
-        print("Tempo: " + str(after - now))

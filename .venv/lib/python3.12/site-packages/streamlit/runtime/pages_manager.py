@@ -1,4 +1,4 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2024)
+# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2025)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -300,7 +300,9 @@ class PagesManager:
         if isinstance(self.pages_strategy, PagesStrategyV1):
             if os.path.exists(self.main_script_parent / "pages"):
                 _LOGGER.warning(
-                    "st.navigation was called in an app with a pages/ directory. This may cause unusual app behavior. You may want to rename the pages/ directory."
+                    "st.navigation was called in an app with a pages/ directory. "
+                    "This may cause unusual app behavior. You may want to rename the "
+                    "pages/ directory."
                 )
             PagesManager.DefaultStrategy = PagesStrategyV2
             self.pages_strategy = PagesStrategyV2(self)

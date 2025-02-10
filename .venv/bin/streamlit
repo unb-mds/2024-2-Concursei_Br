@@ -1,4 +1,6 @@
-#!/home/artur/Documentos/Faculdade/MDS/2024-2-Squad14/.venv/bin/python3
+#!/bin/sh
+'''exec' "/home/jose/Documents/01 - Estudo/01 - Projects/MDS/2024-2-Concursei_Br/.venv/bin/python3" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys

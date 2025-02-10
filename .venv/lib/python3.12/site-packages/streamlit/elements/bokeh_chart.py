@@ -1,4 +1,4 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2024)
+# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2025)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ class BokehMixin:
     def bokeh_chart(
         self,
         figure: Figure,
-        use_container_width: bool = False,
+        use_container_width: bool = True,
     ) -> DeltaGenerator:
         """Display an interactive Bokeh chart.
 
@@ -60,11 +60,11 @@ class BokehMixin:
 
         use_container_width : bool
             Whether to override the figure's native width with the width of
-            the parent container. If ``use_container_width`` is ``False``
-            (default), Streamlit sets the width of the chart to fit its contents
-            according to the plotting library, up to the width of the parent
-            container. If ``use_container_width`` is ``True``, Streamlit sets
-            the width of the figure to match the width of the parent container.
+            the parent container. If ``use_container_width`` is ``True`` (default),
+            Streamlit sets the width of the figure to match the width of the parent
+            container. If ``use_container_width`` is ``False``, Streamlit sets the
+            width of the chart to fit its contents according to the plotting library,
+            up to the width of the parent container.
 
         Example
         -------
@@ -77,7 +77,7 @@ class BokehMixin:
         >>> p = figure(title="simple line example", x_axis_label="x", y_axis_label="y")
         >>> p.line(x, y, legend_label="Trend", line_width=2)
         >>>
-        >>> st.bokeh_chart(p, use_container_width=True)
+        >>> st.bokeh_chart(p)
 
         .. output::
            https://doc-bokeh-chart.streamlit.app/

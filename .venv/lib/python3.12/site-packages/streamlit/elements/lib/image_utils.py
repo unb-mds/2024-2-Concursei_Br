@@ -1,4 +1,4 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2024)
+# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2025)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,9 +17,10 @@ from __future__ import annotations
 import io
 import os
 import re
+from collections.abc import Sequence
 from enum import IntEnum
 from pathlib import Path
-from typing import TYPE_CHECKING, Final, Literal, Sequence, Union, cast
+from typing import TYPE_CHECKING, Final, Literal, Union, cast
 
 from typing_extensions import TypeAlias
 
@@ -416,9 +417,9 @@ def marshall_images(
     else:
         captions = [str(caption)]
 
-    assert isinstance(
-        captions, list
-    ), "If image is a list then caption should be as well"
+    assert isinstance(captions, list), (
+        "If image is a list then caption should be as well"
+    )
     assert len(captions) == len(images), "Cannot pair %d captions with %d images." % (
         len(captions),
         len(images),
