@@ -95,7 +95,8 @@ def load_data():
 def plot_pie_chart(df):
     # Gráfico de pizza mostrando a proporção de concursos abertos/previstos.
     status_counts = df['Status'].value_counts()
-
+    
+    
     # Verifica se há ambos os valores antes de gerar o gráfico
     if "Aberto" not in status_counts:
         status_counts["Aberto"] = 0
@@ -115,6 +116,7 @@ def plot_pie_chart(df):
         textinfo="label+percent",
         hovertemplate="<b>%{label}</b><br>Quantidade: %{value}"
     )
+    fig.update_layout(height=600)
 
     # Renderizar no Streamlit
     st.plotly_chart(fig, use_container_width=True)
@@ -138,13 +140,14 @@ def plot_bar_vagas_estado(df):
         color="Região",  # Cores diferenciadas por estado
         color_discrete_sequence=px.colors.sequential.Greens,  # Paleta de cores
     )
-
+    
     # Ajustar a exibição dos rótulos
     fig.update_traces(texttemplate="%{text:.0f}", textposition="outside")
     fig.update_layout(
         xaxis_title="Estado",
         yaxis_title="Quantidade de Vagas",
-        xaxis_tickangle=-45
+        xaxis_tickangle=-45,
+        height=600
     )
 
     # Exibir no Streamlit
@@ -243,11 +246,12 @@ def plot_hist_aberturas(df):
             tickmode="array",
             tickvals=df_concursos_mensal["Mês"],  # Força a exibição de todos os meses
             tickformat="%b %Y",  # Formato 'JAN 2025', 'FEV 2025'...
+            
         ),
         xaxis_title="Mês",
         yaxis_title="Concursos Abertos",
         xaxis_tickangle=-45,  # Inclinar os rótulos do eixo X
-        height=500  # Ajustar tamanho do gráfico
+        height=600  # Ajustar tamanho do gráfico
     )
 
     return fig  # Agora retorna o gráfico diretamente
@@ -318,20 +322,41 @@ st.title("Dashboard de Concursos")
 
 df = load_data()
 
-plot_pie_chart(df)
+col1, col2 = st.columns(2)
 
-plot_bar_vagas_estado(df)
+# Coluna 1
+with col1:
+    st.plotly_chart(plot_hist_aberturas(df), 
+                    use_container_width=True)
 
-# Seletor para número de órgãos a exibir
-top_n = st.slider("Quantidade de órgãos a exibir:", min_value=5, max_value=50, value=10, step=5)
-plot_bar_vagas_orgao(df, top_n)
+    
 
-#plot_hist_aberturas(df)
-st.plotly_chart(plot_hist_aberturas(df), use_container_width=True)
+# Coluna 2
+with col2:
+    plot_bar_vagas_estado(df)
 
+# -------------------------------------------------------
+# EXEMPLO: OUTROS GRÁFICOS LADO A LADO
+# -------------------------------------------------------
+col3, col4 = st.columns(2)
+
+with col3:
+    # Slider e gráfico de vagas por órgão
+    top_n = st.slider("Quantidade de órgãos a exibir:", 
+                      min_value=5, max_value=50, 
+                      value=10, step=5)
+    plot_bar_vagas_orgao(df, top_n)
+
+with col4:
+    plot_pie_chart(df)
+# -------------------------------------------------------
+# LISTA DE CONCURSOS POR MÊS (ABAIXO DAS COLUNAS)
+# -------------------------------------------------------
 concursos_por_mes(df)
 
-# Mapa de concursos por Estado
+# -------------------------------------------------------
+# MAPA INTERATIVO
+# -------------------------------------------------------
 st.subheader("🌎 Mapa Interativo de Concursos por Estado")
 plot_map_concursos(df)
 
