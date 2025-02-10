@@ -71,7 +71,9 @@ def load_data():
     # Tratamento da coluna início
     df["Início"] = df["Início"].astype(str).str.strip()  # Remove espaços extras
     df["Início"] = df["Início"].replace("Previsto", None)  # Substitui "Previsto" por None manualmente
-    df["Início"] = pd.to_datetime(df["Início"], errors="coerce")  # Converte para datetime (os erros viram NaN)
+    df["Início"] = pd.to_datetime(df["Início"], errors="coerce") # Converte para datetime (os erros viram NaN)
+
+    df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce").fillna(0).astype(int)
 
     # Tratamendo coluna VAGAS e REGIÃO
     # Converter a coluna "Vagas" para numérico (ignorar valores inválidos)
