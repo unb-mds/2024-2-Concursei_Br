@@ -6,6 +6,10 @@ import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
 
+import folium
+from streamlit_folium import folium_static
+from folium.plugins import HeatMap
+
 st.set_page_config(page_title="Dashboards", page_icon="../assets/logo_concursei.png", layout="wide")
 
 def render_header():
@@ -80,6 +84,11 @@ def load_data():
     #df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce")
     # Remover linhas onde "Região" ou "Vagas" são NaN
     #df = df.dropna(subset=["Região", "Vagas"])
+
+    # Tratamento DATAS
+    # Converter datas para formato datetime
+    df["Início"] = pd.to_datetime(df["Início"], errors="coerce", dayfirst=True)
+    df["Fim"] = pd.to_datetime(df["Fim"], errors="coerce", dayfirst=True)
     
     return df
 
@@ -164,7 +173,7 @@ def plot_bar_vagas_orgao(df, top_n):
         color_discrete_sequence=px.colors.sequential.Greens  # Paleta de cores
     )
 
-    # 🔹 Ajustes visuais
+    # Ajustes visuais
     fig.update_traces(
         texttemplate="%{text:.0f}",  # Exibir apenas inteiros
         textposition="outside",
@@ -182,26 +191,148 @@ def plot_bar_vagas_orgao(df, top_n):
     st.plotly_chart(fig, use_container_width=True)
 
 def plot_hist_aberturas(df):
-    """Gráfico histograma mostrando a quantidade de aberturas por mês."""
-    df['Mês'] = df['Início'].dt.to_period('M')
-    aberturas_por_mes = df['Mês'].value_counts().sort_index()
-    fig, ax = plt.subplots(figsize=(10, 5))
-    sns.barplot(x=aberturas_por_mes.index.astype(str), y=aberturas_por_mes.values, ax=ax, palette=['#1e7a34'])
-    ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
-    ax.set_title("Quantidade de Aberturas por Mês")
-    st.pyplot(fig)
+
+    # Cria um gráfico de linha mostrando a quantidade de concursos que estavam abertos em cada mês, considerando o intervalo de inscrições.
+    # Criar um intervalo de meses entre o primeiro e o último concurso registrado
+    meses = pd.date_range(start=df["Início"].min(), end=df["Fim"].max(), freq="MS")  # MS = primeiro dia do mês
+    
+    concursos_por_mes = []
+ 
+    for mes in meses:
+        abertos_no_mes = df[(df["Início"] <= mes) & (df["Fim"] >= mes)]
+        
+        # 🔹 Limita o número de concursos no hover e adiciona "e mais..." caso ultrapasse
+        num_max_hover = 12
+        concursos_nomes = abertos_no_mes["Nome"].tolist()
+        hover_text = "<br>".join(concursos_nomes[:num_max_hover])
+        
+        if len(concursos_nomes) > num_max_hover:
+            hover_text += f"<br>... e mais {len(concursos_nomes) - num_max_hover} concursos"
+
+        concursos_por_mes.append({
+            "Mês": mes.strftime("%Y-%m"), 
+            "Concursos Abertos": len(abertos_no_mes),
+            "Concursos": hover_text,  # Lista limitada para hover
+            "Lista Completa": concursos_nomes  # Lista completa para tabela abaixo
+        })
+
+
+    # Criar DataFrame
+    df_concursos_mensal = pd.DataFrame(concursos_por_mes)
+
+    # Criar o gráfico interativo
+    fig = px.line(
+        df_concursos_mensal,
+        x="Mês",
+        y="Concursos Abertos",
+        title="📆 Concursos com Inscrições Abertas por Mês",
+        markers=True,
+        line_shape="linear",
+        color_discrete_sequence=["#1e7a34"]  # Verde escuro
+    )
+
+    # Ajustes visuais
+    fig.update_traces(
+        hovertemplate="<b>%{x}</b><br>Concursos Abertos: %{y}<br><br><b>Concursos:</b><br>%{customdata}",
+        mode="lines+markers",
+        customdata=df_concursos_mensal["Concursos"]  # Adiciona a lista de concursos no hover
+    )
+
+    fig.update_layout(
+        xaxis=dict(
+            tickmode="array",
+            tickvals=df_concursos_mensal["Mês"],  # Força a exibição de todos os meses
+            tickformat="%b %Y",  # Formato 'JAN 2025', 'FEV 2025'...
+        ),
+        xaxis_title="Mês",
+        yaxis_title="Concursos Abertos",
+        xaxis_tickangle=-45,  # Inclinar os rótulos do eixo X
+        height=500  # Ajustar tamanho do gráfico
+    )
+
+    return fig  # Agora retorna o gráfico diretamente
+
+def concursos_por_mes(df):
+
+    # Criar um seletor para o usuário ver a lista completa dos concursos por mês
+    st.subheader("🔎 Ver Lista Completa de Concursos Abertos por Mês")
+
+    mes_selecionado = st.selectbox("Selecione um mês:", df["Início"].dt.strftime("%Y-%m").sort_values().unique())
+
+    # Filtrar a lista de concursos abertos no mês selecionado
+    concursos_no_mes = df[(df["Início"].dt.strftime("%Y-%m") <= mes_selecionado) & (df["Fim"].dt.strftime("%Y-%m") >= mes_selecionado)]
+
+    # Mostrar a lista completa de concursos para o mês selecionado
+    if not concursos_no_mes.empty:
+        st.write(f"📋 **Concursos Abertos em {mes_selecionado}:**")
+        st.write(concursos_no_mes[["Nome", "Início", "Fim", "Vagas", "Região"]])
+    else:
+        st.warning("Nenhum concurso encontrado para este mês.")
+
+
+def plot_map_concursos(df):
+    """
+    Gera um mapa interativo mostrando a distribuição dos concursos por estado.
+    """
+    # 📌 Criar dicionário para converter siglas em coordenadas (lat, lon)
+    estados_coordenadas = {
+        "AC": (-9.0238, -70.8110), "AL": (-9.5713, -36.7819), "AP": (0.9020, -52.0030),
+        "AM": (-3.4653, -62.2159), "BA": (-12.5797, -41.7007), "CE": (-5.4984, -39.3206),
+        "DF": (-15.8267, -47.9218), "ES": (-19.1834, -40.3089), "GO": (-15.8270, -49.8362),
+        "MA": (-4.9609, -45.2744), "MT": (-12.6819, -56.9211), "MS": (-20.7722, -54.7852),
+        "MG": (-18.5122, -44.5550), "PA": (-3.4168, -52.3500), "PB": (-7.2399, -36.7819),
+        "PR": (-25.2521, -52.0215), "PE": (-8.8137, -36.9541), "PI": (-7.7183, -42.7289),
+        "RJ": (-22.9083, -43.1964), "RN": (-5.4026, -36.9541), "RS": (-30.0346, -51.2177),
+        "RO": (-10.8306, -63.3180), "RR": (2.7376, -61.3013), "SC": (-27.2423, -50.2189),
+        "SP": (-23.5505, -46.6333), "SE": (-10.5741, -37.3857), "TO": (-10.1753, -48.2982)
+    }
+
+    # 📌 Contar o número de concursos por estado
+    concursos_por_estado = df["Região"].value_counts()
+
+    # Criar um mapa centralizado no Brasil
+    mapa = folium.Map(location=[-14.2350, -51.9253], zoom_start=4, tiles="cartodb positron")
+
+    # 📌 Adicionar os marcadores no mapa
+    for estado, coordenadas in estados_coordenadas.items():
+        if estado in concursos_por_estado:
+            quantidade = concursos_por_estado[estado]
+
+            folium.CircleMarker(
+                location=coordenadas,
+                radius=5 + (quantidade * 0.3),  # Ajusta tamanho com base no número de concursos
+                color="green",
+                fill=True,
+                fill_color="green",
+                fill_opacity=0.7,
+                popup=f"{estado}: {quantidade} concursos",
+            ).add_to(mapa)
+
+    # 📌 Exibir o mapa no Streamlit
+    folium_static(mapa, width=900, height=500)
+
 
 # Streamlit App
 render_header()
 st.title("Dashboard de Concursos")
 
 df = load_data()
+
 plot_pie_chart(df)
+
 plot_bar_vagas_estado(df)
 
 # Seletor para número de órgãos a exibir
 top_n = st.slider("Quantidade de órgãos a exibir:", min_value=5, max_value=50, value=10, step=5)
 plot_bar_vagas_orgao(df, top_n)
-plot_hist_aberturas(df)
+
+#plot_hist_aberturas(df)
+st.plotly_chart(plot_hist_aberturas(df), use_container_width=True)
+
+concursos_por_mes(df)
+
+# Mapa de concursos por Estado
+st.subheader("🌎 Mapa Interativo de Concursos por Estado")
+plot_map_concursos(df)
 
 render_footer()
