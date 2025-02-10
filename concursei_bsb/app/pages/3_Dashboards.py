@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+import plotly.express as px
+import plotly.graph_objects as go
+
 st.set_page_config(page_title="Dashboards", page_icon="../assets/logo_concursei.png", layout="wide")
 
 def render_header():
@@ -57,21 +60,47 @@ def render_footer():
         unsafe_allow_html=True
     )
 
+@st.cache_data
 def load_data():
-    """Carrega e trata os dados do CSV."""
+    # Carrega e trata os dados do CSV.
     df = pd.read_csv("../data/contests_info.csv", sep=';')
-    df.dropna(inplace=True)
-    df['Início'] = pd.to_datetime(df['Início'], errors='coerce')
-    df = df.dropna(subset=['Início'])
+
+    # Remover espaços extras e valores inconsistentes na coluna STATUS
+    df['Status'] = df['Status'].astype(str).str.strip()
+
+    # Tratamento da coluna início
+    df["Início"] = df["Início"].astype(str).str.strip()  # Remove espaços extras
+    df["Início"] = df["Início"].replace("Previsto", None)  # Substitui "Previsto" por None manualmente
+    df["Início"] = pd.to_datetime(df["Início"], errors="coerce")  # Converte para datetime (os erros viram NaN)
     return df
 
 def plot_pie_chart(df):
-    """Gráfico de pizza mostrando a proporção de concursos abertos/previstos."""
+    # Gráfico de pizza mostrando a proporção de concursos abertos/previstos.
     status_counts = df['Status'].value_counts()
-    fig, ax = plt.subplots(figsize=(6, 6))
-    ax.pie(status_counts, labels=status_counts.index, autopct='%1.1f%%', colors=['#1e7a34', '#dcdcdc'])
-    ax.set_title("Proporção de Concursos Abertos/Previstos")
-    st.pyplot(fig)
+
+    # Verifica se há ambos os valores antes de gerar o gráfico
+    if "Aberto" not in status_counts:
+        status_counts["Aberto"] = 0
+    if "Previsto" not in status_counts:
+        status_counts["Previsto"] = 0
+
+    fig = px.pie(
+        names=status_counts.index, 
+        values=status_counts.values, 
+        title="Proporção de Concursos Abertos/Previstos",
+        color=status_counts.index,
+        color_discrete_map={"Aberto": "#1e7a34", "Previsto": "#dcdcdc"},  # Cores específicas
+    )
+
+    # Exibir valores absolutos no gráfico
+    fig.update_traces(
+        textinfo="label+percent",
+        hovertemplate="<b>%{label}</b><br>Quantidade: %{value}"
+    )
+
+    # Renderizar no Streamlit
+    st.plotly_chart(fig, use_container_width=True)
+
 
 def plot_bar_vagas_estado(df):
     """Gráfico de barras: quantidade de vagas por estado."""
