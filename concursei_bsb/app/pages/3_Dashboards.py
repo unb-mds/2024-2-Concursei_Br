@@ -72,6 +72,13 @@ def load_data():
     df["Início"] = df["Início"].astype(str).str.strip()  # Remove espaços extras
     df["Início"] = df["Início"].replace("Previsto", None)  # Substitui "Previsto" por None manualmente
     df["Início"] = pd.to_datetime(df["Início"], errors="coerce")  # Converte para datetime (os erros viram NaN)
+
+    # Tratamendo coluna VAGAS e REGIÃO
+    # Converter a coluna "Vagas" para numérico (ignorar valores inválidos)
+    df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce")
+    # Remover linhas onde "Região" ou "Vagas" são NaN
+    #df = df.dropna(subset=["Região", "Vagas"])
+    
     return df
 
 def plot_pie_chart(df):
@@ -103,14 +110,34 @@ def plot_pie_chart(df):
 
 
 def plot_bar_vagas_estado(df):
-    """Gráfico de barras: quantidade de vagas por estado."""
-    df['Vagas'] = pd.to_numeric(df['Vagas'], errors='coerce').fillna(0)
-    vagas_estado = df.groupby('Região')['Vagas'].sum().sort_values(ascending=False)
-    fig, ax = plt.subplots(figsize=(10, 5))
-    sns.barplot(x=vagas_estado.index, y=vagas_estado.values, ax=ax, palette=['#1e7a34'])
-    ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
-    ax.set_title("Quantidade de Vagas por Estado")
-    st.pyplot(fig)
+    # Gráfico de barras: quantidade de vagas por estado.
+    # Agrupar por Estado (Região) e somar as vagas
+    vagas_por_estado = df.groupby("Região")["Vagas"].sum().reset_index()
+
+    # Ordenar por número de vagas
+    vagas_por_estado = vagas_por_estado.sort_values(by="Vagas", ascending=False)
+
+    # Criar o gráfico de barras interativo
+    fig = px.bar(
+        vagas_por_estado,
+        x="Região",
+        y="Vagas",
+        title="Quantidade de Vagas por Estado",
+        text="Vagas",  # Exibir os valores sobre as barras
+        color="Região",  # Cores diferenciadas por estado
+        color_discrete_sequence=px.colors.sequential.Greens,  # Paleta de cores
+    )
+
+    # Ajustar a exibição dos rótulos
+    fig.update_traces(texttemplate="%{text:.0f}", textposition="outside")
+    fig.update_layout(
+        xaxis_title="Estado",
+        yaxis_title="Quantidade de Vagas",
+        xaxis_tickangle=-45
+    )
+
+    # Exibir no Streamlit
+    st.plotly_chart(fig, use_container_width=True)
 
 def plot_bar_vagas_orgao(df):
     """Gráfico de barras mostrando quais órgãos têm mais vagas."""
