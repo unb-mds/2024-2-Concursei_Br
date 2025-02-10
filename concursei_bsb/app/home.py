@@ -19,10 +19,15 @@ def get_css():
     return """
     <style>
         * {
-            padding: 0 ;
-            margin: 0 ;
+            padding: 0;
+            margin: 0;
             max-width: 100% !important;
         }
+
+        .block-container {
+            padding: 0;
+        }
+        
         body {
             width: 100%;
             height: 100vh;
