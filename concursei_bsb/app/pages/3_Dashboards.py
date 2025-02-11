@@ -412,15 +412,14 @@ with col3:
 
 with col4:
     plot_pie_chart(df_filtrado)
-# -------------------------------------------------------
-# LISTA DE CONCURSOS POR MÊS (ABAIXO DAS COLUNAS)
-# -------------------------------------------------------
-concursos_por_mes(df_filtrado)
 
-# -------------------------------------------------------
-# MAPA INTERATIVO
-# -------------------------------------------------------
-st.subheader("🌎 Mapa Interativo de Concursos por Estado")
-plot_map_concursos(df_filtrado)
+col5, col6 = st.columns(2)
+
+with col5:
+    concursos_por_mes(df_filtrado)
+
+with col6:
+    st.subheader("🌎 Mapa Interativo de Concursos por Estado")
+    plot_map_concursos(df_filtrado)
 
 render_footer()
