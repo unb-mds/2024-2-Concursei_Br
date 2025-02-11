@@ -93,33 +93,54 @@ def load_data():
     return df
 
 def plot_pie_chart(df):
-    # Gráfico de pizza mostrando a proporção de concursos abertos/previstos.
-    status_counts = df['Status'].value_counts()
-    
-    
-    # Verifica se há ambos os valores antes de gerar o gráfico
+    status_counts = df["Status"].value_counts()
+
     if "Aberto" not in status_counts:
         status_counts["Aberto"] = 0
     if "Previsto" not in status_counts:
         status_counts["Previsto"] = 0
 
+    custom_color_map = {
+        "Aberto": "#2ecc71",
+        "Previsto": "#0044d0"
+    }
+
     fig = px.pie(
-        names=status_counts.index, 
-        values=status_counts.values, 
+        names=status_counts.index,
+        values=status_counts.values,
         title="Proporção de Concursos Abertos/Previstos",
         color=status_counts.index,
-        color_discrete_map={"Aberto": "#1e7a34", "Previsto": "#dcdcdc"},  # Cores específicas
+        color_discrete_map=custom_color_map
     )
 
-    # Exibir valores absolutos no gráfico
+    # Ajustes do rótulo
     fig.update_traces(
-        textinfo="label+percent",
-        hovertemplate="<b>%{label}</b><br>Quantidade: %{value}"
+        textinfo="none",
+        texttemplate=(
+            "<span style='font-size:16px; font-weight:bold; "
+            "background-color: rgba(0,0,0,0.8); color:#fff; "
+            "padding:4px; border-radius:4px;'>"
+            # Exibe "Status", depois a porcentagem e o valor bruto
+            "%{label}<br>%{percent} (%{value:,d})</span>"
+        ),
+        textfont=dict(size=16, color="white"),
+        hovertemplate="<b>%{label}</b><br>Quantidade: %{value}<br>Proporção: %{percent}"
     )
-    fig.update_layout(height=600)
 
-    # Renderizar no Streamlit
+    # Remove a anotação central (excluir ou deixar vazio)
+    fig.update_layout(
+        height=600,
+        annotations=[]  # Sem texto central
+    )
+
+    # Borda ao redor das fatias
+    fig.update_traces(
+        marker=dict(line=dict(color='#808080', width=2))
+    )
+
     st.plotly_chart(fig, use_container_width=True)
+
+
 
 
 def plot_bar_vagas_estado(df):
