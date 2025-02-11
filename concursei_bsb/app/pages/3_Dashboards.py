@@ -130,7 +130,8 @@ def plot_pie_chart(df):
     # Remove a anotação central (excluir ou deixar vazio)
     fig.update_layout(
         height=600,
-        annotations=[]  # Sem texto central
+        annotations=[],
+        title_x = 0.25
     )
 
     # Borda ao redor das fatias
@@ -168,7 +169,8 @@ def plot_bar_vagas_estado(df):
         xaxis_title="Estado",
         yaxis_title="Quantidade de Vagas",
         xaxis_tickangle=-45,
-        height=700
+        height=700,
+        title_x = 0.3
     )
 
     # Exibir no Streamlit
@@ -207,8 +209,10 @@ def plot_bar_vagas_orgao(df, top_n):
     fig.update_layout(
         xaxis_title="Quantidade de Vagas",
         yaxis_title="Órgão",
-        yaxis=dict(automargin=True),  # Ajusta a margem automaticamente
-        height=600  # Define a altura do gráfico para facilitar a rolagem
+        yaxis=dict(automargin=True),  
+        height=600,
+        title_x = 0.3
+        
     )
     fig.update_yaxes(autorange="reversed")
 
@@ -273,7 +277,8 @@ def plot_hist_aberturas(df):
         xaxis_title="Mês",
         yaxis_title="Concursos Abertos",
         xaxis_tickangle=-45,  # Inclinar os rótulos do eixo X
-        height=600  # Ajustar tamanho do gráfico
+        height=600,  # Ajustar tamanho do gráfico
+        title_x = 0.3
     )
 
     return fig  # Agora retorna o gráfico diretamente
