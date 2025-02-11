@@ -189,6 +189,7 @@ def plot_bar_vagas_orgao(df, top_n):
         yaxis=dict(automargin=True),  # Ajusta a margem automaticamente
         height=600  # Define a altura do gráfico para facilitar a rolagem
     )
+    fig.update_yaxes(autorange="reversed")
 
     # Exibir no Streamlit
     st.plotly_chart(fig, use_container_width=True)
