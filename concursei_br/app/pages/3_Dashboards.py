@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 import folium
 from streamlit_folium import folium_static
 from folium.plugins import HeatMap
+from datetime import datetime
 
 st.set_page_config(page_title="Dashboards", page_icon="../assets/logo_concursei.png", layout="wide")
 
@@ -77,19 +78,14 @@ def load_data():
     df["Início"] = df["Início"].replace("Previsto", None)  # Substitui "Previsto" por None manualmente
     df["Início"] = pd.to_datetime(df["Início"], errors="coerce") # Converte para datetime (os erros viram NaN)
 
-    df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce").fillna(0).astype(int)
-
-    # Tratamendo coluna VAGAS e REGIÃO
-    # Converter a coluna "Vagas" para numérico (ignorar valores inválidos)
-    #df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce")
-    # Remover linhas onde "Região" ou "Vagas" são NaN
-    #df = df.dropna(subset=["Região", "Vagas"])
-
     # Tratamento DATAS
     # Converter datas para formato datetime
     df["Início"] = pd.to_datetime(df["Início"], errors="coerce", dayfirst=True)
     df["Fim"] = pd.to_datetime(df["Fim"], errors="coerce", dayfirst=True)
-    
+
+    # Excluir linhas onde a coluna "Status" contém "Previsto"
+    df = df[df["Status"].notna()]
+
     return df
 
 def plot_pie_chart(df):
@@ -288,13 +284,17 @@ def concursos_por_mes(df):
     # Criar um seletor para o usuário ver a lista completa dos concursos por mês
     st.subheader("🔎 Ver Lista Completa de Concursos Abertos por Mês")
 
-    mes_selecionado = st.selectbox("Selecione um mês:", df["Início"].dt.strftime("%Y-%m").sort_values().unique())
+    mes_selecionado = st.selectbox("Selecione um mês:", df["Início"].dt.strftime("%m/%Y").sort_values().unique())
 
     # Filtrar a lista de concursos abertos no mês selecionado
-    concursos_no_mes = df[(df["Início"].dt.strftime("%Y-%m") <= mes_selecionado) & (df["Fim"].dt.strftime("%Y-%m") >= mes_selecionado)]
+    concursos_no_mes = df[(df["Início"].dt.strftime("%m/%Y") <= mes_selecionado) & (df["Fim"].dt.strftime("%m/%Y") >= mes_selecionado)]
 
     # Mostrar a lista completa de concursos para o mês selecionado
     if not concursos_no_mes.empty:
+        # Formata as colunas "Início" e "Fim" para o formato dd/mm/yy
+        concursos_no_mes["Início"] = concursos_no_mes["Início"].dt.strftime('%d/%m/%y')
+        concursos_no_mes["Fim"] = concursos_no_mes["Fim"].dt.strftime('%d/%m/%y')
+        
         st.write(f"📋 **Concursos Abertos em {mes_selecionado}:**")
         st.write(concursos_no_mes[["Nome", "Início", "Fim", "Vagas", "Região"]])
     else:
