@@ -117,7 +117,7 @@ def get_css():
             line-height: 1.4;
         }
         .footer {
-            border-top: 3px solid #1e7a34;
+            border-top: 3px solid green;
             background-color:rgb(255, 255, 255);
             padding: 20px;
             border-top: 2px solid #eaeaea;
@@ -198,7 +198,7 @@ def main():
     st.markdown(get_css(), unsafe_allow_html=True)
     st.markdown(render_body(), unsafe_allow_html=True)
     
-    st.markdown(render_statistics(df), unsafe_allow_html=True)
+    render_statistics(df)
     st.markdown(render_footer(), unsafe_allow_html=True)
 
 if __name__ == "__main__":

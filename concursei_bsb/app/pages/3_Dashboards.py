@@ -36,7 +36,7 @@ def render_header():
         </style>
         <div class="header">
             <div class="logo">  
-                <a href="#">Concursei Br</a> 
+                <a href="home">Concursei Br</a> 
             </div>
         </div>
         """,
@@ -278,7 +278,7 @@ def plot_map_concursos(df):
     """
     Gera um mapa interativo mostrando a distribuição dos concursos por estado.
     """
-    # 📌 Criar dicionário para converter siglas em coordenadas (lat, lon)
+    # Criar dicionário para converter siglas em coordenadas (lat, lon)
     estados_coordenadas = {
         "AC": (-9.0238, -70.8110), "AL": (-9.5713, -36.7819), "AP": (0.9020, -52.0030),
         "AM": (-3.4653, -62.2159), "BA": (-12.5797, -41.7007), "CE": (-5.4984, -39.3206),
@@ -291,13 +291,13 @@ def plot_map_concursos(df):
         "SP": (-23.5505, -46.6333), "SE": (-10.5741, -37.3857), "TO": (-10.1753, -48.2982)
     }
 
-    # 📌 Contar o número de concursos por estado
+    # Contar o número de concursos por estado
     concursos_por_estado = df["Região"].value_counts()
 
     # Criar um mapa centralizado no Brasil
     mapa = folium.Map(location=[-14.2350, -51.9253], zoom_start=4, tiles="cartodb positron")
 
-    # 📌 Adicionar os marcadores no mapa
+    # Adicionar os marcadores no mapa
     for estado, coordenadas in estados_coordenadas.items():
         if estado in concursos_por_estado:
             quantidade = concursos_por_estado[estado]
@@ -312,7 +312,7 @@ def plot_map_concursos(df):
                 popup=f"{estado}: {quantidade} concursos",
             ).add_to(mapa)
 
-    # 📌 Exibir o mapa no Streamlit
+    # Exibir o mapa no Streamlit
     folium_static(mapa, width=900, height=500)
 
 
