@@ -137,8 +137,8 @@ def plot_bar_vagas_estado(df):
         y="Vagas",
         title="Quantidade de Vagas por Estado",
         text="Vagas",  # Exibir os valores sobre as barras
-        color="Região",  # Cores diferenciadas por estado
-        color_discrete_sequence=px.colors.sequential.Greens,  # Paleta de cores
+        color="Vagas",  # Cores diferenciadas por estado
+        color_continuous_scale="Greens"  # Paleta de cores
     )
     
     # Ajustar a exibição dos rótulos
@@ -172,8 +172,8 @@ def plot_bar_vagas_orgao(df, top_n):
         title=f"Top {top_n} Órgãos com Mais Vagas",
         text="Vagas",  # Exibir os valores nas barras
         orientation="h",  # Barras horizontais para facilitar a leitura
-        color="Nome",  # Cores diferentes por órgão
-        color_discrete_sequence=px.colors.sequential.Greens  # Paleta de cores
+        color="Vagas",  # Cores diferentes por órgão
+        color_continuous_scale="Greens"  # Paleta de cores
     )
 
     # Ajustes visuais
