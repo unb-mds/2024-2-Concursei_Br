@@ -250,7 +250,7 @@ def plot_hist_aberturas(df):
     df_concursos_mensal = pd.DataFrame(concursos_por_mes)
 
     # Criar o gráfico interativo
-    fig = px.line(
+    fig = px.area(
         df_concursos_mensal,
         x="Mês",
         y="Concursos Abertos",
