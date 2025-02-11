@@ -102,7 +102,7 @@ def plot_pie_chart(df):
 
     custom_color_map = {
         "Aberto": "#2ecc71",
-        "Previsto": "#0044d0"
+        "Previsto": "#FFD700"
     }
 
     fig = px.pie(
