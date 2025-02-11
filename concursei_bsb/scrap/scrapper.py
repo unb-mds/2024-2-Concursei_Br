@@ -1,7 +1,6 @@
 import re
-import time
-import requests
 from datetime import datetime
+import requests
 from bs4 import BeautifulSoup
 import numpy as np
 import time
@@ -141,7 +140,7 @@ class Scrapper():
         finishing_data = self.__format_data(finishing_day, finishing_month, finishing_year)
         
         if starting_data == finishing_data:
-            starting_data = "Não encontrado"
+            starting_data = "Indisponível"
 
         return starting_data, finishing_data
 
@@ -183,19 +182,20 @@ class Scrapper():
 
 
     def run_scrapper(self):
-        #Laço dedicado a verificação do horário para que o scrap seja executado
 
+        """Laço dedicado a verificação do horário para que o scrap seja executado"""
 
         while True:
+            
+            time_now = datetime.time()
 
-            # if time_now.hour == 0 and time_now.minute == 0:
-            contests = np.empty((0, 6), dtype=object)
+            if time_now.hour == 0 and time_now.minute == 0:
+                contests = np.empty((0, 6), dtype=object)
 
-            for loc in self.__regions:
+                for loc in self.__regions:
 
-                soup =  self.__init_web_scrapper(f'https://concursosnobrasil.com/concursos/{loc}')
-                contests = self.__get_contests_entire_info(loc, contests, soup)
-                
-            self.__parse_to_csv(contests)
-            self.__remove_duplicated_contests()
-            break
+                    soup =  self.__init_web_scrapper(f'https://concursosnobrasil.com/concursos/{loc}')
+                    contests = self.__get_contests_entire_info(loc, contests, soup)
+                    
+                self.__parse_to_csv(contests)
+                self.__remove_duplicated_contests()
