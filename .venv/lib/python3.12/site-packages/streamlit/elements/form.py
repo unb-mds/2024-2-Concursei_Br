@@ -1,4 +1,4 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2024)
+# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2025)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -216,11 +216,29 @@ class FormMixin:
         Parameters
         ----------
         label : str
-            A short label explaining to the user what this button is for.
-            Defaults to "Submit".
+            A short label explaining to the user what this button is for. This
+            defaults to ``"Submit"``. The label can optionally contain
+            GitHub-flavored Markdown of the following types: Bold, Italics,
+            Strikethroughs, Inline Code, Links, and Images. Images display like
+            icons, with a max height equal to the font height.
+
+            Unsupported Markdown elements are unwrapped so only their children
+            (text contents) render. Display unsupported elements as literal
+            characters by backslash-escaping them. E.g.,
+            ``"1\\. Not an ordered list"``.
+
+            See the ``body`` parameter of |st.markdown|_ for additional,
+            supported Markdown directives.
+
+            .. |st.markdown| replace:: ``st.markdown``
+            .. _st.markdown: https://docs.streamlit.io/develop/api-reference/text/st.markdown
         help : str or None
-            A tooltip that gets displayed when the button is hovered over.
-            Defaults to None.
+            A tooltip that gets displayed when the button is hovered over. If
+            this is ``None`` (default), no tooltip is displayed.
+
+            The tooltip can optionally contain GitHub-flavored Markdown,
+            including the Markdown directives described in the ``body``
+            parameter of ``st.markdown``.
         on_click : callable
             An optional callback invoked when this button is clicked.
         args : tuple

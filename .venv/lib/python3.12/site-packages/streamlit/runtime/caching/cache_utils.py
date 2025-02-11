@@ -1,4 +1,4 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2024)
+# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2025)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -486,10 +486,11 @@ def _make_function_key(cache_type: CacheType, func: FunctionType) -> str:
     source_code: str | bytes
     try:
         source_code = inspect.getsource(func)
-    except OSError as e:
+    except OSError as ex:
         _LOGGER.debug(
-            "Failed to retrieve function's source code when building its key; falling back to bytecode. err={0}",
-            e,
+            "Failed to retrieve function's source code when building its key; "
+            "falling back to bytecode.",
+            exc_info=ex,
         )
         source_code = func.__code__.co_code
 

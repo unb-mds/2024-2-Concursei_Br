@@ -37,7 +37,7 @@ def get_css():
             background-color: #f9f9f9;
         }
         .header {
-            background-color: #32a852;
+            background-color:rgb(255, 255, 255);
             padding: 20px 50px;
             border-bottom: 3px solid #1e7a34;
             display: flex;
@@ -51,7 +51,7 @@ def get_css():
             margin-left: 5%;
             font-size: 24px;
             font-weight: bold;
-            color: #ffffff;
+            color:rgb(2, 2, 2);
         }
         .header a {
             text-decoration: none;
@@ -117,12 +117,13 @@ def get_css():
             line-height: 1.4;
         }
         .footer {
-            background-color: #32a852;
+            border-top: 3px solid green;
+            background-color:rgb(255, 255, 255);
             padding: 20px;
             border-top: 2px solid #eaeaea;
             text-align: center;
             font-size: 14px;
-            color: #ffffff;
+            color:rgb(0, 0, 0);
         }
     </style>
     """
@@ -135,15 +136,14 @@ def render_body():
             Concursei Br
         </div>
         <div>
-            <a href="#">Início</a>
-            <a href="#"><span class="relatorios">Relatórios</span></a>
+            <a href="Dashboards"><span class="relatorios">Dashboards</span></a>
         </div>
     </div>
 
     <div class="main-section">
         <h1>Acompanhe as <br>publicações no <br> <div style="color:green">Concursei Br</div></h1>
         <p>Promovendo a participação pública em concursos do Brasil: <br>acompanhe de forma simples e clara as publicações de concursos.</p>
-        <a href="#" class="btn">Ver Relatórios</a>
+        <a href="Exportar" class="btn">Exportar Dados</a>
     </div>
     """
     return template
@@ -151,32 +151,35 @@ def render_body():
 def render_statistics(df):
     """
     Renderiza o bloco estatístico com duas informações na mesma caixa:
-    - Número de concursos com inscrições abertas (considerando apenas concursos em que 'Vagas' é numérico)
+    - Número de concursos com inscrições abertas (considerando apenas concursos únicos)
     - Soma total de vagas dos concursos com valor numérico na coluna 'Vagas'
     """
-    # Filtra os concursos onde a coluna 'Vagas' contém um valor numérico
-    df_numeric = df[pd.to_numeric(df['Vagas'], errors='coerce').notnull()].copy()
-    df_numeric['Vagas'] = pd.to_numeric(df_numeric['Vagas'])
+    # Remover ponto (separador de milhar) e converter para numérico
+    df['Vagas_limpo'] = (df['Vagas']
+                                  .astype(str)
+                                  .str.replace('.', '', regex=False))
+    df['Vagas_limpo'] = pd.to_numeric(df['Vagas_limpo'], errors='coerce')
+
     
-    # Calcula a quantidade de concursos abertos dentre os concursos com vagas numéricas
-    abertos = df_numeric[df_numeric['Status'] == 'Aberto'].shape[0]
-    # Calcula a soma total de vagas
-    total_vagas = df_numeric['Vagas'].sum()
-    
-    return f"""
-    <div class="statistics" style="display: flex; justify-content: center;">
-        <div class="statistics-box">
-            <div style="margin-bottom: 20px;">
-                <div class="stat-label">Concursos com inscrições abertas HOJE</div>
-                <div class="stat-number">{abertos}</div>
-            </div>
-            <div>
-                <div class="stat-label">Total de vagas</div>
-                <div class="stat-number">{int(total_vagas)}</div>
+    df['Vagas_limpo'] = df['Vagas_limpo'].fillna(0)
+
+    total_vagas = df['Vagas_limpo'].sum()
+
+    # Exibição das métricas no Streamlit
+    st.markdown(f"""
+        <div class="statistics" style="display: flex; justify-content: center;">
+            <div class="statistics-box">
+                <div style="margin-bottom: 20px;">
+                    <div class="stat-label">Concursos com inscrições abertas HOJE</div>
+                    <div class="stat-number">{len(df)}</div>
+                </div>
+                <div>
+                    <div class="stat-label">Total de vagas HOJE</div>
+                    <div class="stat-number">{int(total_vagas)}</div>
+                </div>
             </div>
         </div>
-    </div>
-    """
+    """, unsafe_allow_html=True)
 
 def render_footer():
     """Função que retorna o footer"""
@@ -190,11 +193,12 @@ def main():
     """Função principal para rodar o Streamlit."""
     set_page_config()
     df = load_data()
+    df = df[df['Status'] == 'Aberto']
 
     st.markdown(get_css(), unsafe_allow_html=True)
     st.markdown(render_body(), unsafe_allow_html=True)
     
-    st.markdown(render_statistics(df), unsafe_allow_html=True)
+    render_statistics(df)
     st.markdown(render_footer(), unsafe_allow_html=True)
 
 if __name__ == "__main__":
