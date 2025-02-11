@@ -88,7 +88,8 @@ def filtros():
         status_opcoes = df_ordenado['Status'].unique()   
         status_selecionado = st.multiselect(
             "Selecione o(s) Status:", 
-            options=status_opcoes
+            options=status_opcoes,
+            default=["Aberto"]  # Definir "EM ABERTO" como padrão
         )
 
     # 3. Aplicar filtros simultâneos
