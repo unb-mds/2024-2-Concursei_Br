@@ -322,7 +322,41 @@ st.title("Dashboard de Concursos")
 
 df = load_data()
 
+def filtros():
+    col1, col2 = st.columns(2)
+
+    # 1. Filtro de Região
+    with col1:
+        regioes = df['Região'].unique()
+        regiao_selecionada = st.multiselect(
+            "Selecione a(s) Região(ões):", 
+            options=regioes
+        )
+
+    # 2. Filtro de Status
+    with col2:
+        status_opcoes = df['Status'].unique()   
+        status_selecionado = st.multiselect(
+            "Selecione o(s) Status:", 
+            options=status_opcoes
+        )
+
+    # 3. Aplicar filtros simultâneos
+    df_filtrado = df.copy()
+
+    if regiao_selecionada:
+        df_filtrado = df_filtrado[df_filtrado['Região'].isin(regiao_selecionada)]
+
+    if status_selecionado:
+        df_filtrado = df_filtrado[df_filtrado['Status'].isin(status_selecionado)]
+
+    return df_filtrado
+
+df_filtrado = filtros()
+
 col1, col2 = st.columns(2)
+
+
 
 # Coluna 1
 with col1:
@@ -330,14 +364,14 @@ with col1:
     top_n = st.slider("Quantidade de órgãos a exibir:", 
                       min_value=5, max_value=50, 
                       value=10, step=5)
-    plot_bar_vagas_orgao(df, top_n)
+    plot_bar_vagas_orgao(df_filtrado, top_n)
     
 
     
 
 # Coluna 2
 with col2:
-    plot_bar_vagas_estado(df)
+    plot_bar_vagas_estado(df_filtrado)
 
 # -------------------------------------------------------
 # EXEMPLO: OUTROS GRÁFICOS LADO A LADO
@@ -345,21 +379,21 @@ with col2:
 col3, col4 = st.columns(2)
 
 with col3:
-    st.plotly_chart(plot_hist_aberturas(df), 
+    st.plotly_chart(plot_hist_aberturas(df_filtrado), 
                     use_container_width=True)
     
 
 with col4:
-    plot_pie_chart(df)
+    plot_pie_chart(df_filtrado)
 # -------------------------------------------------------
 # LISTA DE CONCURSOS POR MÊS (ABAIXO DAS COLUNAS)
 # -------------------------------------------------------
-concursos_por_mes(df)
+concursos_por_mes(df_filtrado)
 
 # -------------------------------------------------------
 # MAPA INTERATIVO
 # -------------------------------------------------------
 st.subheader("🌎 Mapa Interativo de Concursos por Estado")
-plot_map_concursos(df)
+plot_map_concursos(df_filtrado)
 
 render_footer()
