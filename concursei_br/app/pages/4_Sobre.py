@@ -7,6 +7,30 @@ st.set_page_config(page_title="Sobre o Concursei BR", page_icon="assets/logo_con
 st.markdown(
     """
     <style>
+        .header {
+            color: #32a852;
+            padding: 20px 50px;
+            border-bottom: 3px solid #1e7a34;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 50px;
+            text-wrap: nowrap;
+        }
+        .header .logo {
+            margin-left: 5%;
+            font-size: 24px;
+            font-weight: bold;
+            color:rgb(2, 2, 2);
+        }
+        .header a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+
         body {
             width: 100%;
             font-family: Arial, sans-serif;
