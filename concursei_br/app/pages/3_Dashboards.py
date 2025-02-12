@@ -9,7 +9,9 @@ import plotly.graph_objects as go
 import folium
 from streamlit_folium import folium_static
 from folium.plugins import HeatMap
-from datetime import 
+from datetime import datetime
+import requests
+from io import StringIO
 from Home import load_data
 
 st.set_page_config(page_title="Dashboards", page_icon="../assets/logo_concursei.png", layout="wide")
@@ -67,10 +69,9 @@ def render_footer():
     )
 
 @st.cache_data
-def load_data():
+def load_datas():
     # Carrega e trata os dados do CSV.
     df = load_data()
-
     # Remover espaços extras e valores inconsistentes na coluna STATUS
     df['Status'] = df['Status'].astype(str).str.strip()
 
@@ -89,6 +90,9 @@ def load_data():
     df = df[df["Status"].notna()]
 
     return df
+
+df = load_datas()
+#st.write(df.head(20))
 
 def plot_pie_chart(df):
     status_counts = df["Status"].value_counts()
@@ -138,8 +142,6 @@ def plot_pie_chart(df):
     )
 
     st.plotly_chart(fig, use_container_width=True)
-
-
 
 
 def plot_bar_vagas_estado(df):
