@@ -77,7 +77,8 @@ def load_data():
     df["Início"] = df["Início"].astype(str).str.strip()  # Remove espaços extras
     df["Início"] = df["Início"].replace("Previsto", None)  # Substitui "Previsto" por None manualmente
     df["Início"] = pd.to_datetime(df["Início"], errors="coerce") # Converte para datetime (os erros viram NaN)
-
+    df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce").fillna(0).astype(int)
+    
     # Tratamento DATAS
     # Converter datas para formato datetime
     df["Início"] = pd.to_datetime(df["Início"], errors="coerce", dayfirst=True)
