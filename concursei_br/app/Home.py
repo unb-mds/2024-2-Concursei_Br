@@ -11,7 +11,7 @@ def set_page_config():
 
 def load_data():
     """Carrega e processa os dados do CSV."""
-    file_path = "contests_info.csv"
+    file_path = "../data/contests_info.csv"
 
     if not os.path.exists(file_path):
         st.error(f"Arquivo não encontrado: {file_path}")
