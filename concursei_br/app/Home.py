@@ -23,6 +23,8 @@ def load_data():
         return None
 
     df = pd.read_csv(StringIO(response.text), sep=';')
+    
+    df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce").fillna(0).astype(int)
     return df
 
 def get_css():
