@@ -1,0 +1,74 @@
+site_name: 2024-2-Squad14
+
+repo_name: '2024-2-Squad14'
+repo_url: https://github.com/unb-mds/2024-2-Squad14
+
+theme: 
+  name: material
+  language: pt-BR
+
+  icon:
+    repo: fontawesome/brands/github
+  
+  features:
+    - toc.integrate
+    - toc.follow
+    - navigation.tabs
+    - navigation.tabs.stiky
+    - navigation.sections
+    - navigation.footer
+    - navigation.instant
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+
+  hide: 
+    -
+  
+  extra: 
+    social: 
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/unb-mds/2024-2-Squad14
+
+  plugins:
+    - search:
+        lang: pt-BR
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+      primary: teal
+      accent: purple
+    - scheme: slate 
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+      primary: teal 
+      accent: line
+      
+  markdown_extensions:
+    - admonition
+    - pymdownx.details
+    - pymdownx.superfences
+    - attr_list
+    - md_in_html
+    - pymdownx.emoji:
+        emoji_index: !!python/name:materialx.emoji.twemoji
+        emoji_generator: !!python/name:materialx.emoji.to_svg
+
+
+nav: 
+  - Home: index.md
+  - Sprints: sprints.md
+  - Documentação de Projeto:
+    - Visão de Produto: productview.md
+    - Tecnologias: tecnology.md
+    - Backlog: backlog.md
+    - Requisitos: requisitos.md
+    - Arquitetura: arquitetura.md
+    - Story Map: storymap.md
+  - Configuração/Execução: config.md
