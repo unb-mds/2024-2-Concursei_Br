@@ -1,7 +1,8 @@
-# tests/test_scrapper.py
-
 import pytest
-from scrapper import Scrapper  # import da sua classe
+from unittest.mock import MagicMock
+import numpy as np
+from scrapper import Scrapper
+from bs4 import BeautifulSoup
 
 def test_scrapper_instantiation():
     scrapper = Scrapper()
