@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import os
 
 def set_page_config():
     st.set_page_config(
@@ -11,6 +12,11 @@ def set_page_config():
 def load_data():
     """Carrega e processa os dados do CSV."""
     file_path = "../data/contests_info.csv"
+
+    if not os.path.exists(file_path):
+        st.error(f"Arquivo não encontrado: {file_path}")
+        return None
+
     df = pd.read_csv(file_path, sep=';')
     return df
 
