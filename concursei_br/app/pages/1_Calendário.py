@@ -1,15 +1,17 @@
-import streamlit as st
-import pandas as pd
 from datetime import datetime
 import calendar
 from Home import load_data
+import pandas as pd
+import streamlit as st
 
-#nome da página e configurações gerais da página
-st.set_page_config(
-    page_title="Calendário de Concursos",
-    layout="wide",
-    page_icon="assets/logo_concursei.png"
-)
+try:
+    st.set_page_config(
+        page_title="Calendário de Concursos",
+        layout="wide",
+        page_icon="assets/logo_concursei.png"
+    )
+except:
+    pass  # Evita erro se `set_page_config()` já foi chamado antes
 
 #css da página
 st.markdown("""

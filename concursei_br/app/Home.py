@@ -1,7 +1,7 @@
-import streamlit as st
 import pandas as pd
 import requests
 from io import StringIO
+import streamlit as st
 
 # Configuração da página
 st.set_page_config(
