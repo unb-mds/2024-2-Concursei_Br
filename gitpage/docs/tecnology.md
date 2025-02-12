@@ -3,10 +3,12 @@
 ## 💻 Back-end
 
 - **Python** - Linguagem principal para desenvolvimento do projeto.
+- **Pandas** - Framework para lidar com tabelas, dados.
 - **Numpy** - Framework para lidar com arrays e outros dados.
 - **Matplotlib** - Framework para visualização interativa de dados.
 - **BeautifulSoup** - Framework para a raspagem de dados do meu diário.
 - **Unidecode** - Framework para tratamento de caracteres especiais.
+- e varias outras mais...
 
 ## 🎨 Front-end
 
