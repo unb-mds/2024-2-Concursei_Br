@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import calendar
+from Home import load_data
 
 #nome da página e configurações gerais da página
 st.set_page_config(
@@ -9,7 +10,6 @@ st.set_page_config(
     layout="wide",
     page_icon="assets/logo_concursei.png"
 )
-
 
 #css da página
 st.markdown("""
@@ -46,7 +46,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 #lendo o csv e filtrando os dados que queremos
-df = pd.read_csv("../data/contests_info.csv", sep=";")
+df = load_data()
 invalid_values = ["Não encontrado", "Previsto"]
 df = df[~df["Início"].isin(invalid_values) & ~df["Fim"].isin(invalid_values)].copy()
 df["Início"] = pd.to_datetime(df["Início"], dayfirst=True, errors="coerce")

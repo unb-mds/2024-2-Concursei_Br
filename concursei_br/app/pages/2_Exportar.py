@@ -2,8 +2,12 @@ import pandas as pd
 import altair as alt
 import streamlit as st
 from utils.data_loader import load_contests_data
+import requests
+from io import StringIO
+from Home import load_data
 
 st.set_page_config(page_title="Dashboards", page_icon="assets/logo_concursei.png", layout="wide")
+
 
 def render_header():
     """Renderiza o cabeçalho da página."""
@@ -64,7 +68,7 @@ render_header()
 st.title("Exportar dados")
 st.write("Nesta página você poderá exportar os dados personalizados.")
 
-df = pd.read_csv("../data/contests_info.csv", sep=';')
+df = load_data()
 
 df["Vagas"] = df["Vagas"].astype(str).str.replace(".", "", regex=False)  # Remove separadores de milhares
 df["Vagas"] = df["Vagas"].replace("Várias", "0")  # Substitui "Várias" por "0"
