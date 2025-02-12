@@ -1,7 +1,7 @@
 
-# Concursei BSB
+# Concursei BR
 
-<h3> Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. A aplicação visa oferecer à população interressada, uma visão mais simplificada dos processos públicos com inscrição em andamentos e também com datas previstas.</h3>
+<h3> Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. A aplicação visa oferecer à população interressada, uma visão mais simplificada dos processos públicos com inscrição em andamentos e também com datas previstas. O Concursei BR oferece os dados de concursos em todo o Brasil para a visualização.</h3>
 
 <br></br>
 <hr></hr>

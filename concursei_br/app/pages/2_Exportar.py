@@ -3,7 +3,7 @@ import altair as alt
 import streamlit as st
 from utils.data_loader import load_contests_data
 
-st.set_page_config(page_title="Dashboards", page_icon="../assets/logo_concursei.png", layout="wide")
+st.set_page_config(page_title="Dashboards", page_icon="assets/logo_concursei.png", layout="wide")
 
 def render_header():
     """Renderiza o cabeçalho da página."""
@@ -29,7 +29,7 @@ def render_header():
         </style>
         <div class="header">
             <div class="logo">  
-                <a href="home">Concursei Br</a> 
+                <a href="home" style = "text-decoration:none; color: #32a852">Concursei Br</a> 
             </div>
         </div>
         """,

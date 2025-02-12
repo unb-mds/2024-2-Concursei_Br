@@ -8,23 +8,24 @@
   - Matplotlib  
   - BeautifulSoup  
   - Unidecode
+  - ...
 
-Com <b>Python</b> instalado, faça a instalação das bibliotecas com os seguintes comandos no terminal:
-```bash
-pip install streamlit
-pip install numpy
-pip install matplotlib
-pip install bs4
-pip install unidecode
-```
+Com <b>Python</b> instalado:
 
 ## Execução 🖥️
 Clone o repositório deste projeto através da seguinte linha de código:
 ```bash
-git clone https://github.com/unb-mds/2024-2-Squad14.git
+git clone https://github.com/unb-mds/2024-2-Concursei_Br.git
 ```  
+
+Baixe as dependências:
+```bash
+pip install requirements.txt
+```
 
 Execute o programa com:
 ```bash
-streamlit run gov_app.py
+cd .\concurseibr\app
+
+streamlit run home.py
 ```
