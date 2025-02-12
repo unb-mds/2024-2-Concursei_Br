@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import os
+import requests
+from io import StringIO
 
 def set_page_config():
     st.set_page_config(
@@ -11,13 +13,16 @@ def set_page_config():
 
 def load_data():
     """Carrega e processa os dados do CSV."""
-    file_path = "../data/contests_info.csv"
+    file_path = 'https://raw.githubusercontent.com/unb-mds/2024-2-Concursei_Br/front/concursei_br/data/contests_info.csv'
 
-    if not os.path.exists(file_path):
-        st.error(f"Arquivo não encontrado: {file_path}")
+    try:
+        response = requests.get(file_path)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Erro ao acessar o arquivo: {e}")
         return None
 
-    df = pd.read_csv(file_path, sep=';')
+    df = pd.read_csv(StringIO(response.text), sep=';')
     return df
 
 def get_css():
