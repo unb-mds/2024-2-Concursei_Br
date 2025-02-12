@@ -24,17 +24,6 @@ def load_data():
 
     df = pd.read_csv(StringIO(response.text), sep=';')
     
-    # 🔹 Garantir que "Início" e "Fim" estejam no formato datetime
-    df["Início"] = pd.to_datetime(df["Início"], errors="coerce", dayfirst=True)
-    df["Fim"] = pd.to_datetime(df["Fim"], errors="coerce", dayfirst=True)
-
-    # 🔹 Remover linhas onde "Início" ou "Fim" não puderam ser convertidas
-    df = df.dropna(subset=["Início", "Fim"])
-
-    # 🔹 Corrigir valores da coluna "Vagas"
-    df["Vagas"] = df["Vagas"].replace("Várias", None)
-    df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce").fillna(0).astype(int)
-
     df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce").fillna(0).astype(int)
     return df
 

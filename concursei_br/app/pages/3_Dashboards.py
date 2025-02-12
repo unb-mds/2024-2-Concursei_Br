@@ -10,6 +10,8 @@ import folium
 from streamlit_folium import folium_static
 from folium.plugins import HeatMap
 from datetime import datetime
+import requests
+from io import StringIO
 
 st.set_page_config(page_title="Dashboards", page_icon="../assets/logo_concursei.png", layout="wide")
 
@@ -67,8 +69,21 @@ def render_footer():
 
 @st.cache_data
 def load_data():
+
+    """Carrega e processa os dados do CSV."""
+    file_path = 'https://raw.githubusercontent.com/unb-mds/2024-2-Concursei_Br/front/concursei_br/data/contests_info.csv'
+
+    try:
+        response = requests.get(file_path)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Erro ao acessar o arquivo: {e}")
+        return None
+
+    df = pd.read_csv(StringIO(response.text), sep=';')
+
     # Carrega e trata os dados do CSV.
-    df = pd.read_csv("../data/contests_info.csv", sep=';')
+    #df = pd.read_csv("../data/contests_info.csv", sep=';')
 
     # Remover espaços extras e valores inconsistentes na coluna STATUS
     df['Status'] = df['Status'].astype(str).str.strip()
