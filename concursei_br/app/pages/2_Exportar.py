@@ -6,7 +6,7 @@ import requests
 from io import StringIO
 from Home import load_data
 
-st.set_page_config(page_title="Dashboards", page_icon="assets/logo_concursei.png", layout="wide")
+st.set_page_config(page_title="Exportar", page_icon="assets/logo_concursei.png", layout="wide")
 
 
 def render_header():

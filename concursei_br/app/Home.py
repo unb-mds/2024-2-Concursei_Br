@@ -1,122 +1,114 @@
 import streamlit as st
 import pandas as pd
-import os
 import requests
 from io import StringIO
 
-def set_page_config():
-    st.set_page_config(
-        page_title="Concursei Br",
-        layout="wide",
-        page_icon="assets/logo_concursei.png"
-    )
+# Configuração da página
+st.set_page_config(
+    page_title="Concursei Br",
+    layout="wide",
+    page_icon="assets/logo_concursei.png"
+)
 
+# Função para carregar dados do CSV
+@st.cache_data
 def load_data():
     """Carrega e processa os dados do CSV."""
-    file_path = 'https://raw.githubusercontent.com/unb-mds/2024-2-Concursei_Br/front/concursei_br/data/contests_info.csv'
+    file_url = 'https://raw.githubusercontent.com/unb-mds/2024-2-Concursei_Br/front/concursei_br/data/contests_info.csv'
 
     try:
-        response = requests.get(file_path)
+        response = requests.get(file_url)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         st.error(f"Erro ao acessar o arquivo: {e}")
-        return None
+        return pd.DataFrame()
 
     df = pd.read_csv(StringIO(response.text), sep=';')
-    
     df["Vagas"] = pd.to_numeric(df["Vagas"], errors="coerce").fillna(0).astype(int)
     return df
 
-def get_css():
-    """Retorna o CSS para estilização da página."""
+# Função para aplicar estilos CSS personalizados
+def get_custom_css():
     return """
     <style>
-        * {
-            padding: 0;
+        /* Estilos gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
             margin: 0;
-            max-width: 100% !important;
-        }
-
-        .block-container {
             padding: 0;
         }
         
-        body {
-            width: 100%;
-            height: 100vh;
-            margin: 0;
+        .block-container{
             padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
         }
+
+        /* Cabeçalho */
         .header {
-            background-color:rgb(255, 255, 255);
+            background-color: #ffffff;
             padding: 20px 50px;
             border-bottom: 3px solid #1e7a34;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
-            top: 50px;
-            text-wrap: nowrap;
+            z-index: 1000;
+            margin-top: 45px;
         }
         .header .logo {
-            margin-left: 5%;
             font-size: 24px;
             font-weight: bold;
-            color:rgb(2, 2, 2);
-        }
-        .header a {
+            color: #32a852;
             text-decoration: none;
-            color: #ffffff;
+        }
+        .header .nav a {
+            text-decoration: none;
+            color: white;
             font-weight: bold;
             margin-left: 20px;
-        }
-        .relatorios {
-            color: #ffffff;
             background-color: green;
-            margin-left: 30px;
             padding: 10px 25px;
-            border-radius: 8%;
+            border-radius: 0px;
         }
+        /* Seção principal */
         .main-section {
-            width: 100%;
             background-color: #dcdcdc;
             text-align: left;
-            padding: 50px 20px;
+            padding: 50px 7%;
+            border-radius: 0px;
         }
         .main-section h1 {
-            margin-left: 7%;
             font-size: 36px;
             color: #333333;
         }
         .main-section p {
             font-size: 18px;
             color: #666666;
-            margin: 20px 0 20px 7%;
+            margin: 20px 0;
         }
         .main-section .btn {
             display: inline-block;
             background-color: #32a852;
             color: white;
             padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 0px;
             text-decoration: none;
             font-size: 16px;
-            margin: 10px 10px 10px 7%;
+            margin-top: 10px;
+        }
+        /* Estatísticas */
+        .statistics {
+            background-color: #dcdcdc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 0px;
         }
         .statistics-box {
             background: #ffffff;
-            border-radius: 10px;
+            border-radius: 0px;
             padding: 35px;
-            margin: 0px 7%;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-align: center;
             border: 2px solid #1e7a34;
-        }
-        .statistics {
-            background-color: #dcdcdc;
-            padding: 10px 20% 70px 20%;
         }
         .stat-number {
             color: #32a852;
@@ -129,90 +121,87 @@ def get_css():
             font-size: 18px;
             line-height: 1.4;
         }
+        /* Rodapé */
         .footer {
             border-top: 3px solid green;
-            background-color:rgb(255, 255, 255);
+            background-color: #ffffff;
             padding: 20px;
-            border-top: 2px solid #eaeaea;
             text-align: center;
             font-size: 14px;
-            color:rgb(0, 0, 0);
+            color: #000000;
         }
     </style>
     """
 
-def render_body():
-    """Renderiza o corpo principal da página."""
-    template = """
+# Função para renderizar o cabeçalho
+def get_header():
+    return """
     <div class="header">
-        <div class="logo" style="color: #32a852;">  
-            Concursei Br
-        </div>
-        <div>
-            <a href="Dashboards"><span class="relatorios">Dashboards</span></a>
+        <a href="home" class="logo">Concursei Br</a>
+        <div class="nav">
+            <a href="Dashboards">Dashboards</a>
         </div>
     </div>
+    """
 
+# Função para renderizar a seção principal
+def get_main_section():
+    return """
     <div class="main-section">
-        <h1>Acompanhe as <br>publicações no <br> <div style="color:green">Concursei Br</div></h1>
-        <p>Promovendo a participação pública em concursos do Brasil: <br>acompanhe de forma simples e clara as publicações de concursos.</p>
+        <h1>Acompanhe as<br>publicações no<br><span style="color:green">Concursei Br</span></h1>
+        <p>Promovendo a participação pública em concursos do Brasil: acompanhe de forma simples e clara as publicações de concursos.</p>
         <a href="Exportar" class="btn">Exportar Dados</a>
     </div>
     """
-    return template
 
-def render_statistics(df):
-    """
-    Renderiza o bloco estatístico com duas informações na mesma caixa:
-    - Número de concursos com inscrições abertas (considerando apenas concursos únicos)
-    - Soma total de vagas dos concursos com valor numérico na coluna 'Vagas'
-    """
-    # Remover ponto (separador de milhar) e converter para numérico
-    df['Vagas_limpo'] = (df['Vagas']
-                                  .astype(str)
-                                  .str.replace('.', '', regex=False))
-    df['Vagas_limpo'] = pd.to_numeric(df['Vagas_limpo'], errors='coerce')
+# Função para renderizar as estatísticas
+def get_statistics(df):
+    total_concursos = len(df)
+    total_vagas = df['Vagas'].sum()
 
-    
-    df['Vagas_limpo'] = df['Vagas_limpo'].fillna(0)
-
-    total_vagas = df['Vagas_limpo'].sum()
-
-    # Exibição das métricas no Streamlit
-    st.markdown(f"""
-        <div class="statistics" style="display: flex; justify-content: center;">
-            <div class="statistics-box">
-                <div style="margin-bottom: 20px;">
-                    <div class="stat-label">Concursos com inscrições abertas HOJE</div>
-                    <div class="stat-number">{len(df)}</div>
-                </div>
-                <div>
-                    <div class="stat-label">Total de vagas HOJE</div>
-                    <div class="stat-number">{int(total_vagas)}</div>
-                </div>
+    return f"""
+    <div class="statistics">
+        <div class="statistics-box">
+            <div>
+                <div class="stat-label">Concursos com inscrições abertas HOJE</div>
+                <div class="stat-number">{total_concursos}</div>
+            </div>
+            <div>
+                <div class="stat-label">Total de vagas HOJE</div>
+                <div class="stat-number">{total_vagas}</div>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    </div>
+    """
 
-def render_footer():
-    """Função que retorna o footer"""
+# Função para renderizar o rodapé
+def get_footer():
     return """
     <div class="footer">
         © 2025 Concursei Br. Todos os direitos reservados.
     </div>
     """
 
+# Função principal
 def main():
     """Função principal para rodar o Streamlit."""
-    set_page_config()
     df = load_data()
+    
+    if df.empty:
+        st.warning("Nenhum dado carregado. Verifique a origem dos dados.")
+        return
+
     df = df[df['Status'] == 'Aberto']
 
-    st.markdown(get_css(), unsafe_allow_html=True)
-    st.markdown(render_body(), unsafe_allow_html=True)
+    # Aplicando o CSS
+    st.markdown(get_custom_css(), unsafe_allow_html=True)
     
-    render_statistics(df)
-    st.markdown(render_footer(), unsafe_allow_html=True)
+    # Renderizando elementos visuais
+    st.markdown(get_header(), unsafe_allow_html=True)
+    st.markdown(get_main_section(), unsafe_allow_html=True)
+    st.markdown(get_statistics(df), unsafe_allow_html=True)
+    st.markdown(get_footer(), unsafe_allow_html=True)
 
+# Executa o app
 if __name__ == "__main__":
     main()
