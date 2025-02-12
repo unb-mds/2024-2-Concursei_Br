@@ -77,3 +77,18 @@
 - **Arquivo CSV**
    Os dados obtidos foram armazenados em um arquivo csv que irá ser continuamente atualizado.
 - **Dados conectados ao front**
+
+## Sprint 9: Apresentação dos dados no frontend
+
+- **Estilizando o frontend**
+   Estilização do frontend para recebimento dos dados.
+- **Criação de gráficos**
+   Gráficos e calendário de inscrições de concursos.
+
+## Sprint 10: Ajuste das páginas e preparação para R2
+
+- **Ajustes finais no frontend**
+
+- **Dockerização**
+
+- **deploy**

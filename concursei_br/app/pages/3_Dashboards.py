@@ -37,7 +37,7 @@ def render_header():
         </style>
         <div class="header">
             <div class="logo">  
-                <a href="home">Concursei Br</a> 
+                <a href="home" style = "text-decoration:none; color: #32a852">Concursei Br</a> 
             </div>
         </div>
         """,

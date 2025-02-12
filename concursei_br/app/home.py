@@ -132,7 +132,7 @@ def render_body():
     """Renderiza o corpo principal da página."""
     template = """
     <div class="header">
-        <div class="logo">  
+        <div class="logo" style="color: #32a852;">  
             Concursei Br
         </div>
         <div>
