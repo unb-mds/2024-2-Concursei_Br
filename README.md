@@ -1,15 +1,15 @@
-# Concursei BSB
+# Concursei BR
 
-Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. O objetivo do Concursei BSB é servir à população como um "mapa" das vagas de concursos no Distrito Federal, conferindo dados importantes para que os interressados possam analisar e se organizar melhor.
+Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a sua ultilização prática no desenvolvimento de sistemas. O objetivo do Concursei BR é servir à população como um "mapa" das vagas de concursos no Brasil inteiro, conferindo dados importantes para que os interressados possam analisar e se organizar melhor. Permitindo também a exportação dos dados personalizados.
 
-![Descrição da Imagem](concursei_bsb/prototipo_frontend.jpg)
+![Descrição da Imagem](concursei_br/app/assets/prototipo_frontend.jpg)
 
 > Status: Em desenvolvimento ⚙️🔨
 
 ---
 
 ## Público Alvo
-Cidadãos de Brasília, incluindo:
+Cidadãos de todo o Brasil, incluindo:
 
 - Concurseiros
 - Trabalhadores
@@ -28,12 +28,13 @@ Cidadãos de Brasília, incluindo:
 .Numpy<br>
 .Matplotlib<br>
 .BeautifulSoup<br>
-.Unidecode<br>
+.folium<br>
+. ...
 
 ## Execução 🖥️
 Clone o repositório deste projeto através da seguinte linha de código:
 ```bash
-git clone https://github.com/unb-mds/2024-2-Concursei_Bsb.git
+git clone https://github.com/unb-mds/2024-2-Concursei_Br.git
 ```
 
 Com <b>Python</b> instalado, faça a instalação das bibliotecas com o seguinte comando no terminal:
@@ -43,14 +44,14 @@ pip install -r requirements.txt
 
 Com o repositório clonado execute o programa com:
 ```bash
-cd .\concursei_bsb\app\
+cd .\concursei_br\app\
 streamlit run home.py
 ```
 ## Extras
  
- • [Arquitetura](https://unb-mds.github.io/2024-2-Concursei_Bsb/arquitetura/)
+ • [Arquitetura](https://unb-mds.github.io/2024-2-Concursei_Br/arquitetura/)
 
- • [Gitpages](https://unb-mds.github.io/2024-2-Concursei_Bsb/)
+ • [Gitpages](https://unb-mds.github.io/2024-2-Concursei_Br/)
  
 
 ## Equipe 👤
