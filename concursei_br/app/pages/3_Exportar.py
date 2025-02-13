@@ -6,7 +6,10 @@ import requests
 from io import StringIO
 from Home import load_data
 
-st.set_page_config(page_title="Exportar", page_icon="assets/logo_concursei.png", layout="wide")
+try:
+    st.set_page_config(page_title="Exportar", page_icon="assets/logo_concursei.png", layout="wide")
+except:
+    pass
 
 
 def render_header():

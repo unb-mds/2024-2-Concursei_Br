@@ -19,30 +19,51 @@ except:
     pass
 
 def render_header():
-    """Renderiza o cabeçalho da página."""
+    """Renderiza o cabeçalho da página, mantendo o estilo da home."""
     st.markdown(
         """
         <style>
-            .header { 
-                background-color: rgb(255, 255, 255);
+
+            .header-container {
+                padding: 0px !important;
+                margin: 0px !important;
+            }
+        
+            .block-container {
+                padding-top: 45px !important;
+                padding: 0px;
+            }
+            .header {
+                background-color: #ffffff;
                 padding: 20px 50px;
                 border-bottom: 3px solid #1e7a34;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 position: sticky;
-                top: 0;
-                text-wrap: nowrap;
+                z-index: 1000;
+                margin-top: 0px;
             }
             .header .logo {
                 font-size: 24px;
                 font-weight: bold;
-                color: rgb(2, 2, 2);
+                color: #32a852;
+                text-decoration: none;
+            }
+            .header .nav a {
+                text-decoration: none;
+                color: white;
+                font-weight: bold;
+                margin-left: 20px;
+                background-color: green;
+                padding: 10px 25px;
+                border-radius: 0px;
             }
         </style>
         <div class="header">
-            <div class="logo">  
-                <a href="home" style = "text-decoration:none; color: #32a852">Concursei Br</a> 
+            <a href="home" class="logo">Concursei Br</a>
+            <div class="nav">
+                <a href="Exportar">Exportar</a>
             </div>
         </div>
         """,
@@ -324,7 +345,7 @@ def concursos_por_mes(df):
 
     if not df.empty:
         st.write(f"📋 **Concursos disponíveis:**")
-        st.write(df[["Nome","Status" , "Início", "Fim", "Vagas", "Região"]])
+        st.write(df[["Nome","Status", "Início", "Fim", "Vagas", "Região"]])
     else:
         st.warning("⚠️ Nenhum concurso encontrado para este mês.")
 
@@ -367,95 +388,97 @@ def plot_map_concursos(df):
             ).add_to(mapa)
 
     # Exibir o mapa no Streamlit
-    folium_static(mapa, width=900, height=500)
+    folium_static(mapa, width=600, height=500)
 
 
 # Streamlit App
 render_header()
-st.title("Dashboard de Concursos")
 
 df = load_data()
 
-def filtros():
-    col1, col2, col3 = st.columns(3)
+# Criando um layout com espaçamento lateral
+espaco_esquerda, conteudo_principal, espaco_direita = st.columns([0.03, 0.94, 0.03])  # 2% espaço vazio, 98% conteúdo
 
-    # 1. Filtro de Região
-    with col1:
-        regioes = df['Região'].unique()
-        regiao_selecionada = st.multiselect(
-            "Selecione a(s) Região(ões):", 
-            options=regioes
-        )
-
-    # 2. Filtro de Status
-    with col2:
-        status_opcoes = df['Status'].unique()   
-        status_selecionado = st.multiselect(
-            "Selecione o(s) Status:", 
-            options=status_opcoes
-        )
-
-    # 3. Filtro de Data
-    with col3:
-        # Criar lista de meses disponíveis, adicionando "Todos" como opção inicial
-        meses_disponiveis = sorted(df["Mês_Referência"].unique(), key=lambda x: (x != "Previsto", x))
-        meses_disponiveis.insert(0, "Todos")  # Adicionar a opção "Todos" no início
-
-        # Selecionar "Todos" por padrão
-        mes_selecionado = st.selectbox("Selecione um mês:", meses_disponiveis, index=0)
-
-
-    # 4. Aplicar filtros simultâneos
-    df_filtrado = df.copy()
-
-    if regiao_selecionada:
-        df_filtrado = df_filtrado[df_filtrado['Região'].isin(regiao_selecionada)]
-
-    if status_selecionado:
-        df_filtrado = df_filtrado[df_filtrado['Status'].isin(status_selecionado)]
-
-    if mes_selecionado != "Todos":
-        df_filtrado = df_filtrado[df_filtrado["Mês_Referência"] == mes_selecionado]
-
-    return df_filtrado
-
-df_filtrado = filtros()
-
-col1, col2 = st.columns(2)
-
-
-# Coluna 1
-with col1:
-    # Slider e gráfico de vagas por órgão
-    top_n = st.slider("Quantidade de órgãos a exibir:", 
-                      min_value=5, max_value=50, 
-                      value=10, step=5)
-    plot_bar_vagas_orgao(df_filtrado, top_n)
-
-# Coluna 2
-with col2:
-    plot_bar_vagas_estado(df_filtrado)
-
-# -------------------------------------------------------
-# EXEMPLO: OUTROS GRÁFICOS LADO A LADO
-# -------------------------------------------------------
-col3, col4 = st.columns(2)
-
-with col3:
-    st.plotly_chart(plot_hist_aberturas(df_filtrado), 
-                    use_container_width=True)
+with conteudo_principal:
+    st.title("Dashboard de Concursos")
     
+    def filtros():
+        col1, col2, col3 = st.columns(3)
 
-with col4:
-    plot_pie_chart(df_filtrado)
+        # 1. Filtro de Região
+        with col1:
+            regioes = df['Região'].unique()
+            regiao_selecionada = st.multiselect(
+                "Selecione a(s) Região(ões):", 
+                options=regioes
+            )
 
-col5, col6 = st.columns(2)
+        # 2. Filtro de Status
+        with col2:
+            status_opcoes = df['Status'].unique()   
+            status_selecionado = st.multiselect(
+                "Selecione o(s) Status:", 
+                options=status_opcoes
+            )
 
-with col5:
-    concursos_por_mes(df_filtrado)
+        # 3. Filtro de Data
+        with col3:
+            # Criar lista de meses disponíveis, adicionando "Todos" como opção inicial
+            meses_disponiveis = sorted(df["Mês_Referência"].unique(), key=lambda x: (x != "Previsto", x))
+            meses_disponiveis.insert(0, "Todos")  # Adicionar a opção "Todos" no início
 
-with col6:
-    st.subheader("🌎 Mapa Interativo de Concursos por Estado")
-    plot_map_concursos(df_filtrado)
+            # Selecionar "Todos" por padrão
+            mes_selecionado = st.selectbox("Selecione um mês:", meses_disponiveis, index=0)
+
+        # 4. Aplicar filtros simultâneos
+        df_filtrado = df.copy()
+
+        if regiao_selecionada:
+            df_filtrado = df_filtrado[df_filtrado['Região'].isin(regiao_selecionada)]
+
+        if status_selecionado:
+            df_filtrado = df_filtrado[df_filtrado['Status'].isin(status_selecionado)]
+
+        if mes_selecionado != "Todos":
+            df_filtrado = df_filtrado[df_filtrado["Mês_Referência"] == mes_selecionado]
+
+        return df_filtrado
+
+    df_filtrado = filtros()
+
+    col1, col2 = st.columns(2)
+
+    # Coluna 1
+    with col1:
+        # Slider e gráfico de vagas por órgão
+        top_n = st.slider("Quantidade de órgãos a exibir:", 
+                          min_value=5, max_value=50, 
+                          value=10, step=5)
+        plot_bar_vagas_orgao(df_filtrado, top_n)
+
+    # Coluna 2
+    with col2:
+        plot_bar_vagas_estado(df_filtrado)
+
+    # -------------------------------------------------------
+    # EXEMPLO: OUTROS GRÁFICOS LADO A LADO
+    # -------------------------------------------------------
+    col3, col4 = st.columns(2)
+
+    with col3:
+        st.plotly_chart(plot_hist_aberturas(df_filtrado), 
+                        use_container_width=True)
+
+    with col4:
+        plot_pie_chart(df_filtrado)
+
+    col5, col6 = st.columns(2)
+
+    with col5:
+        concursos_por_mes(df_filtrado)
+
+    with col6:
+        st.subheader("🌎 Mapa Interativo de Concursos por Estado")
+        plot_map_concursos(df_filtrado)
 
 render_footer()
