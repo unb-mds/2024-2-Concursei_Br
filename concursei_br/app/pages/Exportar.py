@@ -3,7 +3,7 @@ import altair as alt
 import streamlit as st
 import requests
 from io import StringIO
-from app.Home import load_data
+from Home import load_data
 
 try:
     st.set_page_config(page_title="Exportar", page_icon="assets/logo_concursei.png", layout="wide")
