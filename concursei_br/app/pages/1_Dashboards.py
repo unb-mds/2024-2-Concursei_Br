@@ -13,7 +13,10 @@ from datetime import datetime
 import requests
 from io import StringIO
 
-st.set_page_config(page_title="Dashboards", page_icon="../assets/logo_concursei.png", layout="wide")
+try:
+    st.set_page_config(page_title="Dashboards", page_icon="../assets/logo_concursei.png", layout="wide")
+except:
+    pass
 
 def render_header():
     """Renderiza o cabeçalho da página."""
@@ -98,6 +101,10 @@ def load_data():
     # Converter datas para formato datetime
     df["Início"] = pd.to_datetime(df["Início"], errors="coerce", dayfirst=True)
     df["Fim"] = pd.to_datetime(df["Fim"], errors="coerce", dayfirst=True)
+
+    # Criar uma nova coluna de mês referência
+    df["Mês_Referência"] = df["Início"].dt.strftime("%m/%Y")
+    df["Mês_Referência"] = df["Mês_Referência"].fillna("Previsto")
 
     # Excluir linhas onde a coluna "Status" contém "Previsto"
     df = df[df["Status"].notna()]
@@ -232,17 +239,31 @@ def plot_bar_vagas_orgao(df, top_n):
     st.plotly_chart(fig, use_container_width=True)
 
 def plot_hist_aberturas(df):
+    # Remover valores "Previsto" e substituir por NaN
+    df["Início"] = df["Início"].replace("Previsto", None)
+    df["Fim"] = df["Fim"].replace("Previsto", None)
 
-    # Cria um gráfico de linha mostrando a quantidade de concursos que estavam abertos em cada mês, considerando o intervalo de inscrições.
+    # Converter colunas para datetime (NaN será criado automaticamente onde não for possível converter)
+    df["Início"] = pd.to_datetime(df["Início"], errors="coerce", dayfirst=True)
+    df["Fim"] = pd.to_datetime(df["Fim"], errors="coerce", dayfirst=True)
+
+    # Se ainda houver valores NaT, substituímos por datas padrão
+    data_inicio = df["Início"].min()
+    data_fim = df["Fim"].max()
+
+    if pd.isna(data_inicio):
+        data_inicio = datetime.today().replace(day=1)  # Definindo um valor padrão
+
+    if pd.isna(data_fim):
+        data_fim = datetime.today()  # Define a data máxima como a data atual
+
     # Criar um intervalo de meses entre o primeiro e o último concurso registrado
-    meses = pd.date_range(start=df["Início"].min(), end=df["Fim"].max(), freq="MS")  # MS = primeiro dia do mês
+    meses = pd.date_range(start=data_inicio, end=data_fim, freq="MS")  # MS = primeiro dia do mês
     
     concursos_por_mes = []
- 
     for mes in meses:
         abertos_no_mes = df[(df["Início"] <= mes) & (df["Fim"] >= mes)]
         
-        # 🔹 Limita o número de concursos no hover e adiciona "e mais..." caso ultrapasse
         num_max_hover = 12
         concursos_nomes = abertos_no_mes["Nome"].tolist()
         hover_text = "<br>".join(concursos_nomes[:num_max_hover])
@@ -253,15 +274,15 @@ def plot_hist_aberturas(df):
         concursos_por_mes.append({
             "Mês": mes.strftime("%Y-%m"), 
             "Concursos Abertos": len(abertos_no_mes),
-            "Concursos": hover_text,  # Lista limitada para hover
-            "Lista Completa": concursos_nomes  # Lista completa para tabela abaixo
+            "Concursos": hover_text
         })
 
-
-    # Criar DataFrame
     df_concursos_mensal = pd.DataFrame(concursos_por_mes)
 
-    # Criar o gráfico interativo
+    if df_concursos_mensal.empty:
+        st.warning("⚠️ Nenhum dado disponível para exibir no gráfico.")
+        return go.Figure()  # Retorna um gráfico vazio
+
     fig = px.area(
         df_concursos_mensal,
         x="Mês",
@@ -269,53 +290,43 @@ def plot_hist_aberturas(df):
         title="📆 Concursos com Inscrições Abertas por Mês",
         markers=True,
         line_shape="linear",
-        color_discrete_sequence=["#1e7a34"]  # Verde escuro
+        color_discrete_sequence=["#1e7a34"]
     )
 
-    # Ajustes visuais
     fig.update_traces(
         hovertemplate="<b>%{x}</b><br>Concursos Abertos: %{y}<br><br><b>Concursos:</b><br>%{customdata}",
         mode="lines+markers",
-        customdata=df_concursos_mensal["Concursos"]  # Adiciona a lista de concursos no hover
+        customdata=df_concursos_mensal["Concursos"]
     )
 
     fig.update_layout(
         xaxis=dict(
             tickmode="array",
-            tickvals=df_concursos_mensal["Mês"],  # Força a exibição de todos os meses
-            tickformat="%b %Y",  # Formato 'JAN 2025', 'FEV 2025'...
-            
+            tickvals=df_concursos_mensal["Mês"],
+            tickformat="%b %Y",
         ),
         xaxis_title="Mês",
         yaxis_title="Concursos Abertos",
-        xaxis_tickangle=-45,  # Inclinar os rótulos do eixo X
-        height=600,  # Ajustar tamanho do gráfico
-        title_x = 0.3
+        xaxis_tickangle=-45,
+        height=600,
+        title_x=0.3
     )
 
-    return fig  # Agora retorna o gráfico diretamente
+    return fig
 
 def concursos_por_mes(df):
+    """Exibe a lista de concursos do mês já filtrado."""
+    st.subheader("🔎 Ver Lista Completa de Concursos")
 
-    # Criar um seletor para o usuário ver a lista completa dos concursos por mês
-    st.subheader("🔎 Ver Lista Completa de Concursos Abertos por Mês")
+    # Formatar datas corretamente
+    df["Início"] = df["Início"].dt.strftime('%d/%m/%y').fillna("Previsto")
+    df["Fim"] = df["Fim"].dt.strftime('%d/%m/%y').fillna("Previsto")
 
-    mes_selecionado = st.selectbox("Selecione um mês:", df["Início"].dt.strftime("%m/%Y").sort_values().unique())
-
-    # Filtrar a lista de concursos abertos no mês selecionado
-    concursos_no_mes = df[(df["Início"].dt.strftime("%m/%Y") <= mes_selecionado) & (df["Fim"].dt.strftime("%m/%Y") >= mes_selecionado)]
-
-    # Mostrar a lista completa de concursos para o mês selecionado
-    if not concursos_no_mes.empty:
-        # Formata as colunas "Início" e "Fim" para o formato dd/mm/yy
-        concursos_no_mes["Início"] = concursos_no_mes["Início"].dt.strftime('%d/%m/%y')
-        concursos_no_mes["Fim"] = concursos_no_mes["Fim"].dt.strftime('%d/%m/%y')
-        
-        st.write(f"📋 **Concursos Abertos em {mes_selecionado}:**")
-        st.write(concursos_no_mes[["Nome", "Início", "Fim", "Vagas", "Região"]])
+    if not df.empty:
+        st.write(f"📋 **Concursos disponíveis:**")
+        st.write(df[["Nome","Status" , "Início", "Fim", "Vagas", "Região"]])
     else:
-        st.warning("Nenhum concurso encontrado para este mês.")
-
+        st.warning("⚠️ Nenhum concurso encontrado para este mês.")
 
 def plot_map_concursos(df):
     """
@@ -366,7 +377,7 @@ st.title("Dashboard de Concursos")
 df = load_data()
 
 def filtros():
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     # 1. Filtro de Região
     with col1:
@@ -384,7 +395,17 @@ def filtros():
             options=status_opcoes
         )
 
-    # 3. Aplicar filtros simultâneos
+    # 3. Filtro de Data
+    with col3:
+        # Criar lista de meses disponíveis, adicionando "Todos" como opção inicial
+        meses_disponiveis = sorted(df["Mês_Referência"].unique(), key=lambda x: (x != "Previsto", x))
+        meses_disponiveis.insert(0, "Todos")  # Adicionar a opção "Todos" no início
+
+        # Selecionar "Todos" por padrão
+        mes_selecionado = st.selectbox("Selecione um mês:", meses_disponiveis, index=0)
+
+
+    # 4. Aplicar filtros simultâneos
     df_filtrado = df.copy()
 
     if regiao_selecionada:
@@ -393,12 +414,14 @@ def filtros():
     if status_selecionado:
         df_filtrado = df_filtrado[df_filtrado['Status'].isin(status_selecionado)]
 
+    if mes_selecionado != "Todos":
+        df_filtrado = df_filtrado[df_filtrado["Mês_Referência"] == mes_selecionado]
+
     return df_filtrado
 
 df_filtrado = filtros()
 
 col1, col2 = st.columns(2)
-
 
 
 # Coluna 1
@@ -408,9 +431,6 @@ with col1:
                       min_value=5, max_value=50, 
                       value=10, step=5)
     plot_bar_vagas_orgao(df_filtrado, top_n)
-    
-
-    
 
 # Coluna 2
 with col2:

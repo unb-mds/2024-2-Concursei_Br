@@ -131,8 +131,8 @@ create_calendar(selected_year, selected_month, selected_region)
 #legenda do calendário
 st.info("""
 **Legenda:**  
-🔹 = Data de Início do Concurso  
-🔴 = Data de Término do Concurso  
+🔹 = Data de Início das Inscrições do Concurso  
+🔴 = Data de Término das Inscrições do Concurso  
 """)
 
 #footer da página
