@@ -1,2 +1,7 @@
 **/__pycache__/
-*.vscode
+.vscode/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.env/
