@@ -115,7 +115,8 @@ def criar_visualizacoes(df_filtrado):
     """
     Recebe o df_filtrado e exibe "cards" resumindo:
     - Número total de concursos filtrados
-    - Soma da coluna 'Vagas', interpretando '.' como separador de milhares
+    - Soma da coluna 'Vagas'
+    Além disso, exibe a tabela e permite exportá-la para CSV.
     """
     if df_filtrado.empty:
         st.info("Não há dados para exibir nos gráficos com os filtros selecionados.")
@@ -127,11 +128,23 @@ def criar_visualizacoes(df_filtrado):
 
     with col1:
         st.metric(label="Concursos Filtrados", value=len(df_filtrado))
-
     with col2:
         st.metric(label="Total de Vagas", value=int(total_vagas))
     
+    # Exibe a tabela
     st.table(df_filtrado)
+    
+    # Converte o dataframe para CSV (opcionalmente, você pode ajustar o separador e a codificação)
+    csv = df_filtrado.to_csv(index=False, encoding="utf-8")
+    
+    # Botão de download para exportar a tabela em CSV
+    st.download_button(
+        label="Exportar tabela em CSV",
+        data=csv,
+        file_name="concursos_filtrados.csv",
+        mime="text/csv"
+    )
+
 
 df_filtrado = filtros()
 
