@@ -1,4 +1,4 @@
-# Política de Segurança - Concursei BSB
+# Política de Segurança - Concursei BR
 
 ## Versões Suportadas
 
@@ -13,7 +13,7 @@ Esta seção descreve quais versões do projeto atualmente recebem atualizaçõe
 
 ## Relatando uma Vulnerabilidade
 
-Se você encontrar uma vulnerabilidade de segurança no **Concursei BSB**, siga as etapas abaixo para reportá-la com segurança:
+Se você encontrar uma vulnerabilidade de segurança no **Concursei BR**, siga as etapas abaixo para reportá-la com segurança:
 
 1. **Envie um relatório privado:**
    - Relate a vulnerabilidade diretamente para a equipe de desenvolvimento enviando um e-mail para andre.dedemeyer@gmail.com.
@@ -49,7 +49,7 @@ Se você encontrar uma vulnerabilidade de segurança no **Concursei BSB**, siga 
 
 ## Boas Práticas
 
-Para ajudar a manter o **Concursei BSB** seguro:
+Para ajudar a manter o **Concursei BR** seguro:
 
 - Sempre use as versões mais recentes do projeto e dependências.
 - Evite compartilhar informações confidenciais em repositórios públicos.
@@ -57,4 +57,4 @@ Para ajudar a manter o **Concursei BSB** seguro:
 
 ---
 
-Agradecemos sua contribuição para a segurança do **Concursei BSB**!
+Agradecemos sua contribuição para a segurança do **Concursei BR**!
