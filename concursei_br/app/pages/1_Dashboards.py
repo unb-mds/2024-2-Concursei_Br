@@ -63,7 +63,7 @@ def render_header():
         <div class="header">
             <a href="home" class="logo">Concursei Br</a>
             <div class="nav">
-                <a href="Exportar">Exportar</a>
+                <a href="Home">Home</a>
             </div>
         </div>
         """,
