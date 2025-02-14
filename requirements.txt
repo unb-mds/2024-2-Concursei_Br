@@ -16,6 +16,7 @@ fonttools==4.56.0
 gitdb==4.0.12
 GitPython==3.1.44
 idna==3.10
+iniconfig==2.0.0
 Jinja2==3.1.5
 jsonschema==4.23.0
 jsonschema-specifications==2024.10.1
@@ -30,15 +31,18 @@ packaging==24.2
 pandas==2.2.3
 pillow==11.1.0
 plotly==6.0.0
+pluggy==1.5.0
 protobuf==5.29.3
 pyarrow==19.0.0
 pydeck==0.9.1
 Pygments==2.19.1
 pyparsing==3.2.1
+pytest==8.3.4
 python-dateutil==2.9.0.post0
 pytz==2025.1
 referencing==0.36.2
 requests==2.32.3
+requests-mock==1.12.1
 rich==13.9.4
 rpds-py==0.22.3
 seaborn==0.13.2
@@ -54,6 +58,7 @@ tornado==6.4.2
 typing_extensions==4.12.2
 tzdata==2025.1
 urllib3==2.3.0
+utils==1.0.2
 watchdog==6.0.0
 xyzservices==2025.1.0
 zope.interface==7.2
