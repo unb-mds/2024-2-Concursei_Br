@@ -4,7 +4,7 @@ Este projeto envolve a matéria de Métodos de Desenvolvimento de Software e a s
 
 ![Descrição da Imagem](concursei_br/app/assets/prototipo_frontend.jpg)
 
-> Status: Em desenvolvimento ⚙️🔨
+> Status: Finalizado ✅
 
 ---
 
@@ -14,6 +14,7 @@ Cidadãos de todo o Brasil, incluindo:
 - Concurseiros
 - Trabalhadores
 - Estudantes
+- Jornalistas
 
 ---
 
@@ -32,21 +33,56 @@ Cidadãos de todo o Brasil, incluindo:
 . ...
 
 ## Execução 🖥️
-Clone o repositório deste projeto através da seguinte linha de código:
+### 1. Clone o repositório deste projeto através da seguinte linha de código:
 ```bash
 git clone https://github.com/unb-mds/2024-2-Concursei_Br.git
 ```
 
-Com <b>Python</b> instalado, faça a instalação das bibliotecas com o seguinte comando no terminal:
+### 2. Entre na pasta do projeto
+```bash
+cd 2024-2-Concursei_Br
+```
+
+### 3. Com <b>Python</b> instalado, faça a instalação das bibliotecas com o seguinte comando no terminal:
 ```bash
 pip install -r requirements.txt
 ```
 
-Com o repositório clonado execute o programa com:
+### 4. Com o repositório clonado execute o programa com:
+
+##### **Para Linux/macOS:**
+```bash
+cd concursei_br/app
+streamlit run Home.py
+```
+##### **Para Windows:**
 ```bash
 cd .\concursei_br\app\
-streamlit run home.py
+streamlit run Home.py
 ```
+
+
+## 🌐 Estrutura do Site
+
+O **Concursei BR** é uma plataforma interativa que permite aos usuários acompanhar concursos públicos de maneira intuitiva e acessível. A plataforma é organizada em cinco páginas principais:
+
+### 🏠 Home
+A página inicial apresenta uma introdução ao **Concursei BR**, destacando o propósito da plataforma. Além disso, exibe estatísticas atualizadas sobre a **quantidade de concursos com vagas abertas** e o **total de vagas disponíveis no momento**.
+
+### 📊 Dashboards
+Nesta seção, o usuário encontra **diversos indicadores visuais** sobre os concursos públicos, incluindo gráficos e tabelas que mostram informações detalhadas sobre os concursos **abertos e previstos**.
+
+### 📅 Calendário
+O **calendário interativo** permite visualizar a data de **abertura** e **fechamento** das inscrições dos concursos públicos. Os dias são marcados com indicações visuais, exibindo o **nome do concurso** e a **quantidade de vagas disponíveis**.
+
+### 📥 Exportar
+Nesta página, os usuários podem **exportar a tabela completa dos concursos públicos** em diferentes formatos, permitindo o acesso e análise dos dados de maneira mais conveniente.
+
+### ℹ️ Sobre
+A seção **Sobre** apresenta mais detalhes sobre o projeto **Concursei BR**, incluindo sua finalidade e links úteis, como o **repositório do GitHub** e o **site oficial**. Além disso, exibe a equipe responsável pelo desenvolvimento do projeto, com fotos e links para o perfil do GitHub de cada membro.
+
+---
+
 ## Extras
  
  • [Arquitetura](https://unb-mds.github.io/2024-2-Concursei_Br/arquitetura/)
