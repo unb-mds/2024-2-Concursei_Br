@@ -1,8 +1,8 @@
-# Código de Conduta Concursei BSB
+# Código de Conduta Concursei BR
 
 ## Visão Geral e Propósito
 
-O repositório do **Concursei BSB** é um espaço dedicado ao desenvolvimento colaborativo de uma plataforma que apresenta dados de concursos abertos e encerrados de forma interativa e integrada. Este projeto faz parte da disciplina **MDS** e visa contribuir para a transparência e acessibilidade das informações relacionadas a concursos. 
+O repositório do **Concursei BR** é um espaço dedicado ao desenvolvimento colaborativo de uma plataforma que apresenta dados de concursos abertos e encerrados de forma interativa e integrada. Este projeto faz parte da disciplina **MDS** e visa contribuir para a transparência e acessibilidade das informações relacionadas a concursos. 
 
 Este Código de Conduta tem como objetivo garantir que o ambiente de colaboração seja respeitoso, inclusivo e produtivo para todos os envolvidos, promovendo uma experiência livre de assédio e discriminação.
 
