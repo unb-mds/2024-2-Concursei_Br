@@ -133,7 +133,8 @@ with conteudo_principal:
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        selected_year = st.selectbox("Ano", options=available_years)
+        default_year_index = available_years.index(2025) if 2025 in available_years else 0
+        selected_year = st.selectbox("Ano", options=available_years, index=default_year_index)
     with col2:
         selected_month = st.selectbox("Mês", options=range(1, 13), format_func=lambda x: calendar.month_name[x])
     with col3:
