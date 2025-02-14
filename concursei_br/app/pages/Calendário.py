@@ -16,36 +16,39 @@ except:
 #css da página
 st.markdown("""
 <style>
-    :root {
-        --primary-color: #32a852;
-        --background-color: #ffffff;
-    }
-    .stApp {
-        background-color: var(--background-color);
-    }
-    h1, h2, h3 {
-        color: var(--primary-color) !important;
-    }
-    .stSelectbox label p {
-        color: var(--primary-color) !important;
-        font-weight: bold !important;
-    }
-    
-    [data-testid="stVerticalBlock"] > div:nth-child(2) > div {
-        border-radius: 8px !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-    }
-    
-    hr {
-        border-color: var(--primary-color) !important;
-    }
-    .dia-evento {
-        background: white !important;
-        padding: 10px !important;
-        margin: 4px !important;
-    }
+:root {
+    --primary-color: #32a852;
+}
+
+/* Títulos e selectbox em verde */
+h1, h2, h3 {
+    color: var(--primary-color) !important;
+}
+.stSelectbox label p {
+    color: var(--primary-color) !important;
+    font-weight: bold !important;
+}
+
+/* No modo light */
+html[data-theme="light"] .dia-evento {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* No modo dark */
+html[data-theme="dark"] .dia-evento {
+    background: #333333 !important;
+    color: #ffffff !important;
+    border: 1px solid #555555;
+}
 </style>
 """, unsafe_allow_html=True)
+
+
+
+
+
 
 #lendo o csv e filtrando os dados que queremos
 df = load_data()

@@ -1,6 +1,6 @@
-# Guia de Contribuição - Concursei BSB
+# Guia de Contribuição - Concursei BR
 
-Obrigado por considerar contribuir para o **Concursei BSB**! Este projeto faz parte da disciplina **MDS** e busca promover transparência e acessibilidade aos dados de concursos públicos. Este documento fornece diretrizes para garantir que sua contribuição seja clara, útil e de acordo com os padrões do projeto.
+Obrigado por considerar contribuir para o **Concursei BR**! Este projeto faz parte da disciplina **MDS** e busca promover transparência e acessibilidade aos dados de concursos públicos. Este documento fornece diretrizes para garantir que sua contribuição seja clara, útil e de acordo com os padrões do projeto.
 
 ---
 
@@ -93,7 +93,7 @@ Siga estas etapas para contribuir com o código:
 
 Aqui está uma visão geral da estrutura do projeto para ajudar você a se orientar:
 ```
-├── concursei_bsb/                       # Diretório principal
+├── concursei_br/                        # Diretório principal
     ├── app/                             # Front e app principal
     ├── data/                            # Dados
     ├── scrap/                           # API
@@ -131,4 +131,4 @@ Se encontrar um problema, faça o seguinte:
 
 ---
 
-Agradecemos suas contribuições e por ajudar a tornar o **Concursei BSB** uma plataforma incrível!
+Agradecemos suas contribuições e por ajudar a tornar o **Concursei BR** uma plataforma incrível!
